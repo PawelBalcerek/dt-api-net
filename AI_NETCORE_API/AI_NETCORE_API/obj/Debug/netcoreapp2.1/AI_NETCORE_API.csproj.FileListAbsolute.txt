@@ -1,0 +1,3 @@
+C:\Users\Maciej Cebula\Source\Repos\AI_PROJECT\AI_NETCORE_API\AI_NETCORE_API\obj\Debug\netcoreapp2.1\AI_NETCORE_API.csproj.CoreCompileInputs.cache
+C:\Users\Maciej Cebula\Source\Repos\AI_PROJECT\AI_NETCORE_API\AI_NETCORE_API\obj\Debug\netcoreapp2.1\AI_NETCORE_API.AssemblyInfoInputs.cache
+C:\Users\Maciej Cebula\Source\Repos\AI_PROJECT\AI_NETCORE_API\AI_NETCORE_API\obj\Debug\netcoreapp2.1\AI_NETCORE_API.AssemblyInfo.cs
