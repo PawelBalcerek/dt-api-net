@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Data.SomethingProviding.Abstract;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AI_NETCORE_API.Controllers
@@ -10,6 +11,13 @@ namespace AI_NETCORE_API.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private readonly ISomethingProvider _somethingProvider;
+
+        public ValuesController(ISomethingProvider somethingProvider)
+        {
+            _somethingProvider = somethingProvider;
+        }
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
@@ -19,9 +27,9 @@ namespace AI_NETCORE_API.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public ActionResult<bool> Get(int id)
         {
-            return "value";
+            return _somethingProvider.sialalala();
         }
 
         // POST api/values
