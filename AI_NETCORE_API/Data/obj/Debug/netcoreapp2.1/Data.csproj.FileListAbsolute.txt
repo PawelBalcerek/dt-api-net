@@ -1,9 +1,0 @@
-C:\Users\Maciej Cebula\Source\Repos\AI_PROJECT\AI_NETCORE_API\Data\bin\Debug\netcoreapp2.1\Data.deps.json
-C:\Users\Maciej Cebula\Source\Repos\AI_PROJECT\AI_NETCORE_API\Data\bin\Debug\netcoreapp2.1\Data.dll
-C:\Users\Maciej Cebula\Source\Repos\AI_PROJECT\AI_NETCORE_API\Data\bin\Debug\netcoreapp2.1\Data.pdb
-C:\Users\Maciej Cebula\Source\Repos\AI_PROJECT\AI_NETCORE_API\Data\obj\Debug\netcoreapp2.1\Data.csprojAssemblyReference.cache
-C:\Users\Maciej Cebula\Source\Repos\AI_PROJECT\AI_NETCORE_API\Data\obj\Debug\netcoreapp2.1\Data.csproj.CoreCompileInputs.cache
-C:\Users\Maciej Cebula\Source\Repos\AI_PROJECT\AI_NETCORE_API\Data\obj\Debug\netcoreapp2.1\Data.AssemblyInfoInputs.cache
-C:\Users\Maciej Cebula\Source\Repos\AI_PROJECT\AI_NETCORE_API\Data\obj\Debug\netcoreapp2.1\Data.AssemblyInfo.cs
-C:\Users\Maciej Cebula\Source\Repos\AI_PROJECT\AI_NETCORE_API\Data\obj\Debug\netcoreapp2.1\Data.dll
-C:\Users\Maciej Cebula\Source\Repos\AI_PROJECT\AI_NETCORE_API\Data\obj\Debug\netcoreapp2.1\Data.pdb
