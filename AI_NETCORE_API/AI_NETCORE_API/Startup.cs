@@ -2,6 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Data.Infrastructure.AppsettingsConfiguration.Abstract;
+using Data.Infrastructure.AppsettingsConfiguration.Concrete;
+using Data.Infrastructure.EmailAddressValidation.Abstract;
+using Data.Infrastructure.EmailAddressValidation.Concrete;
+using Data.Infrastructure.Logging.Concrete;
+using Data.Infrastructure.PasswordValidation.Abstract;
+using Data.Infrastructure.PasswordValidation.Concrete;
+using Data.Providers.User.Abstract;
+using Data.Providers.User.Concrete;
 using Data.SomethingProviding.Abstract;
 using Data.SomethingProviding.Concrete;
 using Microsoft.AspNetCore.Builder;
@@ -18,12 +27,15 @@ namespace AI_NETCORE_API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
+            HostingEnvironment = env;
         }
 
         public IConfiguration Configuration { get; }
+        public IHostingEnvironment HostingEnvironment { get; }
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -31,6 +43,13 @@ namespace AI_NETCORE_API
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddTransient<ISomethingProvider, SomethingProvider>();
+            services.AddTransient<IAppsettingsProvider, AppsettingsProvider>();
+            services.AddTransient<Data.Infrastructure.Logging.Abstract.ILogger, Logger>();
+            services.AddTransient<IEmailValidator, EmailValidator>();
+            services.AddTransient<IPasswordValidator, PasswordValidator>();
+            services.AddTransient<IUserProvider, MockedUserProvider>();
+
+
 
             services.AddSwaggerGen(x =>
             {
