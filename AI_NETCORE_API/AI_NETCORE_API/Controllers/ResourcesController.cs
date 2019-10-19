@@ -21,7 +21,7 @@ namespace AI_NETCORE_API.Controllers
         private readonly ILogger _logger;
         private readonly IResourcesProvider _resourcesProvider;
 
-        public ResourcesController(ILogger logger,IResourcesProvider resourcesProvider)
+        public ResourcesController(ILogger logger, IResourcesProvider resourcesProvider)
         {
             _logger = logger;
             _resourcesProvider = resourcesProvider;
@@ -53,7 +53,13 @@ namespace AI_NETCORE_API.Controllers
                 case Data.Providers.Common.Enum.ProvideEnumResult.Exception:
                     return StatusCode(500);
                 case Data.Providers.Common.Enum.ProvideEnumResult.Success:
-                    return Ok(getResourceByIdResponse.Resource);
+                    return Ok(new ResourceModel
+                    {
+                        Id = getResourceByIdResponse.Resource.Id,
+                        Amount = getResourceByIdResponse.Resource.Amount,
+                        CompanyId = getResourceByIdResponse.Resource.CompanyId,
+                        UserId = getResourceByIdResponse.Resource.UserId
+                    });
                 case Data.Providers.Common.Enum.ProvideEnumResult.NotFound:
                     return StatusCode(404);
                 default:
@@ -85,7 +91,13 @@ namespace AI_NETCORE_API.Controllers
                 case Data.Providers.Common.Enum.ProvideEnumResult.Exception:
                     return StatusCode(500);
                 case Data.Providers.Common.Enum.ProvideEnumResult.Success:
-                    return Ok(getResourcesResponse.Resources);
+                    return Ok(getResourcesResponse.Resources.ToList().Select(x => new ResourceModel
+                    {
+                        Id = x.Id,
+                        UserId = x.UserId,
+                        CompanyId = x.CompanyId,
+                        Amount = x.Amount
+                    }));
                 case Data.Providers.Common.Enum.ProvideEnumResult.NotFound:
                     return StatusCode(404);
                 default:

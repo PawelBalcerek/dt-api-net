@@ -7,7 +7,6 @@ using Data.Providers.Resources.Response.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Data.Providers.Resources.Concrete
 {
@@ -32,7 +31,6 @@ namespace Data.Providers.Resources.Concrete
                 new Resource(4,2,2,1000)
             };
         }
-
         public IGetResourceByIdResponse GetResourceById(IGetResourceByIdRequest getResourceByIdRequest)
         {
             try
