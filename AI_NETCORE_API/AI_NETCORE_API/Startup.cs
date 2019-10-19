@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstract;
+using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Concrete;
 using Data.Infrastructure.AppsettingsConfiguration.Abstract;
 using Data.Infrastructure.AppsettingsConfiguration.Concrete;
 using Data.Infrastructure.EmailAddressValidation.Abstract;
@@ -9,8 +11,14 @@ using Data.Infrastructure.EmailAddressValidation.Concrete;
 using Data.Infrastructure.Logging.Concrete;
 using Data.Infrastructure.PasswordValidation.Abstract;
 using Data.Infrastructure.PasswordValidation.Concrete;
+using Data.Providers.BuyOffers.Abstract;
+using Data.Providers.BuyOffers.Concrete;
+using Data.Providers.Companies.Abstract;
+using Data.Providers.Companies.Concrete;
 using Data.Providers.Resources.Abstract;
 using Data.Providers.Resources.Concrete;
+using Data.Providers.SellOffers.Abstract;
+using Data.Providers.SellOffers.Concrete;
 using Data.Providers.Transactions.Abstract;
 using Data.Providers.Transactions.Concrete;
 using Data.Providers.Users.Abstract;
@@ -54,6 +62,10 @@ namespace AI_NETCORE_API
             services.AddTransient<IUserProvider, MockedUserProvider>();
             services.AddTransient<ITransactionsProvider, MockTransactionProvider>();
             services.AddTransient<IResourcesProvider, MockResourcesProvider>();
+            services.AddTransient<ICompaniesProvider, MockCompaniesProvider>();
+            services.AddTransient<IBusinessObjectToModelsConverter, BusinessObjectToModelsConverter>();
+            services.AddTransient<IBuyOffersProvider, BuyOffersProvider>();
+            services.AddTransient<ISellOfferProvider, SellOfferProvider>();
 
 
 

@@ -7,5 +7,11 @@ namespace AI_NETCORE_API.Models.Objects
 {
     public class SellOfferModel
     {
+        public int Id { get; set; }
+        public int Amount { get; set; }
+        public int ResourceId { get; set; }
+        public decimal Price { get; set; }
+        public DateTime Date { get; set; }
+        public bool IsValid { get; set; }
     }
 }

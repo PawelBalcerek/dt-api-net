@@ -15,10 +15,6 @@
     <Folder Include="Creators\Company\" />
     <Folder Include="Creators\SellOffer\" />
     <Folder Include="Creators\Users\" />
-    <Folder Include="Providers\BuyOffer\Abstract\" />
-    <Folder Include="Providers\BuyOffer\Concrete\" />
-    <Folder Include="Providers\BuyOffer\Request\" />
-    <Folder Include="Providers\SellOffer\" />
   </ItemGroup>
 
 </Project>

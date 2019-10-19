@@ -6,7 +6,7 @@ namespace Data.BuisnessObject
 {
     public class SellOffer : BaseOffer
     {
-        public SellOffer(int id, int resourceId, int amount, DateTime date, bool isValid,decimal price) : base(id, resourceId, amount, date, isValid)
+        public SellOffer(int id, int resourceId, int amount, DateTime date, bool isValid,decimal price) : base(id,resourceId, amount, date, isValid)
         {
             Price = price;
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstract;
 using AI_NETCORE_API.Models.Objects;
 using AI_NETCORE_API.Models.Request;
 using Data.Infrastructure.AppsettingsConfiguration.Abstract;
@@ -27,13 +28,15 @@ namespace AI_NETCORE_API.Controllers
         private readonly IPasswordValidator _passwordValidator;
         private readonly IEmailValidator _emailValidator;
         private readonly IUserProvider _userProvider;
+        private readonly IBusinessObjectToModelsConverter _businessObjectToModelsConverter;
 
-        public UsersController(ILogger logger, IPasswordValidator passwordValidator, IEmailValidator emailValidator, IUserProvider userProvider)
+        public UsersController(ILogger logger, IPasswordValidator passwordValidator, IEmailValidator emailValidator, IUserProvider userProvider, IBusinessObjectToModelsConverter businessObjectToModelsConverter)
         {
             _logger = logger;
             _passwordValidator = passwordValidator;
             _emailValidator = emailValidator;
             _userProvider = userProvider;
+            _businessObjectToModelsConverter = businessObjectToModelsConverter;
         }
         /// <param name="item"> UserId</param>
         /// <response code="200">Returns found user</response>
@@ -118,7 +121,7 @@ namespace AI_NETCORE_API.Controllers
 
                 //TODO Add new user in database and return their details
 
-                return StatusCode(200, new UserModel
+                return Ok(new UserModel
                 {
                     Email = registerRequest.Email,
                     Name = registerRequest.Name
@@ -137,11 +140,7 @@ namespace AI_NETCORE_API.Controllers
                 case ProvideEnumResult.Exception:
                     return StatusCode(500);
                 case ProvideEnumResult.Success:
-                    return Ok(new UserModel
-                    {
-                        Email = getUserByIdResponse.User.Email,
-                        Name = getUserByIdResponse.User.Name
-                    });
+                    return Ok(_businessObjectToModelsConverter.ConvertUser(getUserByIdResponse.User));
                 case ProvideEnumResult.NotFound:
                     return StatusCode(404);
                 default:
