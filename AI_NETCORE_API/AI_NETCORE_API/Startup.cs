@@ -9,6 +9,8 @@ using Data.Infrastructure.EmailAddressValidation.Concrete;
 using Data.Infrastructure.Logging.Concrete;
 using Data.Infrastructure.PasswordValidation.Abstract;
 using Data.Infrastructure.PasswordValidation.Concrete;
+using Data.Providers.Resources.Abstract;
+using Data.Providers.Resources.Concrete;
 using Data.Providers.Transactions.Abstract;
 using Data.Providers.Transactions.Concrete;
 using Data.Providers.Users.Abstract;
@@ -51,6 +53,7 @@ namespace AI_NETCORE_API
             services.AddTransient<IPasswordValidator, PasswordValidator>();
             services.AddTransient<IUserProvider, MockedUserProvider>();
             services.AddTransient<ITransactionsProvider, MockTransactionProvider>();
+            services.AddTransient<IResourcesProvider, MockResourcesProvider>();
 
 
 

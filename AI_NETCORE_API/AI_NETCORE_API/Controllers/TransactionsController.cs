@@ -48,16 +48,14 @@ namespace AI_NETCORE_API.Controllers
         }
 
         [HttpGet("")]
-        [ProducesResponseType(200, Type = typeof(TransactionModel))]
+        [ProducesResponseType(200, Type = typeof(IList<TransactionModel>))]
         [ProducesResponseType(500)]
-        public ActionResult<TransactionModel> GetTransaction()
+        public ActionResult<IList<TransactionModel>> GetTransaction()
         {
             try
             {
                 IGetTransactionsResponse getTransactionsResponse = _transactionsProvider.GetTransactions();
-                IList<Transaction> transactions = getTransactionsResponse.Transactions;
-                return PrepareResponseAfterGetTransactions(getTransactionsResponse, transactions);
-                //return PrepareResponseAfterGetUserById(getUserByIdResponse);
+                return PrepareResponseAfterGetTransactions(getTransactionsResponse);
             }
             catch (Exception ex)
             {
@@ -66,7 +64,7 @@ namespace AI_NETCORE_API.Controllers
             }
         }
 
-        private ActionResult<TransactionModel> PrepareResponseAfterGetTransactions(IGetTransactionsResponse getTransactionsResponse, IList<Transaction> transactions)
+        private ActionResult<IList<TransactionModel>> PrepareResponseAfterGetTransactions(IGetTransactionsResponse getTransactionsResponse)
         {
             switch (getTransactionsResponse.ProvideResult)
             {
