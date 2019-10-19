@@ -9,15 +9,16 @@ using Data.Infrastructure.EmailAddressValidation.Abstract;
 using Data.Infrastructure.Logging.Abstract;
 using Data.Infrastructure.PasswordValidation.Abstract;
 using Data.Providers.Common.Enum;
-using Data.Providers.User.Abstract;
-using Data.Providers.User.Request.Abstract;
-using Data.Providers.User.Request.Concrete;
-using Data.Providers.User.Response.Abstract;
+using Data.Providers.Users.Abstract;
+using Data.Providers.Users.Request.Abstract;
+using Data.Providers.Users.Request.Concrete;
+using Data.Providers.Users.Response.Abstract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AI_NETCORE_API.Controllers
 {
+
     [Route("api/")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -34,9 +35,15 @@ namespace AI_NETCORE_API.Controllers
             _emailValidator = emailValidator;
             _userProvider = userProvider;
         }
-
+        /// <param name="item"> UserId</param>
+        /// <response code="200">Returns found user</response>
+        /// <response code="404"> If the User not found, empty response</response>  
+        /// <response code="500"> Exception, empty response</response>  
         [HttpGet("user/{id:int}")]
-        public async Task<ActionResult<string>> Login(int id)
+        [ProducesResponseType(200, Type = typeof(UserModel))]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(404)]
+        public ActionResult<UserModel> GetUserById(int id)
         {
             try
             {
@@ -51,7 +58,13 @@ namespace AI_NETCORE_API.Controllers
             }
         }
 
-        
+        /// <summary>
+        /// Method to login user to API
+        /// </summary>
+        /// <param name="loginRequest"></param>
+        /// <returns>UserModel</returns>
+        [ProducesResponseType(200,Type =typeof(UserModel))]
+        [ProducesResponseType(500)]
         [HttpPost("login")]
         public async Task<ActionResult<string>> Login([FromBody] LoginRequest loginRequest)
         {
@@ -65,9 +78,14 @@ namespace AI_NETCORE_API.Controllers
                 return StatusCode(500);
             }
         }
-
+        /// <summary>
+        /// Method to logout user from API
+        /// </summary>
+        /// <returns>Only httpCode</returns>
         [HttpGet("logout")]
-        public async Task<ActionResult>Logout()
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        public async Task<ActionResult> Logout()
         {
             try
             {
@@ -80,7 +98,15 @@ namespace AI_NETCORE_API.Controllers
             }
         }
 
+        /// <summary>
+        /// Method to create new user 
+        /// </summary>
+        /// <param name="registerRequest"> Request object required to create new user </param>
+        /// <returns>UserModel</returns>
         [HttpPost("register")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(200,Type = typeof(UserModel))]
         public async Task<ActionResult<UserModel>> Register([FromBody] RegisterRequest registerRequest)
         {
             try
@@ -104,7 +130,7 @@ namespace AI_NETCORE_API.Controllers
                 return StatusCode(500);
             }
         }
-        private ActionResult<string> PrepareResponseAfterGetUserById(IGetUserByIdResponse getUserByIdResponse)
+        private ActionResult<UserModel> PrepareResponseAfterGetUserById(IGetUserByIdResponse getUserByIdResponse)
         {
             switch (getUserByIdResponse.ProvideResult)
             {

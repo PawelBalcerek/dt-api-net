@@ -1,9 +1,10 @@
-﻿using Data.Providers.User.Request.Abstract;
+﻿
+using Data.Providers.Users.Request.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Providers.User.Request.Concrete
+namespace Data.Providers.Users.Request.Concrete
 {
     public class GetUserByIdRequest : IGetUserByIdRequest
     {

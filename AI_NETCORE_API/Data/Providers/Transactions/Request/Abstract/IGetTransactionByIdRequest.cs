@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Providers.User.Request.Abstract
+namespace Data.Providers.Transactions.Request.Abstract
 {
-    public interface IGetUserByIdRequest
+    public interface IGetTransactionByIdRequest
     {
         int Id { get; }
     }

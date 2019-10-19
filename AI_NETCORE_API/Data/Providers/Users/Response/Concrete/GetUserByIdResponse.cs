@@ -1,10 +1,11 @@
-﻿using Data.Providers.Common.Enum;
-using Data.Providers.User.Response.Abstract;
+﻿using Data.BuisnessObject;
+using Data.Providers.Common.Enum;
+using Data.Providers.Users.Response.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Providers.User.Response.Concrete
+namespace Data.Providers.Users.Response.Concrete
 {
     public class GetUserByIdResponse : IGetUserByIdResponse
     {
@@ -13,7 +14,7 @@ namespace Data.Providers.User.Response.Concrete
             ProvideResult = ProvideEnumResult.Exception;
         }
 
-        public GetUserByIdResponse(dynamic user)
+        public GetUserByIdResponse(User user)
         {
             if (user == null)
             {
@@ -26,7 +27,7 @@ namespace Data.Providers.User.Response.Concrete
             }
         }
 
-        public dynamic User { get; }
+        public User User { get; }
 
         public ProvideEnumResult ProvideResult { get; }
     }

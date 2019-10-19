@@ -1,13 +1,14 @@
-﻿using Data.Infrastructure.Logging.Abstract;
-using Data.Providers.User.Abstract;
-using Data.Providers.User.Request.Abstract;
-using Data.Providers.User.Response.Abstract;
-using Data.Providers.User.Response.Concrete;
+﻿using Data.BuisnessObject;
+using Data.Infrastructure.Logging.Abstract;
+using Data.Providers.Users.Abstract;
+using Data.Providers.Users.Request.Abstract;
+using Data.Providers.Users.Response.Abstract;
+using Data.Providers.Users.Response.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Providers.User.Concrete
+namespace Data.Providers.Users.Concrete
 {
     public class UserProvider : IUserProvider
     {
@@ -22,12 +23,14 @@ namespace Data.Providers.User.Concrete
             try
             {
                 //TODO get from repository
-                return new GetUserByIdResponse(new { Name = "Nazwa", Email = "email@email.pl" });
+                return new GetUserByIdResponse(new User(getUserByIdRequest.Id,"Nazwa","Email@email.pl","__acxzzzXczx12zA"));
             }
             catch(Exception ex)
             {
+                _logger.Log(ex);
                 return new GetUserByIdResponse();
             }
         }
+        
     }
 }

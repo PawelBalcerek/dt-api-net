@@ -10,17 +10,24 @@ using Data.Infrastructure.PasswordValidation.Response.Abstract;
 using Data.Infrastructure.PasswordValidation.Response.Enum;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace AI_NETCORE_API.Models.Request
 {
+
     public class RegisterRequest
     {
+        [Required]
+        
         public string Email { get; set; }
+        [Required]
         public string Password { get; set; }
+        [Required]
         public string ConfirmPassword { get; set; }
+        [Required]
         public string Name { get; set; }
         public bool IsValid(IPasswordValidator passwordValidator, IEmailValidator emailValidator)
         {

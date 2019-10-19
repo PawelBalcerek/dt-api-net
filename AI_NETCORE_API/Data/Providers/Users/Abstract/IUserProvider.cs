@@ -1,10 +1,10 @@
-﻿using Data.Providers.User.Request.Abstract;
-using Data.Providers.User.Response.Abstract;
+﻿using Data.Providers.Users.Request.Abstract;
+using Data.Providers.Users.Response.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Providers.User.Abstract
+namespace Data.Providers.Users.Abstract
 {
     public interface IUserProvider
     {

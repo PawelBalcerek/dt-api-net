@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Providers.User.Response.Abstract
+namespace Data.Providers.Users.Response.Abstract
 {
     public interface IGetUserByIdResponse : IProvideResult
     {
-        dynamic User { get; }
+        BuisnessObject.User User { get; }
     }
 }

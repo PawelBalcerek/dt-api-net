@@ -9,8 +9,10 @@ using Data.Infrastructure.EmailAddressValidation.Concrete;
 using Data.Infrastructure.Logging.Concrete;
 using Data.Infrastructure.PasswordValidation.Abstract;
 using Data.Infrastructure.PasswordValidation.Concrete;
-using Data.Providers.User.Abstract;
-using Data.Providers.User.Concrete;
+using Data.Providers.Transactions.Abstract;
+using Data.Providers.Transactions.Concrete;
+using Data.Providers.Users.Abstract;
+using Data.Providers.Users.Concrete;
 using Data.SomethingProviding.Abstract;
 using Data.SomethingProviding.Concrete;
 using Microsoft.AspNetCore.Builder;
@@ -48,6 +50,7 @@ namespace AI_NETCORE_API
             services.AddTransient<IEmailValidator, EmailValidator>();
             services.AddTransient<IPasswordValidator, PasswordValidator>();
             services.AddTransient<IUserProvider, MockedUserProvider>();
+            services.AddTransient<ITransactionsProvider, MockTransactionProvider>();
 
 
 
