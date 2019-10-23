@@ -9,9 +9,9 @@ namespace Domain.Infrastructure.PasswordValidation.Request.Concrete
     {
         public PasswordValidationRequest(string passwortToValidate)
         {
-            PasswortToValidate = passwortToValidate;
+            PasswordToValidate = passwortToValidate;
         }
 
-        public string PasswortToValidate { get; }
+        public string PasswordToValidate { get; }
     }
 }

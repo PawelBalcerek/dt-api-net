@@ -29,7 +29,7 @@ namespace Domain.Infrastructure.PasswordValidation.Concrete
             {
                 Regex regex = new Regex(_appsettingsProvider.GetPasswordRegex());
                 return new PasswordValidationResponse(
-                    regex.IsMatch(passwordValidationRequest.PasswortToValidate) ?
+                    regex.IsMatch(passwordValidationRequest.PasswordToValidate) ?
                     PasswordValidationResultEnum.Success :
                     PasswordValidationResultEnum.InvalidInput);
             }

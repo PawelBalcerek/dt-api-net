@@ -6,6 +6,6 @@ namespace Domain.Infrastructure.PasswordValidation.Request.Abstract
 {
     public interface IPasswordValidationRequest
     {
-        string PasswortToValidate { get; }
+        string PasswordToValidate { get; }
     }
 }
