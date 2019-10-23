@@ -1,9 +1,9 @@
-﻿using Data.Infrastructure.Logging.Abstract;
+﻿using Domain.Infrastructure.Logging.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Infrastructure.Logging.Concrete
+namespace Domain.Infrastructure.Logging.Concrete
 {
     public class Logger : ILogger
     {

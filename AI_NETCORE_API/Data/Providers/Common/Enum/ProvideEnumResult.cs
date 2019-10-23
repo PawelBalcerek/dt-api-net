@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Providers.Common.Enum
+namespace Domain.Providers.Common.Enum
 {
     public enum ProvideEnumResult
     {

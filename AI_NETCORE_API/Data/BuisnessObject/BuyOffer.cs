@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.BuisnessObject
+namespace Domain.BuisnessObject
 {
     public class BuyOffer : BaseOffer
     {

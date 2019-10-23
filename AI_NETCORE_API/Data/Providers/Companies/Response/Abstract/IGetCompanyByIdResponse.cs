@@ -1,10 +1,10 @@
-﻿using Data.BuisnessObject;
-using Data.Providers.Common.Abstract;
+﻿using Domain.BuisnessObject;
+using Domain.Providers.Common.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Providers.Companies.Response.Abstract
+namespace Domain.Providers.Companies.Response.Abstract
 {
     public interface IGetCompanyByIdResponse : IProvideResult
     {

@@ -1,6 +1,6 @@
-﻿using Data.Providers.Transactions.Request.Abstract;
+﻿using Domain.Providers.Transactions.Request.Abstract;
 
-namespace Data.Providers.Transactions.Request.Concrete
+namespace Domain.Providers.Transactions.Request.Concrete
 {
     public class GetTransactionByIdRequest : IGetTransactionByIdRequest
     {

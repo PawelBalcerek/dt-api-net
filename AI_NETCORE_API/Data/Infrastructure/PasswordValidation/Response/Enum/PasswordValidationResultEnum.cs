@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Infrastructure.PasswordValidation.Response.Enum
+namespace Domain.Infrastructure.PasswordValidation.Response.Enum
 {
     public enum PasswordValidationResultEnum
     {

@@ -1,16 +1,16 @@
-﻿using Data.Infrastructure.AppsettingsConfiguration.Abstract;
-using Data.Infrastructure.Logging.Abstract;
-using Data.Infrastructure.PasswordValidation.Abstract;
-using Data.Infrastructure.PasswordValidation.Request.Abstract;
-using Data.Infrastructure.PasswordValidation.Response.Abstract;
-using Data.Infrastructure.PasswordValidation.Response.Concrete;
-using Data.Infrastructure.PasswordValidation.Response.Enum;
+﻿using Domain.Infrastructure.AppsettingsConfiguration.Abstract;
+using Domain.Infrastructure.Logging.Abstract;
+using Domain.Infrastructure.PasswordValidation.Abstract;
+using Domain.Infrastructure.PasswordValidation.Request.Abstract;
+using Domain.Infrastructure.PasswordValidation.Response.Abstract;
+using Domain.Infrastructure.PasswordValidation.Response.Concrete;
+using Domain.Infrastructure.PasswordValidation.Response.Enum;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Data.Infrastructure.PasswordValidation.Concrete
+namespace Domain.Infrastructure.PasswordValidation.Concrete
 {
     public class PasswordValidator : IPasswordValidator
     {

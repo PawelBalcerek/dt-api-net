@@ -1,9 +1,9 @@
-﻿using Data.Providers.Resources.Request.Abstract;
+﻿using Domain.Providers.Resources.Request.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Providers.Resources.Request.Concrete
+namespace Domain.Providers.Resources.Request.Concrete
 {
     public class GetResourceByIdRequest : IGetResourceByIdRequest
     {

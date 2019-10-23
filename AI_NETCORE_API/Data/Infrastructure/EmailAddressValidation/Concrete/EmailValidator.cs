@@ -1,13 +1,13 @@
-﻿using Data.Infrastructure.EmailAddressValidation.Abstract;
-using Data.Infrastructure.EmailAddressValidation.Request.Abstract;
-using Data.Infrastructure.EmailAddressValidation.Response.Abstract;
-using Data.Infrastructure.EmailAddressValidation.Response.Concrete;
-using Data.Infrastructure.EmailAddressValidation.Response.Enum;
+﻿using Domain.Infrastructure.EmailAddressValidation.Abstract;
+using Domain.Infrastructure.EmailAddressValidation.Request.Abstract;
+using Domain.Infrastructure.EmailAddressValidation.Response.Abstract;
+using Domain.Infrastructure.EmailAddressValidation.Response.Concrete;
+using Domain.Infrastructure.EmailAddressValidation.Response.Enum;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Infrastructure.EmailAddressValidation.Concrete
+namespace Domain.Infrastructure.EmailAddressValidation.Concrete
 {
     public class EmailValidator : IEmailValidator
     {

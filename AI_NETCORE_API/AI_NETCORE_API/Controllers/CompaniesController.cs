@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstract;
 using AI_NETCORE_API.Models.Objects;
-using Data.Infrastructure.Logging.Abstract;
-using Data.Providers.Companies.Abstract;
-using Data.Providers.Companies.Request.Abstract;
-using Data.Providers.Companies.Request.Concrete;
-using Data.Providers.Companies.Response.Abstract;
+using Domain.Infrastructure.Logging.Abstract;
+using Domain.Providers.Companies.Abstract;
+using Domain.Providers.Companies.Request.Abstract;
+using Domain.Providers.Companies.Request.Concrete;
+using Domain.Providers.Companies.Response.Abstract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -52,11 +52,11 @@ namespace AI_NETCORE_API.Controllers
         {
             switch (getCompanyByIdResponse.ProvideResult)
             {
-                case Data.Providers.Common.Enum.ProvideEnumResult.Exception:
+                case Domain.Providers.Common.Enum.ProvideEnumResult.Exception:
                     return StatusCode(500);
-                case Data.Providers.Common.Enum.ProvideEnumResult.Success:
+                case Domain.Providers.Common.Enum.ProvideEnumResult.Success:
                     return Ok(_businessObjectToModelsConverter.ConvertCompany(getCompanyByIdResponse.Company));
-                case Data.Providers.Common.Enum.ProvideEnumResult.NotFound:
+                case Domain.Providers.Common.Enum.ProvideEnumResult.NotFound:
                     return StatusCode(404);
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -84,12 +84,12 @@ namespace AI_NETCORE_API.Controllers
         {
             switch (getCompaniesResponse.ProvideResult)
             {
-                case Data.Providers.Common.Enum.ProvideEnumResult.Exception:
+                case Domain.Providers.Common.Enum.ProvideEnumResult.Exception:
                     return StatusCode(500);
-                case Data.Providers.Common.Enum.ProvideEnumResult.Success:
+                case Domain.Providers.Common.Enum.ProvideEnumResult.Success:
                     return Ok(getCompaniesResponse.Companies.ToList()
                         .Select(x=> _businessObjectToModelsConverter.ConvertCompany(x)));
-                case Data.Providers.Common.Enum.ProvideEnumResult.NotFound:
+                case Domain.Providers.Common.Enum.ProvideEnumResult.NotFound:
                     return StatusCode(404);
                 default:
                     throw new ArgumentOutOfRangeException();

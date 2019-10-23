@@ -1,10 +1,10 @@
-﻿using Data.Providers.Resources.Request.Abstract;
-using Data.Providers.Resources.Response.Abstract;
+﻿using Domain.Providers.Resources.Request.Abstract;
+using Domain.Providers.Resources.Response.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Providers.Resources.Abstract
+namespace Domain.Providers.Resources.Abstract
 {
     public interface IResourcesProvider
     {

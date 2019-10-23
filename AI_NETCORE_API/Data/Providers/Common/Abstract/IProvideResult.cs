@@ -1,9 +1,9 @@
-﻿using Data.Providers.Common.Enum;
+﻿using Domain.Providers.Common.Enum;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Providers.Common.Abstract
+namespace Domain.Providers.Common.Abstract
 {
     public interface IProvideResult
     {

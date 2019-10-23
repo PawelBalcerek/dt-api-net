@@ -1,5 +1,5 @@
 ﻿using AI_NETCORE_API.Models.Objects;
-using Data.BuisnessObject;
+using Domain.BuisnessObject;
 using System;
 using System.Collections.Generic;
 using System.Linq;

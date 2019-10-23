@@ -1,14 +1,14 @@
-﻿using Data.BuisnessObject;
-using Data.Infrastructure.Logging.Abstract;
-using Data.Providers.Resources.Abstract;
-using Data.Providers.Resources.Request.Abstract;
-using Data.Providers.Resources.Response.Abstract;
-using Data.Providers.Resources.Response.Concrete;
+﻿using Domain.BuisnessObject;
+using Domain.Infrastructure.Logging.Abstract;
+using Domain.Providers.Resources.Abstract;
+using Domain.Providers.Resources.Request.Abstract;
+using Domain.Providers.Resources.Response.Abstract;
+using Domain.Providers.Resources.Response.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Data.Providers.Resources.Concrete
+namespace Domain.Providers.Resources.Concrete
 {
     public class MockResourcesProvider : IResourcesProvider
     {

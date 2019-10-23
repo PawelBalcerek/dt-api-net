@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Providers.Resources.Request.Abstract
+namespace Domain.Providers.Resources.Request.Abstract
 {
     public interface IGetResourceByIdRequest
     {

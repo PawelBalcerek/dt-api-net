@@ -1,9 +1,9 @@
-﻿using Data.Providers.BuyOffers.Request.Abstract;
+﻿using Domain.Providers.BuyOffers.Request.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Providers.BuyOffers.Request.Concrete
+namespace Domain.Providers.BuyOffers.Request.Concrete
 {
     public class GetBuyOfferByIdRequest : IGetBuyOfferByIdRequest
     {
