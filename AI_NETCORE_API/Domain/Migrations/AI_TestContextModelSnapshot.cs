@@ -180,19 +180,19 @@ namespace Data.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnName("email")
-                        .HasMaxLength(1)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("name")
-                        .HasMaxLength(1)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnName("password")
-                        .HasMaxLength(1)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.HasKey("Id");
