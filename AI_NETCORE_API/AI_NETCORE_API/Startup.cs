@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstract;
 using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Concrete;
+using Domain.Creators.Users.Abstract;
+using Domain.Creators.Users.Concrete;
 using Domain.Infrastructure.AppsettingsConfiguration.Abstract;
 using Domain.Infrastructure.AppsettingsConfiguration.Concrete;
 using Domain.Infrastructure.EmailAddressValidation.Abstract;
@@ -63,6 +65,7 @@ namespace AI_NETCORE_API
             services.AddTransient<IBusinessObjectToModelsConverter, BusinessObjectToModelsConverter>();
             services.AddTransient<IBuyOffersProvider, BuyOffersProvider>();
             services.AddTransient<ISellOfferProvider, SellOfferProvider>();
+            services.AddTransient<IUserCreator, UserCreator>();
 
 
 

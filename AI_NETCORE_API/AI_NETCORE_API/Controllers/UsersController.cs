@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstract;
 using AI_NETCORE_API.Models.Objects;
 using AI_NETCORE_API.Models.Request;
+using Domain.Creators.Users.Abstract;
+using Domain.Creators.Users.Request.Concrete;
+using Domain.Creators.Users.Response.Abstract;
 using Domain.Infrastructure.AppsettingsConfiguration.Abstract;
 using Domain.Infrastructure.EmailAddressValidation.Abstract;
 using Domain.Infrastructure.Logging.Abstract;
@@ -28,15 +31,17 @@ namespace AI_NETCORE_API.Controllers
         private readonly IPasswordValidator _passwordValidator;
         private readonly IEmailValidator _emailValidator;
         private readonly IUserProvider _userProvider;
+        private readonly IUserCreator _userCreator;
         private readonly IBusinessObjectToModelsConverter _businessObjectToModelsConverter;
 
-        public UsersController(ILogger logger, IPasswordValidator passwordValidator, IEmailValidator emailValidator, IUserProvider userProvider, IBusinessObjectToModelsConverter businessObjectToModelsConverter)
+        public UsersController(ILogger logger, IPasswordValidator passwordValidator, IEmailValidator emailValidator, IUserProvider userProvider, IBusinessObjectToModelsConverter businessObjectToModelsConverter, IUserCreator userCreator)
         {
             _logger = logger;
             _passwordValidator = passwordValidator;
             _emailValidator = emailValidator;
             _userProvider = userProvider;
             _businessObjectToModelsConverter = businessObjectToModelsConverter;
+            _userCreator = userCreator;
         }
         /// <param name="item"> UserId</param>
         /// <response code="200">Returns found user</response>
@@ -110,7 +115,7 @@ namespace AI_NETCORE_API.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
         [ProducesResponseType(200,Type = typeof(UserModel))]
-        public async Task<ActionResult<UserModel>> Register([FromBody] RegisterRequest registerRequest)
+        public async Task<ActionResult> Register([FromBody] RegisterRequest registerRequest)
         {
             try
             {
@@ -119,13 +124,9 @@ namespace AI_NETCORE_API.Controllers
                     return StatusCode(400);
                 }
 
-                //TODO Add new user in database and return their details
-
-                return Ok(new UserModel
-                {
-                    Email = registerRequest.Email,
-                    Name = registerRequest.Name
-                });
+                IUserCreateResponse result = _userCreator.CreateUser(new UserCreateRequest(registerRequest.Name, registerRequest.Password,
+                    registerRequest.Email));
+                return result.Success ? Ok() : StatusCode(500);
             }
             catch(Exception ex)
             {
