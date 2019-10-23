@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data.Models
 {
-    public partial class Users
+    [Table("Users")]
+    public partial class User
     {
-        public Users()
+        public User()
         {
-            Resources = new HashSet<Resources>();
+            Resources = new HashSet<Resource>();
         }
 
         public int Id { get; set; }
@@ -16,6 +18,6 @@ namespace Data.Models
         public string Password { get; set; }
         public decimal Cash { get; set; }
 
-        public ICollection<Resources> Resources { get; set; }
+        public ICollection<Resource> Resources { get; set; }
     }
 }

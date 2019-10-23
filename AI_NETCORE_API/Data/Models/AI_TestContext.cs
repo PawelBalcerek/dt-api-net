@@ -15,13 +15,13 @@ namespace Data.Models
         {
         }
 
-        public virtual DbSet<BuyOffers> BuyOffers { get; set; }
-        public virtual DbSet<Companies> Companies { get; set; }
-        public virtual DbSet<Configurations> Configurations { get; set; }
-        public virtual DbSet<Resources> Resources { get; set; }
-        public virtual DbSet<SellOffers> SellOffers { get; set; }
-        public virtual DbSet<Transactions> Transactions { get; set; }
-        public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<BuyOffer> BuyOffers { get; set; }
+        public virtual DbSet<Company> Companies { get; set; }
+        public virtual DbSet<Configuration> Configurations { get; set; }
+        public virtual DbSet<Resource> Resources { get; set; }
+        public virtual DbSet<SellOffer> SellOffers { get; set; }
+        public virtual DbSet<Transaction> Transactions { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -34,7 +34,7 @@ namespace Data.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BuyOffers>(entity =>
+            modelBuilder.Entity<BuyOffer>(entity =>
             {
                 entity.ToTable("Buy_Offers");
 
@@ -45,9 +45,8 @@ namespace Data.Models
                 entity.Property(e => e.Amount).HasColumnName("amount");
 
                 entity.Property(e => e.Date)
-                    .IsRequired()
                     .HasColumnName("date")
-                    .IsRowVersion();
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.IsValid).HasColumnName("is_valid");
 
@@ -66,7 +65,7 @@ namespace Data.Models
                     .HasConstraintName("FK__Buy_Offer__resou__31EC6D26");
             });
 
-            modelBuilder.Entity<Companies>(entity =>
+            modelBuilder.Entity<Company>(entity =>
             {
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
@@ -79,7 +78,7 @@ namespace Data.Models
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<Configurations>(entity =>
+            modelBuilder.Entity<Configuration>(entity =>
             {
                 entity.HasKey(e => e.Name);
 
@@ -92,7 +91,7 @@ namespace Data.Models
                 entity.Property(e => e.Value).HasColumnName("value");
             });
 
-            modelBuilder.Entity<Resources>(entity =>
+            modelBuilder.Entity<Resource>(entity =>
             {
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
@@ -117,7 +116,7 @@ namespace Data.Models
                     .HasConstraintName("FK__Resources__user___2F10007B");
             });
 
-            modelBuilder.Entity<SellOffers>(entity =>
+            modelBuilder.Entity<SellOffer>(entity =>
             {
                 entity.ToTable("Sell_Offers");
 
@@ -128,9 +127,8 @@ namespace Data.Models
                 entity.Property(e => e.Amount).HasColumnName("amount");
 
                 entity.Property(e => e.Date)
-                    .IsRequired()
                     .HasColumnName("date")
-                    .IsRowVersion();
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.IsValid).HasColumnName("is_valid");
 
@@ -149,7 +147,7 @@ namespace Data.Models
                     .HasConstraintName("FK__Sell_Offe__resou__30F848ED");
             });
 
-            modelBuilder.Entity<Transactions>(entity =>
+            modelBuilder.Entity<Transaction>(entity =>
             {
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
@@ -160,9 +158,8 @@ namespace Data.Models
                 entity.Property(e => e.BuyOfferId).HasColumnName("buy_offer_id");
 
                 entity.Property(e => e.Date)
-                    .IsRequired()
                     .HasColumnName("date")
-                    .IsRowVersion();
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.Price)
                     .HasColumnName("price")
@@ -183,7 +180,7 @@ namespace Data.Models
                     .HasConstraintName("FK__Transacti__sell___32E0915F");
             });
 
-            modelBuilder.Entity<Users>(entity =>
+            modelBuilder.Entity<User>(entity =>
             {
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")

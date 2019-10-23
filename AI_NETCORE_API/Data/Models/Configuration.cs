@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data.Models
 {
-    public partial class Configurations
+    [Table("Configurations")]
+    public partial class Configuration
     {
         public string Name { get; set; }
         public int Value { get; set; }

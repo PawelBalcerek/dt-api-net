@@ -1,24 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data.Models
 {
-    public partial class BuyOffers
+    [Table("BuyOffers")]
+    public partial class BuyOffer
     {
-        public BuyOffers()
+        public BuyOffer()
         {
-            Transactions = new HashSet<Transactions>();
+            Transactions = new HashSet<Transaction>();
         }
 
         public int Id { get; set; }
         public int ResourceId { get; set; }
         public int Amount { get; set; }
         public decimal MaxPrice { get; set; }
-        public byte[] Date { get; set; }
+        public DateTime Date { get; set; }
         public bool IsValid { get; set; }
         public int StartAmount { get; set; }
 
-        public Resources Resource { get; set; }
-        public ICollection<Transactions> Transactions { get; set; }
+        public Resource Resource { get; set; }
+        public ICollection<Transaction> Transactions { get; set; }
     }
 }
