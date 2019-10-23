@@ -18,7 +18,7 @@ namespace Domain.Providers.Users.Response.Concrete
         {
             if (user == null)
             {
-                ProvideResult = ProvideEnumResult.Exception;
+                ProvideResult = ProvideEnumResult.NotFound;
             }
             else
             {

@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
-    [DbContext(typeof(AI_TestContext))]
-    partial class AI_TestContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(RepositoryContext))]
+    partial class RepositoryContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
