@@ -7,6 +7,6 @@ namespace Domain.Providers.Users.Response.Abstract
 {
     public interface IGetUserByIdResponse : IProvideResult
     {
-        BuisnessObject.User User { get; }
+        BusinessObject.User User { get; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Domain.BuisnessObject;
+﻿using Domain.BusinessObject;
 using Domain.Providers.BuyOffers.Response.Abstract;
 using Domain.Providers.Common.Enum;
 using System;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstract;
 using AI_NETCORE_API.Models.Objects;
-using Domain.BuisnessObject;
+using Domain.BusinessObject;
 using Domain.Infrastructure.Logging.Abstract;
 using Domain.Providers.Transactions.Abstract;
 using Domain.Providers.Transactions.Request.Abstract;

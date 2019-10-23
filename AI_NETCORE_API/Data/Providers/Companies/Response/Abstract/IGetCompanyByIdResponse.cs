@@ -1,4 +1,4 @@
-﻿using Domain.BuisnessObject;
+﻿using Domain.BusinessObject;
 using Domain.Providers.Common.Abstract;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿using Domain.BuisnessObject;
+﻿using Domain.BusinessObject;
 using Domain.Infrastructure.Logging.Abstract;
 using Domain.Providers.Companies.Abstract;
 using Domain.Providers.Companies.Request.Abstract;

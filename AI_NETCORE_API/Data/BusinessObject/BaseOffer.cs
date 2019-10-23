@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.BuisnessObject
+namespace Domain.BusinessObject
 {
     public abstract class BaseOffer
     {

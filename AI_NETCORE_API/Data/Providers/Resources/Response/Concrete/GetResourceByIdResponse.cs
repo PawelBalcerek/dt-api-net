@@ -1,4 +1,4 @@
-﻿using Domain.BuisnessObject;
+﻿using Domain.BusinessObject;
 using Domain.Providers.Common.Enum;
 using Domain.Providers.Resources.Response.Abstract;
 using System;

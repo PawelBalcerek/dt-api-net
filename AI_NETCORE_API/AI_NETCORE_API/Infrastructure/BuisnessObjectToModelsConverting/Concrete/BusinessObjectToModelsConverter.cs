@@ -1,6 +1,6 @@
 ﻿using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstract;
 using AI_NETCORE_API.Models.Objects;
-using Domain.BuisnessObject;
+using Domain.BusinessObject;
 using System;
 using System.Collections.Generic;
 using System.Linq;

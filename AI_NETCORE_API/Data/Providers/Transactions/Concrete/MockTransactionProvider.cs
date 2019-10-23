@@ -1,5 +1,5 @@
 ﻿using Domain.Providers.Transactions.Response.Concrete;
-using Domain.BuisnessObject;
+using Domain.BusinessObject;
 using Domain.Infrastructure.Logging.Abstract;
 using Domain.Providers.Transactions.Abstract;
 using Domain.Providers.Transactions.Request.Abstract;
