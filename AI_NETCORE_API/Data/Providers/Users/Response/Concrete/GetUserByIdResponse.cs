@@ -1,11 +1,11 @@
-﻿using Data.BuisnessObject;
-using Data.Providers.Common.Enum;
-using Data.Providers.Users.Response.Abstract;
+﻿using Domain.BuisnessObject;
+using Domain.Providers.Common.Enum;
+using Domain.Providers.Users.Response.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Providers.Users.Response.Concrete
+namespace Domain.Providers.Users.Response.Concrete
 {
     public class GetUserByIdResponse : IGetUserByIdResponse
     {

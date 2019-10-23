@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Providers.Transactions.Request.Abstract
+namespace Domain.Providers.Transactions.Request.Abstract
 {
     public interface IGetTransactionByIdRequest
     {

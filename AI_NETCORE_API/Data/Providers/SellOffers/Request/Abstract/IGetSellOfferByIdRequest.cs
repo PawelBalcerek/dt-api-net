@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Providers.SellOffers.Request.Abstract
+namespace Domain.Providers.SellOffers.Request.Abstract
 {
     public interface IGetSellOfferByIdRequest
     {

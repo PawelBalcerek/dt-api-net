@@ -1,10 +1,10 @@
-﻿using Data.Providers.Common.Enum;
-using Data.Providers.Transactions.Response.Abstract;
+﻿using Domain.Providers.Common.Enum;
+using Domain.Providers.Transactions.Response.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Providers.Transactions.Response.Concrete
+namespace Domain.Providers.Transactions.Response.Concrete
 {
     public class GetTransactionByIdResponse : IGetTransactionByIdResponse
     {

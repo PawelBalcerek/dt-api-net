@@ -1,10 +1,10 @@
-﻿using Data.Infrastructure.PasswordValidation.Request.Abstract;
-using Data.Infrastructure.PasswordValidation.Response.Abstract;
+﻿using Domain.Infrastructure.PasswordValidation.Request.Abstract;
+using Domain.Infrastructure.PasswordValidation.Response.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Infrastructure.PasswordValidation.Abstract
+namespace Domain.Infrastructure.PasswordValidation.Abstract
 {
     public interface IPasswordValidator
     {

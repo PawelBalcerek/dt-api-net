@@ -1,14 +1,14 @@
-﻿using Data.BuisnessObject;
-using Data.Infrastructure.Logging.Abstract;
-using Data.Providers.Users.Abstract;
-using Data.Providers.Users.Request.Abstract;
-using Data.Providers.Users.Response.Abstract;
-using Data.Providers.Users.Response.Concrete;
+﻿using Domain.BuisnessObject;
+using Domain.Infrastructure.Logging.Abstract;
+using Domain.Providers.Users.Abstract;
+using Domain.Providers.Users.Request.Abstract;
+using Domain.Providers.Users.Response.Abstract;
+using Domain.Providers.Users.Response.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Providers.Users.Concrete
+namespace Domain.Providers.Users.Concrete
 {
     public class UserProvider : IUserProvider
     {

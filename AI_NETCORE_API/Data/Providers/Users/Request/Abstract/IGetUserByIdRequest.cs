@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Providers.Users.Request.Abstract
+namespace Domain.Providers.Users.Request.Abstract
 {
     public interface IGetUserByIdRequest
     {

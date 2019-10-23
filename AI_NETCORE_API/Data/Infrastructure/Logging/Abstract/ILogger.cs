@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Infrastructure.Logging.Abstract
+namespace Domain.Infrastructure.Logging.Abstract
 {
     public interface ILogger
     {

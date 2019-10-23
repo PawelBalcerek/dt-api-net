@@ -1,10 +1,10 @@
-﻿using Data.Infrastructure.AppsettingsConfiguration.Abstract;
+﻿using Domain.Infrastructure.AppsettingsConfiguration.Abstract;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Infrastructure.AppsettingsConfiguration.Concrete
+namespace Domain.Infrastructure.AppsettingsConfiguration.Concrete
 {
     public class AppsettingsProvider : IAppsettingsProvider
     {

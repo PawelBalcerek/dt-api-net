@@ -1,7 +1,7 @@
-﻿using Data.Providers.Transactions.Request.Abstract;
-using Data.Providers.Transactions.Response.Abstract;
+﻿using Domain.Providers.Transactions.Request.Abstract;
+using Domain.Providers.Transactions.Response.Abstract;
 
-namespace Data.Providers.Transactions.Abstract
+namespace Domain.Providers.Transactions.Abstract
 {
     public interface ITransactionsProvider
     {

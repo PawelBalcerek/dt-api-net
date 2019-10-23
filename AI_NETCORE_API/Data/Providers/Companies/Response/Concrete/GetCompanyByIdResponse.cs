@@ -1,11 +1,11 @@
-﻿using Data.BuisnessObject;
-using Data.Providers.Common.Enum;
-using Data.Providers.Companies.Response.Abstract;
+﻿using Domain.BuisnessObject;
+using Domain.Providers.Common.Enum;
+using Domain.Providers.Companies.Response.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Providers.Companies.Response.Concrete
+namespace Domain.Providers.Companies.Response.Concrete
 {
     public class GetCompanyByIdResponse : IGetCompanyByIdResponse
     {

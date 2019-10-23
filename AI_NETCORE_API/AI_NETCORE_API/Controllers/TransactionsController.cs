@@ -4,12 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstract;
 using AI_NETCORE_API.Models.Objects;
-using Data.BuisnessObject;
-using Data.Infrastructure.Logging.Abstract;
-using Data.Providers.Transactions.Abstract;
-using Data.Providers.Transactions.Request.Abstract;
-using Data.Providers.Transactions.Request.Concrete;
-using Data.Providers.Transactions.Response.Abstract;
+using Domain.BuisnessObject;
+using Domain.Infrastructure.Logging.Abstract;
+using Domain.Providers.Transactions.Abstract;
+using Domain.Providers.Transactions.Request.Abstract;
+using Domain.Providers.Transactions.Request.Concrete;
+using Domain.Providers.Transactions.Response.Abstract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -70,12 +70,12 @@ namespace AI_NETCORE_API.Controllers
         {
             switch (getTransactionsResponse.ProvideResult)
             {
-                case Data.Providers.Common.Enum.ProvideEnumResult.Exception:
+                case Domain.Providers.Common.Enum.ProvideEnumResult.Exception:
                     return StatusCode(500);
-                case Data.Providers.Common.Enum.ProvideEnumResult.Success:
+                case Domain.Providers.Common.Enum.ProvideEnumResult.Success:
                     return Ok(getTransactionsResponse.Transactions.ToList()
                         .Select(x => _businessObjectToModelsConverter.ConvertTransaction(x)));
-                case Data.Providers.Common.Enum.ProvideEnumResult.NotFound:
+                case Domain.Providers.Common.Enum.ProvideEnumResult.NotFound:
                     return StatusCode(404);
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -86,11 +86,13 @@ namespace AI_NETCORE_API.Controllers
         {
             switch (getTransactionByIdResponse.ProvideResult)
             {
-                case Data.Providers.Common.Enum.ProvideEnumResult.Exception:
+                case Domain.Providers.Common.Enum.ProvideEnumResult.Exception:
                     return StatusCode(500);
-                case Data.Providers.Common.Enum.ProvideEnumResult.Success:
+                case Domain.Providers.Common.Enum.ProvideEnumResult.Success:
 
-                    return Ok(_businessObjectToModelsConverter.ConvertTransaction(getTransactionByIdResponse.Transaction));                 case Data.Providers.Common.Enum.ProvideEnumResult.NotFound:
+                    return Ok(_businessObjectToModelsConverter.ConvertTransaction(getTransactionByIdResponse.Transaction));
+                case
+                    Domain.Providers.Common.Enum.ProvideEnumResult.NotFound:
                     return StatusCode(404);
                 default:
                     throw new ArgumentOutOfRangeException();

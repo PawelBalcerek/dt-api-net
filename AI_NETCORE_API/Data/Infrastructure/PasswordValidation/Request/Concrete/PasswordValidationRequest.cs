@@ -1,9 +1,9 @@
-﻿using Data.Infrastructure.PasswordValidation.Request.Abstract;
+﻿using Domain.Infrastructure.PasswordValidation.Request.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Infrastructure.PasswordValidation.Request.Concrete
+namespace Domain.Infrastructure.PasswordValidation.Request.Concrete
 {
     public class PasswordValidationRequest : IPasswordValidationRequest
     {

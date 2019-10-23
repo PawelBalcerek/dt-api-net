@@ -1,15 +1,15 @@
-﻿using Data.BuisnessObject;
-using Data.Infrastructure.Logging.Abstract;
-using Data.Providers.Companies.Abstract;
-using Data.Providers.Companies.Request.Abstract;
-using Data.Providers.Companies.Response.Abstract;
-using Data.Providers.Companies.Response.Concrete;
+﻿using Domain.BuisnessObject;
+using Domain.Infrastructure.Logging.Abstract;
+using Domain.Providers.Companies.Abstract;
+using Domain.Providers.Companies.Request.Abstract;
+using Domain.Providers.Companies.Response.Abstract;
+using Domain.Providers.Companies.Response.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Data.Providers.Companies.Concrete
+namespace Domain.Providers.Companies.Concrete
 {
     public class MockCompaniesProvider : ICompaniesProvider
     {

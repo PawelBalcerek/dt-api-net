@@ -1,9 +1,9 @@
-﻿using Data.Providers.Common.Abstract;
+﻿using Domain.Providers.Common.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Providers.Users.Response.Abstract
+namespace Domain.Providers.Users.Response.Abstract
 {
     public interface IGetUserByIdResponse : IProvideResult
     {

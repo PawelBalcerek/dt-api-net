@@ -1,15 +1,15 @@
-﻿using Data.BuisnessObject;
-using Data.Infrastructure.Logging.Abstract;
-using Data.Providers.Transactions.Abstract;
-using Data.Providers.Transactions.Request.Abstract;
-using Data.Providers.Transactions.Response.Abstract;
-using Data.Providers.Transactions.Response.Concrete;
+﻿using Domain.Providers.Transactions.Response.Concrete;
+using Domain.BuisnessObject;
+using Domain.Infrastructure.Logging.Abstract;
+using Domain.Providers.Transactions.Abstract;
+using Domain.Providers.Transactions.Request.Abstract;
+using Domain.Providers.Transactions.Response.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Data.Providers.Transactions.Concrete
+namespace Domain.Providers.Transactions.Concrete
 {
     public class MockTransactionProvider : ITransactionsProvider
     {

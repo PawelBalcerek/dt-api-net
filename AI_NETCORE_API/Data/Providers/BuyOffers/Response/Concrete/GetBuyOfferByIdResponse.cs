@@ -1,8 +1,8 @@
-﻿using Data.BuisnessObject;
-using Data.Providers.BuyOffers.Response.Abstract;
-using Data.Providers.Common.Enum;
+﻿using Domain.BuisnessObject;
+using Domain.Providers.BuyOffers.Response.Abstract;
+using Domain.Providers.Common.Enum;
 
-namespace Data.Providers.BuyOffers.Response.Concrete
+namespace Domain.Providers.BuyOffers.Response.Concrete
 {
     public class GetBuyOfferByIdResponse : IGetBuyOfferByIdResponse
     {

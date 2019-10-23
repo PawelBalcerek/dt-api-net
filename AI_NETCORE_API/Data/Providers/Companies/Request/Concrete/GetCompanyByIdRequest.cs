@@ -1,9 +1,9 @@
-﻿using Data.Providers.Companies.Request.Abstract;
+﻿using Domain.Providers.Companies.Request.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Providers.Companies.Request.Concrete
+namespace Domain.Providers.Companies.Request.Concrete
 {
     public class GetCompanyByIdRequest : IGetCompanyByIdRequest
     {

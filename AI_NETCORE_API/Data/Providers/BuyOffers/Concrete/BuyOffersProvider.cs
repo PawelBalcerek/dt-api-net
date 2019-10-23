@@ -1,15 +1,15 @@
-﻿using Data.BuisnessObject;
-using Data.Infrastructure.Logging.Abstract;
-using Data.Providers.BuyOffers.Abstract;
-using Data.Providers.BuyOffers.Request.Abstract;
-using Data.Providers.BuyOffers.Response.Abstract;
-using Data.Providers.BuyOffers.Response.Concrete;
+﻿using Domain.BuisnessObject;
+using Domain.Infrastructure.Logging.Abstract;
+using Domain.Providers.BuyOffers.Abstract;
+using Domain.Providers.BuyOffers.Request.Abstract;
+using Domain.Providers.BuyOffers.Response.Abstract;
+using Domain.Providers.BuyOffers.Response.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Data.Providers.BuyOffers.Concrete
+namespace Domain.Providers.BuyOffers.Concrete
 {
     public class BuyOffersProvider : IBuyOffersProvider
     {
