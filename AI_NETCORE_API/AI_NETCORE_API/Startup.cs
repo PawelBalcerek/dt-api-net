@@ -23,6 +23,10 @@ using Domain.Providers.Transactions.Abstract;
 using Domain.Providers.Transactions.Concrete;
 using Domain.Providers.Users.Abstract;
 using Domain.Providers.Users.Concrete;
+using Domain.DTOToBOConverting;
+using Data.Models;
+using Domain.Repositories.UserRepo.Abstract;
+using Domain.Repositories.UserRepo.Concrete;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,6 +36,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
+
 
 namespace AI_NETCORE_API
 {
@@ -51,12 +56,15 @@ namespace AI_NETCORE_API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            
+
+            services.AddTransient<RepositoryContext>();
+            services.AddTransient<IDTOToBOConverter, DTOToBOConverter>();
+            services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IAppsettingsProvider, AppsettingsProvider>();
             services.AddTransient<Domain.Infrastructure.Logging.Abstract.ILogger, Logger>();
             services.AddTransient<IEmailValidator, EmailValidator>();
             services.AddTransient<IPasswordValidator, PasswordValidator>();
-            services.AddTransient<IUserProvider, MockedUserProvider>();
+            services.AddTransient<IUserProvider, UserProvider>();
             services.AddTransient<ITransactionsProvider, MockTransactionProvider>();
             services.AddTransient<IResourcesProvider, MockResourcesProvider>();
             services.AddTransient<ICompaniesProvider, MockCompaniesProvider>();

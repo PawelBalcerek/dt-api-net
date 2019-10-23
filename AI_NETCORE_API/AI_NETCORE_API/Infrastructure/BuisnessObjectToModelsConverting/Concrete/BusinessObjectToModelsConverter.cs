@@ -29,8 +29,7 @@ namespace AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Concret
             return new CompanyModel
             {
                 Id = company.Id,
-                Name = company.Name,
-                UserId = company.UserId
+                Name = company.Name
             };
         }
 
