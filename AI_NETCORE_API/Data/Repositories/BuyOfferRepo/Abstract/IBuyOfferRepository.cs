@@ -7,7 +7,8 @@ using Data.Models;
 namespace Domain.Repositories.BuyOfferRepo.Abstract
 {
     public interface IBuyOfferRepository : IRepositoryBase<BuyOffer>
-    { 
-
+    {
+        BusinessObject.BuyOffer GetBuyOfferById(int id);
+        IEnumerable<BusinessObject.BuyOffer> GetAllBuyOffers();
     }
 }

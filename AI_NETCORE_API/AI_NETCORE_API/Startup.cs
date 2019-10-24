@@ -29,6 +29,16 @@ using Domain.DTOToBOConverting;
 using Data.Models;
 using Domain.Repositories.UserRepo.Abstract;
 using Domain.Repositories.UserRepo.Concrete;
+using Domain.Repositories.CompanyRepo.Abstract;
+using Domain.Repositories.CompanyRepo.Concrete;
+using Domain.Repositories.ResourceRepo.Abstract;
+using Domain.Repositories.ResourceRepo.Concrete;
+using Domain.Repositories.BuyOfferRepo.Abstract;
+using Domain.Repositories.BuyOfferRepo.Concrete;
+using Domain.Repositories.SellOfferRepo.Abstract;
+using Domain.Repositories.SellOfferRepo.Concrete;
+using Domain.Repositories.TransactionRepo.Abstract;
+using Domain.Repositories.TransactionRepo.Concrete;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -62,14 +72,19 @@ namespace AI_NETCORE_API
             services.AddTransient<RepositoryContext>();
             services.AddTransient<IDTOToBOConverter, DTOToBOConverter>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<ICompanyRepository, CompanyRepository>();
+            services.AddTransient<IResourceRepository, ResourceRepository>();
+            services.AddTransient<IBuyOfferRepository, BuyOfferRepository>();
+            services.AddTransient<ISellOfferRepository, SellOfferRepository>();
+            services.AddTransient<ITransactionRepository, TransactionRepository>();
             services.AddTransient<IAppsettingsProvider, AppsettingsProvider>();
             services.AddTransient<Domain.Infrastructure.Logging.Abstract.ILogger, Logger>();
             services.AddTransient<IEmailValidator, EmailValidator>();
             services.AddTransient<IPasswordValidator, PasswordValidator>();
             services.AddTransient<IUserProvider, UserProvider>();
-            services.AddTransient<ITransactionsProvider, MockTransactionProvider>();
-            services.AddTransient<IResourcesProvider, MockResourcesProvider>();
-            services.AddTransient<ICompaniesProvider, MockCompaniesProvider>();
+            services.AddTransient<ITransactionsProvider, TransactionProvider>();
+            services.AddTransient<IResourcesProvider, ResourcesProvider>();
+            services.AddTransient<ICompaniesProvider, CompaniesProvider>();
             services.AddTransient<IBusinessObjectToModelsConverter, BusinessObjectToModelsConverter>();
             services.AddTransient<IBuyOffersProvider, BuyOffersProvider>();
             services.AddTransient<ISellOfferProvider, SellOfferProvider>();
@@ -95,11 +110,11 @@ namespace AI_NETCORE_API
                 app.UseHsts();
             }
 
-           // app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             app.UseMvc();
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => 
+            app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("../swagger/v1/swagger.json", "Core API");
             });

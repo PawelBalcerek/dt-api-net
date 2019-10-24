@@ -7,6 +7,8 @@ using Data.Models;
 namespace Domain.Repositories.ResourceRepo.Abstract
 {
     public interface IResourceRepository : IRepositoryBase<Resource>
-    { 
+    {
+        BusinessObject.Resource GetResourceById(int id);
+        IEnumerable<BusinessObject.Resource> GetAllResources();
     }
 }
