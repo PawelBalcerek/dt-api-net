@@ -14,12 +14,15 @@
     <Folder Include="Creators\BuyOffer\" />
     <Folder Include="Creators\Company\" />
     <Folder Include="Creators\SellOffer\" />
-    <Folder Include="Creators\Users\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.1.11" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>

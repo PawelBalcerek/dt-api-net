@@ -9,6 +9,7 @@ namespace Domain.Repositories.UserRepo.Abstract
 {
     public interface IUserRepository : IRepositoryBase<Data.Models.User>
     {
-        Domain.BusinessObject.User GetUserById(int id);
+        BusinessObject.User GetUserById(int id);
+        void CreateUser(int id, string name, string password, string email);
     }
 }
