@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstract;
 using AI_NETCORE_API.Models.Objects;
 using AI_NETCORE_API.Models.Request;
+using AI_NETCORE_API.Models.Response;
 using Domain.Creators.Users.Abstract;
 using Domain.Creators.Users.Request.Concrete;
 using Domain.Creators.Users.Response.Abstract;
@@ -71,16 +72,23 @@ namespace AI_NETCORE_API.Controllers
         /// </summary>
         /// <param name="loginRequest"></param>
         /// <returns>UserModel</returns>
-        [ProducesResponseType(200,Type =typeof(UserModel))]
+        [ProducesResponseType(200, Type = typeof(LoginResponse))]
         [ProducesResponseType(500)]
         [HttpPost("login")]
         public async Task<ActionResult<string>> Login([FromBody] LoginRequest loginRequest)
         {
             try
             {
-                return StatusCode(200);
+                var tokenData = new System.IdentityModel.Tokens.Jwt.JwtSecurityToken();
+                var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+                var response = new LoginResponse()
+                {
+                    Token = handler.WriteToken(tokenData),
+                };
+
+                return Ok(response);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.Log(ex);
                 return StatusCode(500);
@@ -114,12 +122,12 @@ namespace AI_NETCORE_API.Controllers
         [HttpPost("register")]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        [ProducesResponseType(200,Type = typeof(UserModel))]
+        [ProducesResponseType(200, Type = typeof(UserModel))]
         public async Task<ActionResult> Register([FromBody] RegisterRequest registerRequest)
         {
             try
             {
-                if (!registerRequest.IsValid(_passwordValidator,_emailValidator))
+                if (!registerRequest.IsValid(_passwordValidator, _emailValidator))
                 {
                     return StatusCode(400);
                 }
@@ -128,7 +136,7 @@ namespace AI_NETCORE_API.Controllers
                     registerRequest.Email));
                 return result.Success ? Ok() : StatusCode(500);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.Log(ex);
                 return StatusCode(500);
