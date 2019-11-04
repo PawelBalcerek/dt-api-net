@@ -97,12 +97,22 @@ namespace AI_NETCORE_API
             services.AddSwaggerGen(x =>
             {
                 x.SwaggerDoc("v1", new Info { Title = "Core Api", Description = "Swagger Core Api" });
+                x.AddSecurityDefinition("Bearer",
+                    new ApiKeyScheme
+                    {
+                        In = "header",
+                        Description = "Please enter into field the word 'Bearer' following by space and JWT",
+                        Name = "Authorization",
+                        Type = "apiKey"
+                    });
+
+                x.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>> { { "Bearer", Enumerable.Empty<string>() }, });
             });
 
             var tokenConfiguration = Configuration.GetSection("tokenManagement");
             services.Configure<Models.TokenManagement>(tokenConfiguration);
             var tokenManagement = tokenConfiguration.Get<Models.TokenManagement>();
-            var secret = Encoding.ASCII.GetBytes(tokenManagement.Secret);
+            var secret = Encoding.ASCII.GetBytes("YourKey-2374-OFFKDI940NG7:56753253-tyuw-5769-0921-kfirox29zoxv");
 
             services.AddAuthentication(x =>
             {

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstract;
 using AI_NETCORE_API.Models.Objects;
@@ -18,8 +20,10 @@ using Domain.Providers.Users.Abstract;
 using Domain.Providers.Users.Request.Abstract;
 using Domain.Providers.Users.Request.Concrete;
 using Domain.Providers.Users.Response.Abstract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AI_NETCORE_API.Controllers
 {
@@ -52,10 +56,13 @@ namespace AI_NETCORE_API.Controllers
         [ProducesResponseType(200, Type = typeof(UserModel))]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
+        [Authorize]
         public ActionResult<UserModel> GetUserById(int id)
         {
             try
             {
+
+
                 IGetUserByIdRequest getUserByIdRequest = new GetUserByIdRequest(id);
                 IGetUserByIdResponse getUserByIdResponse = _userProvider.GetUserById(getUserByIdRequest);
                 return PrepareResponseAfterGetUserById(getUserByIdResponse);
@@ -79,11 +86,22 @@ namespace AI_NETCORE_API.Controllers
         {
             try
             {
-                var tokenData = new System.IdentityModel.Tokens.Jwt.JwtSecurityToken();
-                var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = System.Text.Encoding.ASCII.GetBytes("YourKey-2374-OFFKDI940NG7:56753253-tyuw-5769-0921-kfirox29zoxv");
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                        new Claim("id", "0"),
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(7),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+
                 var response = new LoginResponse()
                 {
-                    Token = handler.WriteToken(tokenData),
+                    Token = tokenHandler.WriteToken(token),
                 };
 
                 return Ok(response);
