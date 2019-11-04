@@ -44,5 +44,10 @@ namespace Domain.Providers.Users.Concrete
                 return new GetUserByIdResponse();
             }
         }
+
+        public ILoginUserResponse LoginUser(ILoginUserRequest loginUserRequest)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

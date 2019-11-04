@@ -11,5 +11,6 @@ namespace Domain.Repositories.UserRepo.Abstract
     {
         BusinessObject.User GetUserById(int id);
         void CreateUser(int id, string name, string password, string email);
+        string Authenticate(string login, string password);
     }
 }

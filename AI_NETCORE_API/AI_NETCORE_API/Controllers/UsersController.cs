@@ -89,13 +89,14 @@ namespace AI_NETCORE_API.Controllers
         [ProducesResponseType(200, Type = typeof(LoginResponse))]
         [ProducesResponseType(500)]
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login([FromBody] LoginRequest loginRequest)
+        public async Task<ActionResult<ILoginUserResponse>> Login([FromBody] LoginRequest loginRequest)
         {
             try
             {
-               
+                ILoginUserRequest loginRequestData = new LoginUserRequest(loginRequest.Login, loginRequest.Password);
+                var loginResponse = _userProvider.LoginUser(loginRequestData);
 
-                return Ok(null);
+                return Ok(loginResponse);
             }
             catch (Exception ex)
             {

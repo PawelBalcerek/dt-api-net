@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System;
 using Domain.Infrastructure;
+using Microsoft.Extensions.Options;
 
 namespace Domain.Repositories.UserRepo.Concrete
 {
@@ -18,10 +19,11 @@ namespace Domain.Repositories.UserRepo.Concrete
         private readonly TokenManagement _tokenManagement;
 
 
-        public UserRepository(RepositoryContext repositoryContext, IDTOToBOConverter converter)
+        public UserRepository(RepositoryContext repositoryContext, IDTOToBOConverter converter, IOptions<TokenManagement> tokenManagement)
             : base(repositoryContext)
         {
             _converter = converter;
+            _tokenManagement = tokenManagement.Value;
         }
         public BusinessObject.User GetUserById(int id)
         {

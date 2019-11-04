@@ -34,6 +34,14 @@ namespace Domain.Providers.Users.Concrete
                 return new GetUserByIdResponse();
             }
         }
-        
+
+        public ILoginUserResponse LoginUser(ILoginUserRequest loginUserRequest)
+        {
+
+            var token =_users.Authenticate(loginUserRequest.Login, loginUserRequest.Password);
+            var response = new LoginUserResponse(token);
+
+            return response;
+        }
     }
 }
