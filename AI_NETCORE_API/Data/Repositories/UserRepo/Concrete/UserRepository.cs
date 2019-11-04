@@ -10,6 +10,7 @@ using System.Security.Claims;
 using System;
 using Domain.Infrastructure;
 using Microsoft.Extensions.Options;
+using System.Diagnostics;
 
 namespace Domain.Repositories.UserRepo.Concrete
 {
@@ -47,13 +48,21 @@ namespace Domain.Repositories.UserRepo.Concrete
 
         public string Authenticate(string login, string password)
         {
+            var tim = Stopwatch.StartNew();
+            var users = from u in RepositoryContext.Users where u.Password == password && u.Email == login select u;
+            var user = users.FirstOrDefault();
+            var dbTime = tim.ElapsedMilliseconds;
+
+            if (user == null) return null;
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = System.Text.Encoding.ASCII.GetBytes(_tokenManagement.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                        new Claim("id", "0"),
+                        new Claim("Id", user.Id.ToString()),
+                        new Claim("Name", user.Name)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

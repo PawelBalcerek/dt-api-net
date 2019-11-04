@@ -96,6 +96,11 @@ namespace AI_NETCORE_API.Controllers
                 ILoginUserRequest loginRequestData = new LoginUserRequest(loginRequest.Login, loginRequest.Password);
                 var loginResponse = _userProvider.LoginUser(loginRequestData);
 
+                if(loginResponse.Token == null)
+                {
+                    return StatusCode(401);
+                }
+
                 return Ok(loginResponse);
             }
             catch (Exception ex)
