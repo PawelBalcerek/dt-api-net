@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstract;
+using AI_NETCORE_API.Models;
 using AI_NETCORE_API.Models.Objects;
 using AI_NETCORE_API.Models.Request;
 using AI_NETCORE_API.Models.Response;
@@ -23,6 +24,7 @@ using Domain.Providers.Users.Response.Abstract;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AI_NETCORE_API.Controllers
@@ -39,7 +41,12 @@ namespace AI_NETCORE_API.Controllers
         private readonly IUserCreator _userCreator;
         private readonly IBusinessObjectToModelsConverter _businessObjectToModelsConverter;
 
-        public UsersController(ILogger logger, IPasswordValidator passwordValidator, IEmailValidator emailValidator, IUserProvider userProvider, IBusinessObjectToModelsConverter businessObjectToModelsConverter, IUserCreator userCreator)
+        public UsersController(ILogger logger,
+            IPasswordValidator passwordValidator,
+            IEmailValidator emailValidator,
+            IUserProvider userProvider,
+            IBusinessObjectToModelsConverter businessObjectToModelsConverter,
+            IUserCreator userCreator)
         {
             _logger = logger;
             _passwordValidator = passwordValidator;
@@ -86,25 +93,9 @@ namespace AI_NETCORE_API.Controllers
         {
             try
             {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var key = System.Text.Encoding.ASCII.GetBytes("YourKey-2374-OFFKDI940NG7:56753253-tyuw-5769-0921-kfirox29zoxv");
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new Claim[]
-                    {
-                        new Claim("id", "0"),
-                    }),
-                    Expires = DateTime.UtcNow.AddDays(7),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                };
-                var token = tokenHandler.CreateToken(tokenDescriptor);
+               
 
-                var response = new LoginResponse()
-                {
-                    Token = tokenHandler.WriteToken(token),
-                };
-
-                return Ok(response);
+                return Ok(null);
             }
             catch (Exception ex)
             {

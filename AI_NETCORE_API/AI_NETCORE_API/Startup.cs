@@ -51,6 +51,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Domain.Infrastructure;
 
 namespace AI_NETCORE_API
 {
@@ -110,9 +111,9 @@ namespace AI_NETCORE_API
             });
 
             var tokenConfiguration = Configuration.GetSection("tokenManagement");
-            services.Configure<Models.TokenManagement>(tokenConfiguration);
-            var tokenManagement = tokenConfiguration.Get<Models.TokenManagement>();
-            var secret = Encoding.ASCII.GetBytes("YourKey-2374-OFFKDI940NG7:56753253-tyuw-5769-0921-kfirox29zoxv");
+            services.Configure<TokenManagement>(tokenConfiguration);
+            var tokenManagement = tokenConfiguration.Get<TokenManagement>();
+            var secret = Encoding.ASCII.GetBytes(tokenManagement.Secret);
 
             services.AddAuthentication(x =>
             {
