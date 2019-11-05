@@ -14,8 +14,9 @@ namespace Domain.Providers.Companies.Response.Concrete
             ProvideResult = ProvideEnumResult.Exception;
         }
 
-        public GetCompaniesResponse(IList<Company> companies)
+        public GetCompaniesResponse(IList<Company> companies,long databaseExecutionTime)
         {
+            DatabaseExecutionTime = databaseExecutionTime;
             if (companies == null)
             {
                 ProvideResult = ProvideEnumResult.NotFound;
@@ -30,5 +31,6 @@ namespace Domain.Providers.Companies.Response.Concrete
         public IList<Company> Companies { get; }
 
         public ProvideEnumResult ProvideResult { get; }
+        public long DatabaseExecutionTime { get; }
     }
 }

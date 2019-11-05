@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Domain.Repositories.BaseRepo.Response;
 using Domain.Repositories.CompanyRepo.Abstract;
 
 
@@ -28,7 +29,8 @@ namespace Domain.Providers.Companies.Concrete
         {
             try
             {
-                return new GetCompaniesResponse(_companies.GetAllCompanies().Object.ToList());
+                RepositoryResponse<IEnumerable<Company>> result = _companies.GetAllCompanies();
+                return new GetCompaniesResponse(result.Object.ToList(),result.DatabaseTime);
             }
             catch (Exception ex)
             {
@@ -41,7 +43,8 @@ namespace Domain.Providers.Companies.Concrete
         {
             try
             {
-                return new GetCompanyByIdResponse(_companies.GetCompanyById(getCompanyByIdRequest.CompanyId).Object);
+                RepositoryResponse<Company> result = _companies.GetCompanyById(getCompanyByIdRequest.CompanyId);
+                return new GetCompanyByIdResponse(result.Object,result.DatabaseTime);
             }
             catch (Exception ex)
             {

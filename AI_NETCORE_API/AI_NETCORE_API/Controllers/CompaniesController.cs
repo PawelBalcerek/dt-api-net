@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstract;
 using AI_NETCORE_API.Models.Objects;
+using AI_NETCORE_API.Models.Response.Companies;
+using AI_NETCORE_API.Models.Response.ExecutingTimes;
 using Domain.Infrastructure.Logging.Abstract;
 using Domain.Providers.Companies.Abstract;
 using Domain.Providers.Companies.Request.Abstract;
@@ -28,41 +31,6 @@ namespace AI_NETCORE_API.Controllers
             _companiesProvider = companiesProvider;
             _businessObjectToModelsConverter = businessObjectToModelsConverter;
         }
-
-        [HttpGet("{id:int}")]
-        [ProducesResponseType(200, Type = typeof(CompanyModel))]
-        [ProducesResponseType(500)]
-        [ProducesResponseType(404)]
-        public ActionResult<CompanyModel> GetCompanyById(int id)
-        {
-            try
-            {
-                IGetCompanyByIdRequest getCompanyByIdRequest  = new GetCompanyByIdRequest(id);
-                IGetCompanyByIdResponse getCompanyByIdResponse = _companiesProvider.GetCompanyById(getCompanyByIdRequest);
-                return PrepareResponseAfterGetCompanyById(getCompanyByIdResponse);
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex);
-                return StatusCode(500);
-            }
-        }
-
-        private ActionResult<CompanyModel> PrepareResponseAfterGetCompanyById(IGetCompanyByIdResponse getCompanyByIdResponse)
-        {
-            switch (getCompanyByIdResponse.ProvideResult)
-            {
-                case Domain.Providers.Common.Enum.ProvideEnumResult.Exception:
-                    return StatusCode(500);
-                case Domain.Providers.Common.Enum.ProvideEnumResult.Success:
-                    return Ok(_businessObjectToModelsConverter.ConvertCompany(getCompanyByIdResponse.Company));
-                case Domain.Providers.Common.Enum.ProvideEnumResult.NotFound:
-                    return StatusCode(404);
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-        
         [HttpGet("")]
         [ProducesResponseType(200, Type = typeof(IList<CompanyModel>))]
         [ProducesResponseType(500)]
@@ -70,8 +38,9 @@ namespace AI_NETCORE_API.Controllers
         {
             try
             {
+                Stopwatch timer = Stopwatch.StartNew();
                 IGetCompaniesResponse getCompaniesResponse = _companiesProvider.GetCompanies();
-                return PrepareResponseAfterGetCompanies(getCompaniesResponse);
+                return PrepareResponseAfterGetCompanies(getCompaniesResponse,timer);
             }
             catch (Exception ex)
             {
@@ -80,15 +49,15 @@ namespace AI_NETCORE_API.Controllers
             }
         }
 
-        private ActionResult<IList<CompanyModel>> PrepareResponseAfterGetCompanies(IGetCompaniesResponse getCompaniesResponse)
+        private ActionResult<IList<CompanyModel>> PrepareResponseAfterGetCompanies(IGetCompaniesResponse getCompaniesResponse,Stopwatch timer)
         {
             switch (getCompaniesResponse.ProvideResult)
             {
                 case Domain.Providers.Common.Enum.ProvideEnumResult.Exception:
                     return StatusCode(500);
                 case Domain.Providers.Common.Enum.ProvideEnumResult.Success:
-                    return Ok(getCompaniesResponse.Companies.ToList()
-                        .Select(x=> _businessObjectToModelsConverter.ConvertCompany(x)));
+                    GetCompaniesResponseModel response = PrepareSuccessResponseAfterGetCompanies(getCompaniesResponse, timer);
+                    return Ok(response);
                 case Domain.Providers.Common.Enum.ProvideEnumResult.NotFound:
                     return StatusCode(404);
                 default:
@@ -96,6 +65,22 @@ namespace AI_NETCORE_API.Controllers
             }
         }
 
-        
+        private GetCompaniesResponseModel PrepareSuccessResponseAfterGetCompanies(IGetCompaniesResponse getCompaniesResponse,
+            Stopwatch timer)
+        {
+            IList<CompanyModel> companiesModelList = getCompaniesResponse.Companies.ToList()
+                .Select(x => _businessObjectToModelsConverter.ConvertCompany(x)).ToList();
+            timer.Stop();
+            GetCompaniesResponseModel response = new GetCompaniesResponseModel
+            {
+                Companies = companiesModelList,
+                ExecutionDetails = new ExecutionDetails
+                {
+                    DatabaseTime = getCompaniesResponse.DatabaseExecutionTime,
+                    ExecutionTime = timer.ElapsedMilliseconds
+                }
+            };
+            return response;
+        }
     }
 }
