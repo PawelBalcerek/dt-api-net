@@ -1,9 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using Domain.Repositories.BaseRepo.Concrete;
 using Domain.Repositories.CompanyRepo.Abstract;
 using Data.Models;
 using Domain.DTOToBOConverting;
 using System.Linq;
+using System.Timers;
+using Domain.Repositories.BaseRepo.Response;
+
 namespace Domain.Repositories.CompanyRepo.Concrete
 {
     public class CompanyRepository: RepositoryBase<Company>, ICompanyRepository
@@ -14,15 +19,21 @@ namespace Domain.Repositories.CompanyRepo.Concrete
         {
             _converter = converter;
         }
-        public BusinessObject.Company GetCompanyById(int id)
+        public RepositoryResponse<BusinessObject.Company> GetCompanyById(int id)
         {
-            var company = FindByCondition(comp => comp.Id == id).FirstOrDefault();
-            return _converter.ConvertCompany(company);
+            Stopwatch stopWatch = Stopwatch.StartNew();
+            Company company = FindByCondition(comp => comp.Id == id).FirstOrDefault();
+            BusinessObject.Company result = _converter.ConvertCompany(company);
+            stopWatch.Stop();
+            return new RepositoryResponse<BusinessObject.Company>(result, stopWatch.ElapsedMilliseconds);
         }
 
-        public IEnumerable<BusinessObject.Company> GetAllCompanies()
+        public RepositoryResponse<IEnumerable<BusinessObject.Company>> GetAllCompanies()
         {
-            return FindAll().Select(c => _converter.ConvertCompany(c));
+            Stopwatch stopWatch = Stopwatch.StartNew();
+            IQueryable<BusinessObject.Company> result = FindAll().Select(c => _converter.ConvertCompany(c));
+            stopWatch.Stop();
+            return new RepositoryResponse<IEnumerable<BusinessObject.Company>>(result,stopWatch.ElapsedMilliseconds);
         }
     }
 }
