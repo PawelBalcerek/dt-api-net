@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Response\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -22,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Data\Domain.csproj" />
+    <ProjectReference Include="..\Domain\Data.csproj" />
   </ItemGroup>
 
 </Project>

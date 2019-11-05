@@ -1,10 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstract;
+using AI_NETCORE_API.Models;
 using AI_NETCORE_API.Models.Objects;
 using AI_NETCORE_API.Models.Request;
+using AI_NETCORE_API.Models.Response;
+using Domain.Creators.Users.Abstract;
+using Domain.Creators.Users.Request.Concrete;
+using Domain.Creators.Users.Response.Abstract;
 using Domain.Infrastructure.AppsettingsConfiguration.Abstract;
 using Domain.Infrastructure.EmailAddressValidation.Abstract;
 using Domain.Infrastructure.Logging.Abstract;
@@ -14,8 +21,11 @@ using Domain.Providers.Users.Abstract;
 using Domain.Providers.Users.Request.Abstract;
 using Domain.Providers.Users.Request.Concrete;
 using Domain.Providers.Users.Response.Abstract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AI_NETCORE_API.Controllers
 {
@@ -28,15 +38,22 @@ namespace AI_NETCORE_API.Controllers
         private readonly IPasswordValidator _passwordValidator;
         private readonly IEmailValidator _emailValidator;
         private readonly IUserProvider _userProvider;
+        private readonly IUserCreator _userCreator;
         private readonly IBusinessObjectToModelsConverter _businessObjectToModelsConverter;
 
-        public UsersController(ILogger logger, IPasswordValidator passwordValidator, IEmailValidator emailValidator, IUserProvider userProvider, IBusinessObjectToModelsConverter businessObjectToModelsConverter)
+        public UsersController(ILogger logger,
+            IPasswordValidator passwordValidator,
+            IEmailValidator emailValidator,
+            IUserProvider userProvider,
+            IBusinessObjectToModelsConverter businessObjectToModelsConverter,
+            IUserCreator userCreator)
         {
             _logger = logger;
             _passwordValidator = passwordValidator;
             _emailValidator = emailValidator;
             _userProvider = userProvider;
             _businessObjectToModelsConverter = businessObjectToModelsConverter;
+            _userCreator = userCreator;
         }
         /// <param name="item"> UserId</param>
         /// <response code="200">Returns found user</response>
@@ -46,10 +63,13 @@ namespace AI_NETCORE_API.Controllers
         [ProducesResponseType(200, Type = typeof(UserModel))]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
+        [Authorize]
         public ActionResult<UserModel> GetUserById(int id)
         {
             try
             {
+
+
                 IGetUserByIdRequest getUserByIdRequest = new GetUserByIdRequest(id);
                 IGetUserByIdResponse getUserByIdResponse = _userProvider.GetUserById(getUserByIdRequest);
                 return PrepareResponseAfterGetUserById(getUserByIdResponse);
@@ -66,16 +86,24 @@ namespace AI_NETCORE_API.Controllers
         /// </summary>
         /// <param name="loginRequest"></param>
         /// <returns>UserModel</returns>
-        [ProducesResponseType(200,Type =typeof(UserModel))]
+        [ProducesResponseType(200, Type = typeof(LoginResponse))]
         [ProducesResponseType(500)]
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login([FromBody] LoginRequest loginRequest)
+        public async Task<ActionResult<ILoginUserResponse>> Login([FromBody] LoginRequest loginRequest)
         {
             try
             {
-                return StatusCode(200);
+                ILoginUserRequest loginRequestData = new LoginUserRequest(loginRequest.Login, loginRequest.Password);
+                var loginResponse = _userProvider.LoginUser(loginRequestData);
+
+                if(loginResponse.Token == null)
+                {
+                    return StatusCode(401);
+                }
+
+                return Ok(loginResponse);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.Log(ex);
                 return StatusCode(500);
@@ -109,25 +137,21 @@ namespace AI_NETCORE_API.Controllers
         [HttpPost("register")]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        [ProducesResponseType(200,Type = typeof(UserModel))]
-        public async Task<ActionResult<UserModel>> Register([FromBody] RegisterRequest registerRequest)
+        [ProducesResponseType(200, Type = typeof(UserModel))]
+        public async Task<ActionResult> Register([FromBody] RegisterRequest registerRequest)
         {
             try
             {
-                if (!registerRequest.IsValid(_passwordValidator,_emailValidator))
+                if (!registerRequest.IsValid(_passwordValidator, _emailValidator))
                 {
                     return StatusCode(400);
                 }
 
-                //TODO Add new user in database and return their details
-
-                return Ok(new UserModel
-                {
-                    Email = registerRequest.Email,
-                    Name = registerRequest.Name
-                });
+                IUserCreateResponse result = _userCreator.CreateUser(new UserCreateRequest(registerRequest.Name, registerRequest.Password,
+                    registerRequest.Email));
+                return result.Success ? Ok() : StatusCode(500);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.Log(ex);
                 return StatusCode(500);

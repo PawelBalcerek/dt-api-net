@@ -4,6 +4,7 @@ using Domain.Providers.BuyOffers.Abstract;
 using Domain.Providers.BuyOffers.Request.Abstract;
 using Domain.Providers.BuyOffers.Response.Abstract;
 using Domain.Providers.BuyOffers.Response.Concrete;
+using Domain.Repositories.BuyOfferRepo.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,29 +15,20 @@ namespace Domain.Providers.BuyOffers.Concrete
     public class BuyOffersProvider : IBuyOffersProvider
     {
         private readonly ILogger _logger;
-        private readonly IList<BuyOffer> _buyOffers;
+        private readonly IBuyOfferRepository _buyOffers;
 
-        public BuyOffersProvider(ILogger logger)
+        public BuyOffersProvider(ILogger logger, IBuyOfferRepository buyOffers)
         {
             _logger = logger;
-            _buyOffers = PrepareBuyOfferList();
-        }
-        private IList<BuyOffer> PrepareBuyOfferList()
-        {
-            return new List<BuyOffer>
-            {
-                new BuyOffer(1,1,20,DateTime.Now,true,20),
-                new BuyOffer(2,2,20,DateTime.Now,true,30),
-                new BuyOffer(3,1,30,DateTime.Now,true,10)
-            };
+            _buyOffers = buyOffers;
         }
         public IGetBuyOfferByIdResponse GetBuyOfferById(IGetBuyOfferByIdRequest getBuyOfferByIdRequest)
         {
             try
             {
-                return new GetBuyOfferByIdResponse(_buyOffers.ToList().FirstOrDefault(x => x.Id == getBuyOfferByIdRequest.BuyOfferId));
+                return new GetBuyOfferByIdResponse(_buyOffers.GetBuyOfferById(getBuyOfferByIdRequest.BuyOfferId));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.Log(ex);
                 return new GetBuyOfferByIdResponse();
@@ -47,9 +39,9 @@ namespace Domain.Providers.BuyOffers.Concrete
         {
             try
             {
-                return new GetBuyOffersResponse(_buyOffers); 
+                return new GetBuyOffersResponse(_buyOffers.GetAllBuyOffers().ToList());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.Log(ex);
                 return new GetBuyOffersResponse();

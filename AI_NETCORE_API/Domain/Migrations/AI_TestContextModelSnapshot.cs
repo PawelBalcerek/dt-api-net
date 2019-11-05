@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
-    [DbContext(typeof(AI_TestContext))]
-    partial class AI_TestContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(RepositoryContext))]
+    partial class RepositoryContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -180,19 +180,19 @@ namespace Data.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnName("email")
-                        .HasMaxLength(1)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("name")
-                        .HasMaxLength(1)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnName("password")
-                        .HasMaxLength(1)
+                        .HasMaxLength(100)
                         .IsUnicode(false);
 
                     b.HasKey("Id");

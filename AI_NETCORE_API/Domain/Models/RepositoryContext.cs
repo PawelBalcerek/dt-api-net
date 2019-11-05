@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Data.Models
 {
-    public partial class AI_TestContext : DbContext
+    public partial class RepositoryContext : DbContext
     {
-        public AI_TestContext()
+        public RepositoryContext()
         {
         }
 
-        public AI_TestContext(DbContextOptions<AI_TestContext> options)
+        public RepositoryContext(DbContextOptions<RepositoryContext> options)
             : base(options)
         {
         }

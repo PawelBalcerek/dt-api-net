@@ -9,5 +9,6 @@ namespace Domain.Providers.Users.Abstract
     public interface IUserProvider
     {
         IGetUserByIdResponse GetUserById(IGetUserByIdRequest getUserByIdRequest);
+        ILoginUserResponse LoginUser(ILoginUserRequest loginUserRequest);
     }
 }

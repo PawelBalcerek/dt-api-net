@@ -36,9 +36,9 @@ namespace Data.Migrations
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false),
-                    name = table.Column<string>(unicode: false, maxLength: 1, nullable: false),
-                    email = table.Column<string>(unicode: false, maxLength: 1, nullable: false),
-                    password = table.Column<string>(unicode: false, maxLength: 1, nullable: false),
+                    name = table.Column<string>(unicode: false, maxLength: 100, nullable: false),
+                    email = table.Column<string>(unicode: false, maxLength: 100, nullable: false),
+                    password = table.Column<string>(unicode: false, maxLength: 100, nullable: false),
                     cash = table.Column<decimal>(type: "numeric(10, 2)", nullable: false)
                 },
                 constraints: table =>

@@ -21,8 +21,8 @@ namespace Domain.Providers.Companies.Concrete
             _logger = logger;
             _companies = new List<Company>
             {
-                new Company(1,"Company1",1),
-                new Company(2,"Company2",2)
+                new Company(1,"Company1"),
+                new Company(2,"Company2")
             };
         }
 

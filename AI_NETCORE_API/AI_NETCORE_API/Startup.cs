@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstract;
 using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Concrete;
+using Domain.Creators.Users.Abstract;
+using Domain.Creators.Users.Concrete;
 using Domain.Infrastructure.AppsettingsConfiguration.Abstract;
 using Domain.Infrastructure.AppsettingsConfiguration.Concrete;
 using Domain.Infrastructure.EmailAddressValidation.Abstract;
@@ -23,6 +25,20 @@ using Domain.Providers.Transactions.Abstract;
 using Domain.Providers.Transactions.Concrete;
 using Domain.Providers.Users.Abstract;
 using Domain.Providers.Users.Concrete;
+using Domain.DTOToBOConverting;
+using Data.Models;
+using Domain.Repositories.UserRepo.Abstract;
+using Domain.Repositories.UserRepo.Concrete;
+using Domain.Repositories.CompanyRepo.Abstract;
+using Domain.Repositories.CompanyRepo.Concrete;
+using Domain.Repositories.ResourceRepo.Abstract;
+using Domain.Repositories.ResourceRepo.Concrete;
+using Domain.Repositories.BuyOfferRepo.Abstract;
+using Domain.Repositories.BuyOfferRepo.Concrete;
+using Domain.Repositories.SellOfferRepo.Abstract;
+using Domain.Repositories.SellOfferRepo.Concrete;
+using Domain.Repositories.TransactionRepo.Abstract;
+using Domain.Repositories.TransactionRepo.Concrete;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,6 +48,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Domain.Infrastructure;
 
 namespace AI_NETCORE_API
 {
@@ -51,26 +71,68 @@ namespace AI_NETCORE_API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            
+
+            services.AddTransient<RepositoryContext>();
+            services.AddTransient<IDTOToBOConverter, DTOToBOConverter>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<ICompanyRepository, CompanyRepository>();
+            services.AddTransient<IResourceRepository, ResourceRepository>();
+            services.AddTransient<IBuyOfferRepository, BuyOfferRepository>();
+            services.AddTransient<ISellOfferRepository, SellOfferRepository>();
+            services.AddTransient<ITransactionRepository, TransactionRepository>();
             services.AddTransient<IAppsettingsProvider, AppsettingsProvider>();
             services.AddTransient<Domain.Infrastructure.Logging.Abstract.ILogger, Logger>();
             services.AddTransient<IEmailValidator, EmailValidator>();
             services.AddTransient<IPasswordValidator, PasswordValidator>();
-            services.AddTransient<IUserProvider, MockedUserProvider>();
-            services.AddTransient<ITransactionsProvider, MockTransactionProvider>();
-            services.AddTransient<IResourcesProvider, MockResourcesProvider>();
-            services.AddTransient<ICompaniesProvider, MockCompaniesProvider>();
+            services.AddTransient<IUserProvider, UserProvider>();
+            services.AddTransient<ITransactionsProvider, TransactionProvider>();
+            services.AddTransient<IResourcesProvider, ResourcesProvider>();
+            services.AddTransient<ICompaniesProvider, CompaniesProvider>();
             services.AddTransient<IBusinessObjectToModelsConverter, BusinessObjectToModelsConverter>();
             services.AddTransient<IBuyOffersProvider, BuyOffersProvider>();
             services.AddTransient<ISellOfferProvider, SellOfferProvider>();
+            services.AddTransient<IUserCreator, UserCreator>();
 
 
 
             services.AddSwaggerGen(x =>
             {
                 x.SwaggerDoc("v1", new Info { Title = "Core Api", Description = "Swagger Core Api" });
+                x.AddSecurityDefinition("Bearer",
+                    new ApiKeyScheme
+                    {
+                        In = "header",
+                        Description = "Please enter into field the word 'Bearer' following by space and JWT",
+                        Name = "Authorization",
+                        Type = "apiKey"
+                    });
+
+                x.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>> { { "Bearer", Enumerable.Empty<string>() }, });
+            });
+
+            var tokenConfiguration = Configuration.GetSection("tokenManagement");
+            services.Configure<TokenManagement>(tokenConfiguration);
+            var tokenManagement = tokenConfiguration.Get<TokenManagement>();
+            var secret = Encoding.ASCII.GetBytes(tokenManagement.Secret);
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(secret),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
             });
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -84,11 +146,13 @@ namespace AI_NETCORE_API
                 app.UseHsts();
             }
 
-           // app.UseHttpsRedirection();
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseAuthentication();
+            // app.UseHttpsRedirection();
             app.UseMvc();
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => 
+            app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("../swagger/v1/swagger.json", "Core API");
             });
