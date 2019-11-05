@@ -6,6 +6,8 @@ EXPOSE 443
 FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /src
 COPY ["AI_NETCORE_API/AI_NETCORE_API.csproj", "AI_NETCORE_API/"]
+COPY ["Data/Data.csproj", "Data/"]
+COPY ["Domain/Domain.csproj", "Domain/"]
 RUN dotnet restore "AI_NETCORE_API/AI_NETCORE_API.csproj"
 COPY . .
 WORKDIR "/src/AI_NETCORE_API"
