@@ -9,6 +9,6 @@ namespace Domain.Providers.Resources.Abstract
     public interface IResourcesProvider
     {
         IGetResourceByIdResponse GetResourceById(IGetResourceByIdRequest getResourceByIdRequest);
-        IGetResourcesResponse GetResources();
+        IGetResourcesResponse GetResources(IGetUserResourcesRequest getUserResourcesRequest);
     }
 }

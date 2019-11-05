@@ -9,6 +9,6 @@ namespace Domain.Repositories.ResourceRepo.Abstract
     public interface IResourceRepository : IRepositoryBase<Resource>
     {
         BusinessObject.Resource GetResourceById(int id);
-        IEnumerable<BusinessObject.Resource> GetAllResources();
+        IEnumerable<BusinessObject.Resource> GetAllResources(int userId);
     }
 }

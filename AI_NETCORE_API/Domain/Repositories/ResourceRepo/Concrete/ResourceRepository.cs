@@ -8,7 +8,7 @@ using System.Linq;
 using Domain.DTOToBOConverting;
 namespace Domain.Repositories.ResourceRepo.Concrete
 {
-    public class ResourceRepository: RepositoryBase<Resource>, IResourceRepository
+    public class ResourceRepository : RepositoryBase<Resource>, IResourceRepository
     {
         private readonly IDTOToBOConverter _converter;
         public ResourceRepository(RepositoryContext repositoryContext, IDTOToBOConverter converter)
@@ -23,9 +23,9 @@ namespace Domain.Repositories.ResourceRepo.Concrete
             return _converter.ConvertResource(resource);
         }
 
-        public IEnumerable<BusinessObject.Resource> GetAllResources()
+        public IEnumerable<BusinessObject.Resource> GetAllResources(int userId)
         {
-            return FindAll().Select(r => _converter.ConvertResource(r));
+            return FindByCondition(r => r.UserId == userId).Select(r => _converter.ConvertResource(r));
         }
     }
 }

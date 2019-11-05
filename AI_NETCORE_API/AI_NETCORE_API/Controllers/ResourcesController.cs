@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstract;
 using AI_NETCORE_API.Models.Objects;
@@ -10,6 +12,7 @@ using Domain.Providers.Resources.Request.Abstract;
 using Domain.Providers.Resources.Request.Concrete;
 using Domain.Providers.Resources.Response.Abstract;
 using Domain.Providers.Transactions.Response.Abstract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -67,11 +70,15 @@ namespace AI_NETCORE_API.Controllers
         [HttpGet("")]
         [ProducesResponseType(200, Type = typeof(IList<ResourceModel>))]
         [ProducesResponseType(500)]
-        public ActionResult<IList<ResourceModel>> GetResources()
+        [Authorize("Bearer")]
+        public ActionResult<IList<ResourceModel>> GetUserResources()
         {
             try
             {
-                IGetResourcesResponse getResourcesResponse = _resourcesProvider.GetResources();
+                var identity = HttpContext.User.Identity as ClaimsIdentity;
+                var userId = int.Parse(identity.Claims.Where(c => c.Type == "Id").FirstOrDefault().Value);
+                IGetUserResourcesRequest getUserResourcesRequest = new GetUserResourcesRequest(userId);
+                IGetResourcesResponse getResourcesResponse = _resourcesProvider.GetResources(getUserResourcesRequest);
                 return PrepareResponseAfterGetResources(getResourcesResponse);
             }
             catch (Exception ex)

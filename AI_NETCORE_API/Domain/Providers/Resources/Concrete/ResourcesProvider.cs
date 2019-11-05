@@ -35,11 +35,11 @@ namespace Domain.Providers.Resources.Concrete
             }
         }
 
-        public IGetResourcesResponse GetResources()
+        public IGetResourcesResponse GetResources(IGetUserResourcesRequest getUserResourcesRequest)
         {
             try
             {
-                return new GetResourcesResponse(_resources.GetAllResources().ToList());
+                return new GetResourcesResponse(_resources.GetAllResources(getUserResourcesRequest.UserId).ToList());
             }
             catch (Exception ex)
             {
