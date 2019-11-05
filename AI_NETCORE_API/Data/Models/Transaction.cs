@@ -14,7 +14,7 @@ namespace Data.Models
         public int Amount { get; set; }
         public decimal Price { get; set; }
 
-        public BuyOffer BuyOffer { get; set; }
-        public SellOffer SellOffer { get; set; }
+        public virtual BuyOffer BuyOffer { get; set; }
+        public virtual SellOffer SellOffer { get; set; }
     }
 }

@@ -15,6 +15,6 @@ namespace Data.Models
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public ICollection<Resource> Resources { get; set; }
+        public virtual ICollection<Resource> Resources { get; set; }
     }
 }

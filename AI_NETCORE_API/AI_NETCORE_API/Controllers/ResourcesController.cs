@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstract;
 using AI_NETCORE_API.Models.Objects;
+using AI_NETCORE_API.Models.Response.Resources;
+using AI_NETCORE_API.Models.Response.ExecutingTimes;
 using Domain.Infrastructure.Logging.Abstract;
 using Domain.Providers.Resources.Abstract;
 using Domain.Providers.Resources.Request.Abstract;
@@ -33,53 +36,21 @@ namespace AI_NETCORE_API.Controllers
             _businessObjectToModelsConverter = businessObjectToModelsConverter;
         }
 
-        [HttpGet("{id:int}")]
-        [ProducesResponseType(200, Type = typeof(ResourceModel))]
-        [ProducesResponseType(500)]
-        [ProducesResponseType(404)]
-        public ActionResult<ResourceModel> GetResourceById(int id)
-        {
-            try
-            {
-                IGetResourceByIdRequest getResourceByIdRequest = new GetResourceByIdRequest(id);
-                IGetResourceByIdResponse getResourceByIdResponse = _resourcesProvider.GetResourceById(getResourceByIdRequest);
-                return PrepareResponseAfterGetResourceById(getResourceByIdResponse);
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex);
-                return StatusCode(500);
-            }
-        }
-
-        private ActionResult<ResourceModel> PrepareResponseAfterGetResourceById(IGetResourceByIdResponse getResourceByIdResponse)
-        {
-            switch (getResourceByIdResponse.ProvideResult)
-            {
-                case Domain.Providers.Common.Enum.ProvideEnumResult.Exception:
-                    return StatusCode(500);
-                case Domain.Providers.Common.Enum.ProvideEnumResult.Success:
-                    return Ok(_businessObjectToModelsConverter.ConvertResource(getResourceByIdResponse.Resource));
-                case Domain.Providers.Common.Enum.ProvideEnumResult.NotFound:
-                    return StatusCode(404);
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
-        [HttpGet("")]
+        [HttpGet("/api/users/resources")]
         [ProducesResponseType(200, Type = typeof(IList<ResourceModel>))]
+        [ProducesResponseType(401)]
         [ProducesResponseType(500)]
         [Authorize("Bearer")]
         public ActionResult<IList<ResourceModel>> GetUserResources()
         {
             try
             {
+                Stopwatch timer = Stopwatch.StartNew();
                 var identity = HttpContext.User.Identity as ClaimsIdentity;
                 var userId = int.Parse(identity.Claims.Where(c => c.Type == "Id").FirstOrDefault().Value);
                 IGetUserResourcesRequest getUserResourcesRequest = new GetUserResourcesRequest(userId);
-                IGetResourcesResponse getResourcesResponse = _resourcesProvider.GetResources(getUserResourcesRequest);
-                return PrepareResponseAfterGetResources(getResourcesResponse);
+                IGetResourcesResponse getResourcesResponse = _resourcesProvider.GetUserResources(getUserResourcesRequest);
+                return PrepareResponseAfterGetResources(getResourcesResponse, timer);
             }
             catch (Exception ex)
             {
@@ -88,20 +59,38 @@ namespace AI_NETCORE_API.Controllers
             }
         }
 
-        private ActionResult<IList<ResourceModel>> PrepareResponseAfterGetResources(IGetResourcesResponse getResourcesResponse)
+        private ActionResult<IList<ResourceModel>> PrepareResponseAfterGetResources(IGetResourcesResponse getResourcesResponse, Stopwatch timer)
         {
             switch (getResourcesResponse.ProvideResult)
             {
                 case Domain.Providers.Common.Enum.ProvideEnumResult.Exception:
                     return StatusCode(500);
                 case Domain.Providers.Common.Enum.ProvideEnumResult.Success:
-                    return Ok(getResourcesResponse.Resources.ToList()
-                        .Select(x => _businessObjectToModelsConverter.ConvertResource(x)));
+                    GetUserResourcesResponseModel response = PrepareSuccessResponseAfterGetUserResources(getResourcesResponse, timer);
+                    return Ok(response);
                 case Domain.Providers.Common.Enum.ProvideEnumResult.NotFound:
                     return StatusCode(404);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private GetUserResourcesResponseModel PrepareSuccessResponseAfterGetUserResources(IGetResourcesResponse getResourcesResponse, Stopwatch timer)
+        {
+            IList<ResourceModel> resourceModelsList = getResourcesResponse.Resources
+                .Select(x => _businessObjectToModelsConverter.ConvertResource(x)).ToList();
+            timer.Stop();
+
+            GetUserResourcesResponseModel response = new GetUserResourcesResponseModel
+            {
+                Resources = resourceModelsList,
+                ExecutionDetails = new ExecutionDetails
+                {
+                    DatabaseTime = getResourcesResponse.DatabaseExecutionTime,
+                    ExecutionTime = timer.ElapsedMilliseconds
+                }
+            };
+            return response;
         }
     }
 }

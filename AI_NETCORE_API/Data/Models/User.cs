@@ -18,6 +18,6 @@ namespace Data.Models
         public string Password { get; set; }
         public decimal Cash { get; set; }
 
-        public ICollection<Resource> Resources { get; set; }
+        public virtual ICollection<Resource> Resources { get; set; }
     }
 }

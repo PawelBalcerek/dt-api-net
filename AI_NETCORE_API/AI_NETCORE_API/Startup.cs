@@ -52,6 +52,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Domain.Infrastructure;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AI_NETCORE_API
 {
@@ -130,6 +131,12 @@ namespace AI_NETCORE_API
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
+            });
+            services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser().Build());
             });
         }
 

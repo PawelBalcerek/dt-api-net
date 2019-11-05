@@ -22,24 +22,12 @@ namespace Domain.Providers.Resources.Concrete
             _resources = resources;
         }
 
-        public IGetResourceByIdResponse GetResourceById(IGetResourceByIdRequest getResourceByIdRequest)
+        public IGetResourcesResponse GetUserResources(IGetUserResourcesRequest getUserResourcesRequest)
         {
             try
             {
-                return new GetResourceByIdResponse(_resources.GetResourceById(getResourceByIdRequest.ResourceId));
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex);
-                return new GetResourceByIdResponse();
-            }
-        }
-
-        public IGetResourcesResponse GetResources(IGetUserResourcesRequest getUserResourcesRequest)
-        {
-            try
-            {
-                return new GetResourcesResponse(_resources.GetAllResources(getUserResourcesRequest.UserId).ToList());
+                var result = _resources.GetUserResources(getUserResourcesRequest.UserId);
+                return new GetResourcesResponse(result.Object.ToList(), result.DatabaseTime);
             }
             catch (Exception ex)
             {
