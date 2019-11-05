@@ -28,7 +28,7 @@ namespace Domain.Providers.Companies.Concrete
         {
             try
             {
-                return new GetCompaniesResponse(_companies.GetAllCompanies().ToList());
+                return new GetCompaniesResponse(_companies.GetAllCompanies().Object.ToList());
             }
             catch (Exception ex)
             {
@@ -41,7 +41,7 @@ namespace Domain.Providers.Companies.Concrete
         {
             try
             {
-                return new GetCompanyByIdResponse(_companies.GetCompanyById(getCompanyByIdRequest.CompanyId));
+                return new GetCompanyByIdResponse(_companies.GetCompanyById(getCompanyByIdRequest.CompanyId).Object);
             }
             catch (Exception ex)
             {
