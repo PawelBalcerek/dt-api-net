@@ -74,7 +74,7 @@ namespace Data.Models
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasColumnName("name")
-                    .HasMaxLength(1)
+                    .HasMaxLength(30)
                     .IsUnicode(false);
             });
 
@@ -84,7 +84,7 @@ namespace Data.Models
 
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
-                    .HasMaxLength(1)
+                    .HasMaxLength(30)
                     .IsUnicode(false)
                     .ValueGeneratedNever();
 
@@ -193,19 +193,19 @@ namespace Data.Models
                 entity.Property(e => e.Email)
                     .IsRequired()
                     .HasColumnName("email")
-                    .HasMaxLength(1)
+                    .HasMaxLength(30)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasColumnName("name")
-                    .HasMaxLength(1)
+                    .HasMaxLength(30)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Password)
                     .IsRequired()
                     .HasColumnName("password")
-                    .HasMaxLength(1)
+                    .HasMaxLength(30)
                     .IsUnicode(false);
             });
         }

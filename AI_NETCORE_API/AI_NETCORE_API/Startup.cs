@@ -53,6 +53,10 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Domain.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
+using Domain.Creators.Configurations.Concrete;
+using Domain.Creators.Configurations.Abstract;
+using Domain.Repositories.ConfigurationRepo.Concrete;
+using Domain.Repositories.ConfigurationRepo.Abstract;
 
 namespace AI_NETCORE_API
 {
@@ -81,6 +85,7 @@ namespace AI_NETCORE_API
             services.AddTransient<IBuyOfferRepository, BuyOfferRepository>();
             services.AddTransient<ISellOfferRepository, SellOfferRepository>();
             services.AddTransient<ITransactionRepository, TransactionRepository>();
+            services.AddTransient<IConfigurationRepository, ConfigurationRepository>();
             services.AddTransient<IAppsettingsProvider, AppsettingsProvider>();
             services.AddTransient<Domain.Infrastructure.Logging.Abstract.ILogger, Logger>();
             services.AddTransient<IEmailValidator, EmailValidator>();
@@ -93,6 +98,8 @@ namespace AI_NETCORE_API
             services.AddTransient<IBuyOffersProvider, BuyOffersProvider>();
             services.AddTransient<ISellOfferProvider, SellOfferProvider>();
             services.AddTransient<IUserCreator, UserCreator>();
+            services.AddTransient<IConfigurationCreator, ConfigurationCreator>();
+            
 
 
 
