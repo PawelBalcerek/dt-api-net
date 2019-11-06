@@ -11,5 +11,6 @@ namespace Domain.Repositories.ResourceRepo.Abstract
     public interface IResourceRepository : IRepositoryBase<Resource>
     {
         RepositoryResponse<IEnumerable<BusinessObject.Resource>> GetUserResources(int userId);
+        RepositoryResponse<BusinessObject.Resource> AddResource(int amount, int userId, int companyId);
     }
 }
