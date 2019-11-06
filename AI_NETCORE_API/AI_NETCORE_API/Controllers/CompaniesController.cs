@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstract;
 using AI_NETCORE_API.Models.Objects;
+using AI_NETCORE_API.Models.Request.Company;
 using AI_NETCORE_API.Models.Response.Companies;
 using AI_NETCORE_API.Models.Response.ExecutingTimes;
 using Domain.Infrastructure.Logging.Abstract;
@@ -32,9 +33,9 @@ namespace AI_NETCORE_API.Controllers
             _businessObjectToModelsConverter = businessObjectToModelsConverter;
         }
         [HttpGet("")]
-        [ProducesResponseType(200, Type = typeof(IList<CompanyModel>))]
+        [ProducesResponseType(200, Type = typeof(GetCompaniesResponseModel))]
         [ProducesResponseType(500)]
-        public ActionResult<IList<CompanyModel>> GetCompanies()
+        public ActionResult<GetCompaniesResponseModel> GetCompanies()
         {
             try
             {
@@ -49,7 +50,39 @@ namespace AI_NETCORE_API.Controllers
             }
         }
 
-        private ActionResult<IList<CompanyModel>> PrepareResponseAfterGetCompanies(IGetCompaniesResponse getCompaniesResponse,Stopwatch timer)
+
+
+        //[HttpPost("")]
+        //[ProducesResponseType(200, Type = typeof(CreateCompanyResponseModel))]
+        //[ProducesResponseType(500)]
+        //public ActionResult<CreateCompanyResponseModel> AddCompany(CreateCompanyRequest request)
+        //{
+        //    try
+        //    {
+        //        Stopwatch timer = Stopwatch.StartNew();
+        //        if (!request.IsValid)
+        //        {
+        //            return PrepareResponseInAddingCompanyWhenBadRequest(timer);
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.Log(ex);
+        //        return StatusCode(500);
+        //    }
+        //}
+
+        //private ActionResult<CreateCompanyResponseModel> PrepareResponseInAddingCompanyWhenBadRequest(Stopwatch timer)
+        //{
+        //    timer.Stop();
+        //    return StatusCode(400,
+        //        new CreateCompanyResponseModel
+        //            {ExecutionDetails = new ExecutionDetails {ExecutionTime = timer.ElapsedMilliseconds}});
+        //}
+
+
+        private ActionResult<GetCompaniesResponseModel> PrepareResponseAfterGetCompanies(IGetCompaniesResponse getCompaniesResponse,Stopwatch timer)
         {
             switch (getCompaniesResponse.ProvideResult)
             {
