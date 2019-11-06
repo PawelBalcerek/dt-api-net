@@ -39,7 +39,7 @@ namespace Domain.DTOToBOConverting
             if (resource == null)
                 return null;
             else
-                return new Domain.BusinessObject.Resource(resource.Id, resource.UserId, resource.CompId, resource.Amount);
+                return new Domain.BusinessObject.Resource(resource.Id, resource.UserId, new BusinessObject.Company(resource.CompId, resource.Comp.Name), resource.Amount);
         }
         public Domain.BusinessObject.Transaction ConvertTransaction(Data.Models.Transaction transaction)
         {

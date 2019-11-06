@@ -14,11 +14,12 @@ namespace Domain.Providers.Resources.Response.Concrete
             ProvideResult = ProvideEnumResult.Exception;
         }
 
-        public GetResourcesResponse(IList<Resource> resources)
+        public GetResourcesResponse(IList<Resource> resources, long databaseExecutionTime)
         {
             if (resources != null)
             {
                 Resources = resources;
+                DatabaseExecutionTime = databaseExecutionTime;
                 ProvideResult = ProvideEnumResult.Success;
             }
             else
@@ -28,7 +29,7 @@ namespace Domain.Providers.Resources.Response.Concrete
         }
 
         public IList<Resource> Resources { get; }
-
+        public long DatabaseExecutionTime { get; }
         public ProvideEnumResult ProvideResult { get; }
     }
 }

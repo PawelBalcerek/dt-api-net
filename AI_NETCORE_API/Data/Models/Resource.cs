@@ -18,9 +18,9 @@ namespace Data.Models
         public int CompId { get; set; }
         public int Amount { get; set; }
 
-        public Company Comp { get; set; }
-        public User User { get; set; }
-        public ICollection<BuyOffer> BuyOffers { get; set; }
-        public ICollection<SellOffer> SellOffers { get; set; }
+        public virtual Company Comp { get; set; }
+        public virtual User User { get; set; }
+        public virtual ICollection<BuyOffer> BuyOffers { get; set; }
+        public virtual ICollection<SellOffer> SellOffers { get; set; }
     }
 }

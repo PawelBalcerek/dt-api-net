@@ -20,7 +20,7 @@ namespace Data.Models
         public bool IsValid { get; set; }
         public int StartAmount { get; set; }
 
-        public Resource Resource { get; set; }
-        public ICollection<Transaction> Transactions { get; set; }
+        public virtual Resource Resource { get; set; }
+        public virtual ICollection<Transaction> Transactions { get; set; }
     }
 }

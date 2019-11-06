@@ -40,7 +40,7 @@ namespace AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Concret
                 Id = resource.Id,
                 UserId = resource.UserId,
                 Amount = resource.Amount,
-                CompanyId = resource.CompanyId
+                Company = new CompanyModel { Id = resource.Company.Id, Name = resource.Company.Name }
             };
         }
 

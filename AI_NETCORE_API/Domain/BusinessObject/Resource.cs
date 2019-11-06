@@ -6,17 +6,17 @@ namespace Domain.BusinessObject
 {
     public class Resource
     {
-        public Resource(int id, int userId, int companyId, int amount)
+        public Resource(int id, int userId, Company company, int amount)
         {
             Id = id;
             UserId = userId;
-            CompanyId = companyId;
+            Company = company;
             Amount = amount;
         }
 
         public int Id { get; }
         public int UserId { get; }
-        public int CompanyId { get; }
+        public Company Company { get; }
         public int Amount { get; }
     }
 }

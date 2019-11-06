@@ -5,10 +5,15 @@ using Domain.Repositories.BaseRepo.Concrete;
 using Domain.Repositories.ResourceRepo.Abstract;
 using Data.Models;
 using System.Linq;
+using System.Linq.Expressions;
 using Domain.DTOToBOConverting;
+using Domain.Repositories.BaseRepo.Response;
+using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
+
 namespace Domain.Repositories.ResourceRepo.Concrete
 {
-    public class ResourceRepository: RepositoryBase<Resource>, IResourceRepository
+    public class ResourceRepository : RepositoryBase<Resource>, IResourceRepository
     {
         private readonly IDTOToBOConverter _converter;
         public ResourceRepository(RepositoryContext repositoryContext, IDTOToBOConverter converter)
@@ -17,15 +22,13 @@ namespace Domain.Repositories.ResourceRepo.Concrete
             _converter = converter;
         }
 
-        public BusinessObject.Resource GetResourceById(int id)
+        public RepositoryResponse<IEnumerable<BusinessObject.Resource>> GetUserResources(int userId)
         {
-            Resource resource = FindByCondition(resExpr => resExpr.Id == id).FirstOrDefault();
-            return _converter.ConvertResource(resource);
-        }
-
-        public IEnumerable<BusinessObject.Resource> GetAllResources()
-        {
-            return FindAll().Select(r => _converter.ConvertResource(r));
+            var timer = Stopwatch.StartNew();
+            var resources = FindByCondition(r => r.UserId == userId).Include(r => r.Comp).Select(r => _converter.ConvertResource(r));
+            timer.Stop();
+            var time = timer.ElapsedMilliseconds;
+            return new RepositoryResponse<IEnumerable<BusinessObject.Resource>>(resources, time);
         }
     }
 }

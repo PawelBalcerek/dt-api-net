@@ -7,7 +7,7 @@ using Domain.Providers.Resources.Response.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+/*
 namespace Domain.Providers.Resources.Concrete
 {
     public class MockResourcesProvider : IResourcesProvider
@@ -58,3 +58,4 @@ namespace Domain.Providers.Resources.Concrete
         }
     }
 }
+*/
