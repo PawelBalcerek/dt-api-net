@@ -1,21 +1,21 @@
-﻿using Domain.Creators.Configurations.Abstract;
-using Domain.Creators.Configurations.Request.Abstract;
-using Domain.Creators.Configurations.Response.Abstract;
-using Domain.Creators.Configurations.Response.Concrete;
+﻿using Domain.Updaters.Configurations.Abstract;
+using Domain.Updaters.Configurations.Request.Abstract;
+using Domain.Updaters.Configurations.Response.Abstract;
+using Domain.Updaters.Configurations.Response.Concrete;
 using Domain.Infrastructure.Logging.Abstract;
 using Domain.Repositories.ConfigurationRepo.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Creators.Configurations.Concrete
+namespace Domain.Updaters.Configurations.Concrete
 {
-    public class ConfigurationCreator : IConfigurationCreator
+    public class ConfigurationUpdater : IConfigurationUpdater
     {
         private readonly ILogger _logger;
         private readonly IConfigurationRepository _configuationRepository;
 
-        public ConfigurationCreator(ILogger logger, IConfigurationRepository configurationRepository)
+        public ConfigurationUpdater(ILogger logger, IConfigurationRepository configurationRepository)
         {
             _logger = logger;
             _configuationRepository = configurationRepository;

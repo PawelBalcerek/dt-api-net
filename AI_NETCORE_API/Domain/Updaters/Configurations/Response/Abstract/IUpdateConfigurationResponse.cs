@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Creators.Configurations.Response.Abstract
+namespace Domain.Updaters.Configurations.Response.Abstract
 {
     public interface IUpdateConfigurationResponse
     {
