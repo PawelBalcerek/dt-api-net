@@ -30,5 +30,39 @@ namespace Domain.Repositories.ResourceRepo.Concrete
             var time = timer.ElapsedMilliseconds;
             return new RepositoryResponse<IEnumerable<BusinessObject.Resource>>(resources, time);
         }
+
+        public RepositoryResponse<BusinessObject.Resource> GetResourceById(int id)
+        {
+            Stopwatch timer = Stopwatch.StartNew();
+            var resource = FindByCondition(r => r.Id == id).FirstOrDefault();
+            var resourceBO = _converter.ConvertResource(resource);
+            timer.Stop();
+
+            return new RepositoryResponse<BusinessObject.Resource>(resourceBO, timer.ElapsedMilliseconds);
+        }
+
+        public RepositoryResponse<bool> UpdateResource(BusinessObject.Resource resource)
+        {
+            bool success;
+            Stopwatch timer = Stopwatch.StartNew();
+
+            var dbResource = FindByCondition(r => r.Id == resource.Id).FirstOrDefault();
+            if (dbResource == null)
+            {
+                timer.Stop();
+                success = false;
+            }
+            else
+            {
+                dbResource.Amount = resource.Amount;
+                RepositoryContext.Update(dbResource);
+                RepositoryContext.SaveChanges();
+                timer.Stop();
+                success = true;
+            }
+
+            long time = timer.ElapsedMilliseconds;
+            return new RepositoryResponse<bool>(success, time);
+        }
     }
 }

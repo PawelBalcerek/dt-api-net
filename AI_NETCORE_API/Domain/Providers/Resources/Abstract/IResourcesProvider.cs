@@ -8,6 +8,6 @@ namespace Domain.Providers.Resources.Abstract
 {
     public interface IResourcesProvider
     {
-        IGetResourcesResponse GetUserResources(IGetUserResourcesRequest getUserResourcesRequest);
+        IGetUserResourcesResponse GetUserResources(IGetUserResourcesRequest getUserResourcesRequest);
     }
 }

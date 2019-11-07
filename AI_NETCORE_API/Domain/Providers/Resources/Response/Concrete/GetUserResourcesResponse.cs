@@ -7,14 +7,14 @@ using System.Text;
 
 namespace Domain.Providers.Resources.Response.Concrete
 {
-    public class GetResourcesResponse : IGetResourcesResponse
+    public class GetUserResourcesResponse : IGetUserResourcesResponse
     {
-        public GetResourcesResponse()
+        public GetUserResourcesResponse()
         {
             ProvideResult = ProvideEnumResult.Exception;
         }
 
-        public GetResourcesResponse(IList<Resource> resources, long databaseExecutionTime)
+        public GetUserResourcesResponse(IList<Resource> resources, long databaseExecutionTime)
         {
             if (resources != null)
             {
