@@ -8,5 +8,6 @@ namespace Domain.Providers.Users.Response.Abstract
     public interface IGetUserByIdResponse : IProvideResult
     {
         BusinessObject.User User { get; }
+        long DbTime { get; }
     }
 }

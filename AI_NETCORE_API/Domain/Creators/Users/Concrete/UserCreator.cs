@@ -27,12 +27,9 @@ namespace Domain.Creators.Users.Concrete
         {
             try
             {
-                _userRepository.CreateUser(userCreateRequest.GetHashCode(),userCreateRequest.UserName,userCreateRequest.Password,userCreateRequest.Email);
-                var p = _userRepository.FindAll().ToList();
-                
-                
-                
-                return new UserCreateResponse(true);
+                var response = _userRepository.CreateUser(userCreateRequest.UserName,userCreateRequest.Password,userCreateRequest.Email);
+    
+                return new UserCreateResponse(response.Object, response.DatabaseTime);
             }
             catch (Exception ex)
             {

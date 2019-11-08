@@ -7,13 +7,13 @@ namespace Domain.Providers.Users.Request.Concrete
 {
     public class LoginUserRequest : ILoginUserRequest
     {
-        public string Login { get; }
+        public string Email { get; }
 
         public string Password { get; }
 
-        public LoginUserRequest(string login, string password)
+        public LoginUserRequest(string email, string password)
         {
-            Login = login;
+            Email = email;
             Password = password;
         }
     }

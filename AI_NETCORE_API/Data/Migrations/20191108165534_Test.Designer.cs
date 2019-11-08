@@ -4,14 +4,16 @@ using Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Data.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20191108165534_Test")]
+    partial class Test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +24,9 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Models.BuyOffer", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnName("ID");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("ID")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Amount")
                         .HasColumnName("amount");
@@ -54,12 +58,14 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Models.Company", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnName("ID");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("ID")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("name")
-                        .HasMaxLength(1)
+                        .HasMaxLength(30)
                         .IsUnicode(false);
 
                     b.HasKey("Id");
@@ -70,8 +76,9 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Models.Configuration", b =>
                 {
                     b.Property<string>("Name")
+                        .ValueGeneratedOnAdd()
                         .HasColumnName("name")
-                        .HasMaxLength(1)
+                        .HasMaxLength(30)
                         .IsUnicode(false);
 
                     b.Property<int>("Value")
@@ -85,7 +92,9 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Models.Resource", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnName("ID");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("ID")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Amount")
                         .HasColumnName("amount");
@@ -108,7 +117,9 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Models.SellOffer", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnName("ID");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("ID")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Amount")
                         .HasColumnName("amount");
@@ -140,7 +151,9 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Models.Transaction", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnName("ID");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("ID")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Amount")
                         .HasColumnName("amount");
@@ -171,7 +184,9 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Models.User", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnName("ID");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("ID")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<decimal>("Cash")
                         .HasColumnName("cash")
@@ -180,19 +195,19 @@ namespace Data.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnName("email")
-                        .HasMaxLength(100)
+                        .HasMaxLength(30)
                         .IsUnicode(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnName("name")
-                        .HasMaxLength(100)
+                        .HasMaxLength(30)
                         .IsUnicode(false);
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnName("password")
-                        .HasMaxLength(100)
+                        .HasMaxLength(30)
                         .IsUnicode(false);
 
                     b.HasKey("Id");

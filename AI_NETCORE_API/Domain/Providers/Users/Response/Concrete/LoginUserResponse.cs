@@ -8,10 +8,11 @@ namespace Domain.Providers.Users.Response.Concrete
     public class LoginUserResponse : ILoginUserResponse
     {
         public string Token { get; }
-
-        public LoginUserResponse(string token)
+        public long DbTime { get; }
+        public LoginUserResponse(string token, long dbTime)
         {
             Token = token;
+            DbTime = dbTime;
         }
     }
 }

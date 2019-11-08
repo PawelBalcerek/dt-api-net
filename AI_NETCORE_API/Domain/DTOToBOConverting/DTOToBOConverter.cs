@@ -11,7 +11,7 @@ namespace Domain.DTOToBOConverting
             if (user == null)
                 return null;
             else
-                return new Domain.BusinessObject.User(user.Id, user.Name, user.Email, user.Password);
+                return new Domain.BusinessObject.User(user.Id, user.Name, user.Email, user.Password, user.Cash);
         }
         public Domain.BusinessObject.Company ConvertCompany(Data.Models.Company company)
         {
