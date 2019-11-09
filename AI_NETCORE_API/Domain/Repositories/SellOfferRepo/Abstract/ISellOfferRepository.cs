@@ -10,5 +10,6 @@ namespace Domain.Repositories.SellOfferRepo.Abstract
     {
         BusinessObject.SellOffer GetSellOfferById(int id);
         IEnumerable<BusinessObject.SellOffer> GetAllSellOffers();
+        List<BusinessObject.SellOffer> GetSellOffersByUserId(int id);
     }
 }

@@ -8,6 +8,6 @@ namespace Domain.Providers.SellOffers.Response.Abstract
 {
     public interface IGetSellOffersByUserIdResponse : IProvideResult
     {
-        SellOffer SellOffer { get; }
+        List<SellOffer> SellOffer { get; }
     }
 }

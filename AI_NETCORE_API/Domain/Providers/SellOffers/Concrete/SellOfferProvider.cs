@@ -49,9 +49,18 @@ namespace Domain.Providers.SellOffers.Concrete
             }
         }
 
-        public List<IGetSellOffersByUserIdResponse> GetSellOffersByUserId(IGetSellOffersByUserIdRequest getSellOffersByUserIdRequest)
+        public GetSellOffersByUserIdResponse GetSellOffersByUserId(IGetSellOffersByUserIdRequest getSellOffersByUserIdRequest)
         {
-            return new List<IGetSellOffersByUserIdResponse>();
+            try
+            {
+                return new GetSellOffersByUserIdResponse(_sellOffers.GetSellOffersByUserId(getSellOffersByUserIdRequest.UserId));
+                
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex);
+                return new GetSellOffersByUserIdResponse();
+            }
         }
     }
 }

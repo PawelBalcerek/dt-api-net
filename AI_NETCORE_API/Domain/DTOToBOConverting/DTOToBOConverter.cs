@@ -34,6 +34,13 @@ namespace Domain.DTOToBOConverting
             else
                 return new Domain.BusinessObject.SellOffer(sellOffer.Id, sellOffer.ResourceId, sellOffer.Amount, sellOffer.Date, sellOffer.IsValid, sellOffer.Price, sellOffer.StartAmount);
         }
+        public Domain.BusinessObject.SellOffer ConvertSellOfferWithCompany(Data.Models.SellOffer sellOffer, Data.Models.Company company)
+        {
+            if (sellOffer == null)
+                return null;
+            else
+                return new Domain.BusinessObject.SellOffer(sellOffer.Id, sellOffer.ResourceId, sellOffer.Amount, sellOffer.Date, sellOffer.IsValid, sellOffer.Price, sellOffer.StartAmount, company);
+        }
         public Domain.BusinessObject.Resource ConvertResource(Data.Models.Resource resource)
         {
             if (resource == null)

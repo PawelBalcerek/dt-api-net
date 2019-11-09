@@ -14,7 +14,7 @@ namespace Domain.Providers.SellOffers.Response.Concrete
             ProvideResult = ProvideEnumResult.Exception;
         }
 
-        public GetSellOffersByUserIdResponse(SellOffer sellOffer)
+        public GetSellOffersByUserIdResponse(List<SellOffer> sellOffer)
         {
             if (sellOffer == null)
             {
@@ -27,7 +27,7 @@ namespace Domain.Providers.SellOffers.Response.Concrete
             }
         }
 
-        public SellOffer SellOffer { get; }
+        public List<SellOffer> SellOffer { get; }
 
         public ProvideEnumResult ProvideResult { get; }
     }

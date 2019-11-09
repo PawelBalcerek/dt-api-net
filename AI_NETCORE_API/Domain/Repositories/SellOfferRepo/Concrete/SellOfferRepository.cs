@@ -6,6 +6,8 @@ using Domain.Repositories.SellOfferRepo.Abstract;
 using Data.Models;
 using Domain.DTOToBOConverting;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+
 namespace Domain.Repositories.SellOfferRepo.Concrete
 {
     public class SellOfferRepository: RepositoryBase<SellOffer>, ISellOfferRepository
@@ -26,6 +28,20 @@ namespace Domain.Repositories.SellOfferRepo.Concrete
         public IEnumerable<BusinessObject.SellOffer> GetAllSellOffers()
         {
             return FindAll().Select(s => _converter.ConvertSellOffer(s));
+        }
+
+        public List<BusinessObject.SellOffer> GetSellOffersByUserId(int id)
+        {
+            using (var databaseContext = new RepositoryContext())
+            {
+                List<SellOffer> sellOffers = databaseContext.SellOffers.Where(p => p.Resource.UserId == id && p.IsValid == true).Include(p => p.Resource).ToList();
+                List<BusinessObject.SellOffer> bussinessSellOffers = new List<BusinessObject.SellOffer>();
+                foreach(var sellOffer in sellOffers)
+                {
+                    bussinessSellOffers.Add(_converter.ConvertSellOfferWithCompany(sellOffer, sellOffer.Resource.Comp));
+                }
+                return bussinessSellOffers;
+            }
         }
     }
 }
