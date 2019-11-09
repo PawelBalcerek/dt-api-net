@@ -54,7 +54,11 @@ namespace AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Concret
                 Date = sellOffer.Date,
                 Amount = sellOffer.Amount,
                 Price = sellOffer.Price,
-                Company = new CompanyModel()
+                Company = new CompanyModel
+                {
+                    Id = sellOffer.Company.Id,
+                    Name = sellOffer.Company.Name
+                }
             };
         }
 
