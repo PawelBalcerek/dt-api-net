@@ -50,10 +50,11 @@ namespace AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Concret
             {
                 Id = sellOffer.Id,
                 ResourceId = sellOffer.ResourceId,
-                IsValid = sellOffer.IsValid,
+                StartAmount = sellOffer.StartAmount,
                 Date = sellOffer.Date,
                 Amount = sellOffer.Amount,
-                Price = sellOffer.Price
+                Price = sellOffer.Price,
+                Company = new CompanyModel()
             };
         }
 
