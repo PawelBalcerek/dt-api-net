@@ -48,5 +48,10 @@ namespace Domain.Providers.SellOffers.Concrete
                 return new GetSellOffersResponse();
             }
         }
+
+        public List<IGetSellOffersByUserIdResponse> GetSellOffersByUserId(IGetSellOffersByUserIdRequest getSellOffersByUserIdRequest)
+        {
+            return new List<IGetSellOffersByUserIdResponse>();
+        }
     }
 }

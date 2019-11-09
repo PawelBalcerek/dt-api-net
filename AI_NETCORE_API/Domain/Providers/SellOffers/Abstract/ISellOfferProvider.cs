@@ -10,5 +10,6 @@ namespace Domain.Providers.SellOffers.Abstract
     {
         IGetSellOfferByIdResponse GetSellOfferById(IGetSellOfferByIdRequest getSellOfferByIdRequest);
         IGetSellOffersResponse GetSellOffers();
+        List<IGetSellOffersByUserIdResponse> GetSellOffersByUserId(IGetSellOffersByUserIdRequest getSellOffersByUserIdRequest);
     }
 }
