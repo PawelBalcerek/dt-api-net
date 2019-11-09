@@ -12,6 +12,7 @@ namespace AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstrac
         CompanyModel ConvertCompany(Company company);
         BuyOfferModel ConvertBuyOffer(BuyOffer buyOffer);
         SellOfferModel ConvertSellOffer(SellOffer sellOffer);
+        List<SellOfferModel> ConvertSellOffer(List<SellOffer> sellOffer);
         UserModel ConvertUser(User user);
         TransactionModel ConvertTransaction(Transaction transaction);
         ResourceModel ConvertResource(Resource resource);
