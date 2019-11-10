@@ -22,17 +22,17 @@ namespace Domain.Providers.Resources.Concrete
             _resources = resources;
         }
 
-        public IGetResourcesResponse GetUserResources(IGetUserResourcesRequest getUserResourcesRequest)
+        public IGetUserResourcesResponse GetUserResources(IGetUserResourcesRequest getUserResourcesRequest)
         {
             try
             {
                 var result = _resources.GetUserResources(getUserResourcesRequest.UserId);
-                return new GetResourcesResponse(result.Object.ToList(), result.DatabaseTime);
+                return new GetUserResourcesResponse(result.Object.ToList(), result.DatabaseTime);
             }
             catch (Exception ex)
             {
                 _logger.Log(ex);
-                return new GetResourcesResponse();
+                return new GetUserResourcesResponse();
             }
         }
     }
