@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstract;
 using AI_NETCORE_API.Models.Objects;
+using AI_NETCORE_API.Models.Request.SellOffers;
 using AI_NETCORE_API.Models.Response.SellOffers;
 using Domain.Infrastructure.Logging.Abstract;
 using Domain.Providers.SellOffers.Abstract;
 using Domain.Providers.SellOffers.Request.Abstract;
 using Domain.Providers.SellOffers.Request.Concrete;
 using Domain.Providers.SellOffers.Response.Abstract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -100,16 +103,19 @@ namespace AI_NETCORE_API.Controllers
         /// <summary>
         /// Method to get valid user sell offers
         /// </summary>
-        /// <param name="sell-offers"></param>
         /// <returns>SellOffersModel</returns>
-        [ProducesResponseType(200, Type = typeof(GetSellOffersByUserIdResponseModel))]
+        [ProducesResponseType(200, Type = typeof(SellOfferModel))]
+        [ProducesResponseType(401)]
         [ProducesResponseType(500)]
-        [HttpGet("user/sell-offers")]
+        [HttpGet("users/sell-offers")]
+        [Authorize("Bearer")]
         public ActionResult<SellOfferModel> GetSellOffersByUserId()
         {
             try
             {
-                GetSellOffersByUserIdRequest request = new GetSellOffersByUserIdRequest(0/*Get id from JWT*/);
+                var identity = HttpContext.User.Identity as ClaimsIdentity;
+                var userId = int.Parse(identity.Claims.Where(c => c.Type == "Id").FirstOrDefault().Value);
+                GetSellOffersByUserIdRequest request = new GetSellOffersByUserIdRequest(userId);
                 IGetSellOffersByUserIdResponse getSellOffersByUserIdResponse = _sellOffersProvider.GetSellOffersByUserId(request);
                 return PrepareResponseAfterGetSellOffersByUserId(getSellOffersByUserIdResponse);
             }
@@ -134,5 +140,45 @@ namespace AI_NETCORE_API.Controllers
                     throw new ArgumentOutOfRangeException();
             }
         }
+
+        /// <summary>
+        /// Method to post new sell offer
+        /// </summary>
+        /// <param name="sell-offers"></param>
+        /// <returns></returns>
+        [ProducesResponseType(200, Type = typeof(IList<SellOfferModel>))]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(500)]
+        [HttpPost("sell-offers")]
+        [Authorize("Bearer")]
+        public ActionResult<IList<SellOfferModel>> PostSellOffers([FromBody] CreateSellOfferRequest request)
+        {
+            try
+            {
+                IGetSellOffersResponse getSellOffersResponse = _sellOffersProvider.GetSellOffers();
+                return PrepareResponseAfterPostSellOffers(getSellOffersResponse);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex);
+                return StatusCode(500);
+            }
+        }
+
+        private ActionResult<IList<SellOfferModel>> PrepareResponseAfterPostSellOffers(IGetSellOffersResponse getSellOffersResponse)
+        {
+            switch (getSellOffersResponse.ProvideResult)
+            {
+                case Domain.Providers.Common.Enum.ProvideEnumResult.Exception:
+                    return StatusCode(500);
+                case Domain.Providers.Common.Enum.ProvideEnumResult.Success:
+                    return Ok(getSellOffersResponse.SellOffers.ToList()
+                        .Select(x => _businessObjectToModelsConverter.ConvertSellOffer(x)));
+                case Domain.Providers.Common.Enum.ProvideEnumResult.NotFound:
+                    return StatusCode(404);
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }   
     }
 }
