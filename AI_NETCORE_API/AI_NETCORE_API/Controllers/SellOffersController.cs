@@ -104,7 +104,7 @@ namespace AI_NETCORE_API.Controllers
         /// <returns>SellOffersModel</returns>
         [ProducesResponseType(200, Type = typeof(GetSellOffersByUserIdResponseModel))]
         [ProducesResponseType(500)]
-        [HttpPost("user/sell-offers")]
+        [HttpGet("user/sell-offers")]
         public ActionResult<SellOfferModel> GetSellOffersByUserId()
         {
             try
