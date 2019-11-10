@@ -62,7 +62,7 @@ namespace AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Concret
             };
         }
 
-        List<SellOfferModel> ConvertSellOffer(List<SellOffer> sellOffer)
+        public List<SellOfferModel> ConvertSellOffer(List<SellOffer> sellOffer)
         {
             List<SellOfferModel> list = new List<SellOfferModel>();
 

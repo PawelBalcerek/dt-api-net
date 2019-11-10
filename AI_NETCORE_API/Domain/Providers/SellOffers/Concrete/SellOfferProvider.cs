@@ -49,7 +49,7 @@ namespace Domain.Providers.SellOffers.Concrete
             }
         }
 
-        public GetSellOffersByUserIdResponse GetSellOffersByUserId(IGetSellOffersByUserIdRequest getSellOffersByUserIdRequest)
+        public IGetSellOffersByUserIdResponse GetSellOffersByUserId(IGetSellOffersByUserIdRequest getSellOffersByUserIdRequest)
         {
             try
             {
