@@ -71,8 +71,8 @@ namespace AI_NETCORE_API.Controllers
             {
                 executionDetails = new ExecutionDetails
                 {
-                    DatabaseTime = updateConfigurationResponse.DbTime,
-                    ExecutionTime = timer.ElapsedMilliseconds
+                    DbTime = updateConfigurationResponse.DbTime,
+                    ExecTime = timer.ElapsedMilliseconds
                 }
             };
         }

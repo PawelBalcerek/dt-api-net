@@ -14,7 +14,7 @@ namespace Domain.Providers.Users.Response.Concrete
             ProvideResult = ProvideEnumResult.Exception;
         }
 
-        public GetUserByIdResponse(User user)
+        public GetUserByIdResponse(User user, long dbTime)
         {
             if (user == null)
             {
@@ -25,10 +25,11 @@ namespace Domain.Providers.Users.Response.Concrete
                 User = user;
                 ProvideResult = ProvideEnumResult.Success;
             }
+            DbTime = dbTime;
         }
 
         public User User { get; }
-
+        public long DbTime { get; }
         public ProvideEnumResult ProvideResult { get; }
     }
 }

@@ -40,7 +40,7 @@ namespace Data.Models
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Amount).HasColumnName("amount");
 
@@ -69,7 +69,7 @@ namespace Data.Models
             {
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -85,8 +85,7 @@ namespace Data.Models
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
                     .HasMaxLength(30)
-                    .IsUnicode(false)
-                    .ValueGeneratedNever();
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Value).HasColumnName("value");
             });
@@ -95,7 +94,7 @@ namespace Data.Models
             {
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Amount).HasColumnName("amount");
 
@@ -122,7 +121,7 @@ namespace Data.Models
 
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Amount).HasColumnName("amount");
 
@@ -151,7 +150,7 @@ namespace Data.Models
             {
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Amount).HasColumnName("amount");
 
@@ -184,7 +183,7 @@ namespace Data.Models
             {
                 entity.Property(e => e.Id)
                     .HasColumnName("ID")
-                    .ValueGeneratedNever();
+                    .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Cash)
                     .HasColumnName("cash")

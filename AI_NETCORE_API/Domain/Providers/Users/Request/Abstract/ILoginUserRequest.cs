@@ -6,7 +6,7 @@ namespace Domain.Providers.Users.Request.Abstract
 {
     public interface ILoginUserRequest
     {
-        string Login { get; }
+        string Email { get; }
         string Password { get; }
     }
 }

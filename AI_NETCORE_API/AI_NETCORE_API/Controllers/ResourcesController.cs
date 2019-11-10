@@ -86,8 +86,8 @@ namespace AI_NETCORE_API.Controllers
                 Resources = resourceModelsList,
                 ExecutionDetails = new ExecutionDetails
                 {
-                    DatabaseTime = getResourcesResponse.DatabaseExecutionTime,
-                    ExecutionTime = timer.ElapsedMilliseconds
+                    DbTime = getResourcesResponse.DatabaseExecutionTime,
+                    ExecTime = timer.ElapsedMilliseconds
                 }
             };
             return response;

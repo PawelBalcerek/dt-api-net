@@ -8,5 +8,6 @@ namespace Domain.Creators.Users.Response.Abstract
     public interface IUserCreateResponse
     {
         bool Success { get; }
+        long DbTime { get; }
     }
 }

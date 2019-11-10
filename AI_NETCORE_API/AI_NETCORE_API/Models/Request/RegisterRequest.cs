@@ -21,12 +21,9 @@ namespace AI_NETCORE_API.Models.Request
     public class RegisterRequest
     {
         [Required]
-        
         public string Email { get; set; }
         [Required]
         public string Password { get; set; }
-        [Required]
-        public string ConfirmPassword { get; set; }
         [Required]
         public string Name { get; set; }
         public bool IsValid(IPasswordValidator passwordValidator, IEmailValidator emailValidator)
@@ -39,9 +36,7 @@ namespace AI_NETCORE_API.Models.Request
 
             return !string.IsNullOrWhiteSpace(Email) &&
                 !string.IsNullOrWhiteSpace(Password) &&
-                !string.IsNullOrWhiteSpace(ConfirmPassword) &&
                 !string.IsNullOrWhiteSpace(Name) &&
-                ConfirmPassword == Password &&
                 passwordValidationResponse.PasswordValidationResult == PasswordValidationResultEnum.Success &&
                 emailValidationResponse.EmailValidationResult == EmailValidationResult.Success
             ;

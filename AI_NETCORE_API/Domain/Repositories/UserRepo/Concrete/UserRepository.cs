@@ -11,6 +11,7 @@ using System;
 using Domain.Infrastructure;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
+using Domain.Repositories.BaseRepo.Response;
 
 namespace Domain.Repositories.UserRepo.Concrete
 {
@@ -26,32 +27,42 @@ namespace Domain.Repositories.UserRepo.Concrete
             _converter = converter;
             _tokenManagement = tokenManagement.Value;
         }
-        public BusinessObject.User GetUserById(int id)
+        public RepositoryResponse<BusinessObject.User> GetUserById(int id)
         {
+            Stopwatch timer = Stopwatch.StartNew();
             User user = FindByCondition(userExpr => userExpr.Id == id).FirstOrDefault();
-            return _converter.ConvertUser(user);
+            timer.Stop();
+            return new RepositoryResponse<BusinessObject.User>(_converter.ConvertUser(user), timer.ElapsedMilliseconds);
         }
 
-        public void CreateUser(int id, string name, string password, string email)
+        public RepositoryResponse<bool> CreateUser(string name, string password, string email)
         {
+            Stopwatch timer = Stopwatch.StartNew();
             RepositoryContext.Users.Add(new User
             {
                 Password = password,
                 Email = email,
                 Name = name,
-                Cash = 0,
-                Id = id,
-                Resources = new List<Resource>()
+                Cash = 0
             });
-            RepositoryContext.SaveChanges(true);
+            try
+            {
+                RepositoryContext.SaveChanges();
+                timer.Stop();
+                return new RepositoryResponse<bool>(true, timer.ElapsedMilliseconds);
+            } catch (Exception ex)
+            {
+                return new RepositoryResponse<bool>(false, timer.ElapsedMilliseconds);
+            }
+            
         }
 
-        public string Authenticate(string login, string password)
+        public RepositoryResponse<string> Authenticate(string email, string password)
         {
-            var tim = Stopwatch.StartNew();
-            var users = from u in RepositoryContext.Users where u.Password == password && u.Email == login select u;
+            var timer = Stopwatch.StartNew();
+            var users = from u in RepositoryContext.Users where u.Password == password && u.Email == email select u;
             var user = users.FirstOrDefault();
-            var dbTime = tim.ElapsedMilliseconds;
+            timer.Stop();
 
             if (user == null) return null;
 
@@ -69,7 +80,7 @@ namespace Domain.Repositories.UserRepo.Concrete
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            return tokenHandler.WriteToken(token);
+            return new RepositoryResponse<string>(tokenHandler.WriteToken(token), timer.ElapsedMilliseconds);
         }
     }
 }
