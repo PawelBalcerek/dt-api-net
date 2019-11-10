@@ -14,7 +14,7 @@ namespace Domain.Providers.SellOffers.Response.Concrete
             ProvideResult = ProvideEnumResult.Exception;
         }
 
-        public GetSellOffersByUserIdResponse(List<SellOffer> sellOffer)
+        public GetSellOffersByUserIdResponse(IList<SellOffer> sellOffer, long databaseExecutionTime)
         {
             if (sellOffer == null)
             {
@@ -23,12 +23,13 @@ namespace Domain.Providers.SellOffers.Response.Concrete
             else
             {
                 SellOffer = sellOffer;
+                DatabaseExecutionTime = databaseExecutionTime;
                 ProvideResult = ProvideEnumResult.Success;
             }
         }
 
-        public List<SellOffer> SellOffer { get; }
-
+        public IList<SellOffer> SellOffer { get; }
+        public long DatabaseExecutionTime { get; }
         public ProvideEnumResult ProvideResult { get; }
     }
 }

@@ -7,6 +7,8 @@ using Data.Models;
 using Domain.DTOToBOConverting;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Domain.Repositories.BaseRepo.Response;
+using System.Diagnostics;
 
 namespace Domain.Repositories.SellOfferRepo.Concrete
 {
@@ -19,29 +21,17 @@ namespace Domain.Repositories.SellOfferRepo.Concrete
             _converter = converter;
         }
 
-        public BusinessObject.SellOffer GetSellOfferById(int id)
-        {
-            SellOffer sellOffer = FindByCondition(sellOfferExpr => sellOfferExpr.Id == id).FirstOrDefault();
-            return _converter.ConvertSellOffer(sellOffer);
-        }
-
-        public IEnumerable<BusinessObject.SellOffer> GetAllSellOffers()
-        {
-            return FindAll().Select(s => _converter.ConvertSellOffer(s));
-        }
-
-        public List<BusinessObject.SellOffer> GetSellOffersByUserId(int id)
+        public RepositoryResponse<IEnumerable<BusinessObject.SellOffer>> GetSellOffersByUserId(int id)
         {
             using (var databaseContext = new RepositoryContext())
             {
-                List<SellOffer> sellOffers = databaseContext.SellOffers.Where(p => p.Resource.UserId == id && p.IsValid == true).Include(p => p.Resource).ToList();
-                List<BusinessObject.SellOffer> bussinessSellOffers = new List<BusinessObject.SellOffer>();
-                foreach(var sellOffer in sellOffers)
-                {
-                    bussinessSellOffers.Add(_converter.ConvertSellOfferWithCompany(sellOffer, sellOffer.Resource.Comp));
-                }
-                return bussinessSellOffers;
+                var timer = Stopwatch.StartNew();
+                var sellOffers = FindByCondition(p => p.Resource.UserId == id && p.IsValid == true).Include(p => p.Resource).Include(p => p.Resource.Comp).Select(p => _converter.ConvertSellOffer(p));
+                timer.Stop();
+                var time = timer.ElapsedMilliseconds;
+                return new RepositoryResponse<IEnumerable<BusinessObject.SellOffer>>(sellOffers, time);
             }
+            
         }
     }
 }

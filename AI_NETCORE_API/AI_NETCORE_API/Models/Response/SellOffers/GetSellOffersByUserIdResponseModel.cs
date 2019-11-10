@@ -9,7 +9,7 @@ namespace AI_NETCORE_API.Models.Response.SellOffers
 {
     public class GetSellOffersByUserIdResponseModel
     {
-        public List<SellOfferModel> SellOffers { get; set; }
+        public IList<SellOfferModel> SellOffers { get; set; }
         public ExecutionDetails ExecDetails { get; set; }
     }
 }

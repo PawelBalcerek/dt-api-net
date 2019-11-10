@@ -23,37 +23,12 @@ namespace Domain.Providers.SellOffers.Concrete
             _sellOffers = sellOffers;
         }
 
-        public IGetSellOfferByIdResponse GetSellOfferById(IGetSellOfferByIdRequest getSellOfferByIdRequest)
-        {
-            try
-            {
-                return new GetSellOfferByIdResponse(_sellOffers.GetSellOfferById(getSellOfferByIdRequest.SellOfferId));
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex);
-                return new GetSellOfferByIdResponse();
-            }
-        }
-
-        public IGetSellOffersResponse GetSellOffers()
-        {
-            try
-            {
-                return new GetSellOffersResponse(_sellOffers.GetAllSellOffers().ToList());
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex);
-                return new GetSellOffersResponse();
-            }
-        }
-
         public IGetSellOffersByUserIdResponse GetSellOffersByUserId(IGetSellOffersByUserIdRequest getSellOffersByUserIdRequest)
         {
             try
             {
-                return new GetSellOffersByUserIdResponse(_sellOffers.GetSellOffersByUserId(getSellOffersByUserIdRequest.UserId));
+                var result = _sellOffers.GetSellOffersByUserId(getSellOffersByUserIdRequest.UserId);
+                return new GetSellOffersByUserIdResponse(result.Object.ToList(), result.DatabaseTime);
                 
             }
             catch (Exception ex)

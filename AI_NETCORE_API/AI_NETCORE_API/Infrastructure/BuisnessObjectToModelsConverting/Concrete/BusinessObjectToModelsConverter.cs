@@ -62,17 +62,6 @@ namespace AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Concret
             };
         }
 
-        public List<SellOfferModel> ConvertSellOffer(List<SellOffer> sellOffer)
-        {
-            List<SellOfferModel> list = new List<SellOfferModel>();
-
-            foreach(var element in sellOffer)
-            {
-                list.Add(ConvertSellOffer(element));
-            }
-            return list;
-        }
-
         public TransactionModel ConvertTransaction(Transaction transaction)
         {
             return new TransactionModel

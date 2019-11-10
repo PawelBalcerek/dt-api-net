@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstract;
 using AI_NETCORE_API.Models.Objects;
 using AI_NETCORE_API.Models.Request.SellOffers;
+using AI_NETCORE_API.Models.Response.ExecutingTimes;
 using AI_NETCORE_API.Models.Response.SellOffers;
 using Domain.Infrastructure.Logging.Abstract;
 using Domain.Providers.SellOffers.Abstract;
@@ -33,91 +35,25 @@ namespace AI_NETCORE_API.Controllers
             _sellOffersProvider = sellOfferProvider;
         }
 
-        [HttpGet("sell-offers/{id:int}")]
-        [ProducesResponseType(200, Type = typeof(SellOfferModel))]
-        [ProducesResponseType(500)]
-        [ProducesResponseType(404)]
-        public ActionResult<SellOfferModel> GetSellOfferById(int id)
-        {
-            try
-            {
-                IGetSellOfferByIdRequest getSellOfferByIdRequest = new GetSellOfferByIdRequest(id);
-                IGetSellOfferByIdResponse getSellOfferByIdResponse = _sellOffersProvider.GetSellOfferById(getSellOfferByIdRequest);
-                return PrepareResponseAfterGetSellOfferById(getSellOfferByIdResponse);
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex);
-                return StatusCode(500);
-            }
-        }
-
-        private ActionResult<SellOfferModel> PrepareResponseAfterGetSellOfferById(IGetSellOfferByIdResponse getSellOfferByIdResponse)
-        {
-            switch (getSellOfferByIdResponse.ProvideResult)
-            {
-                case Domain.Providers.Common.Enum.ProvideEnumResult.Exception:
-                    return StatusCode(500);
-                case Domain.Providers.Common.Enum.ProvideEnumResult.Success:
-                    return Ok(_businessObjectToModelsConverter.ConvertSellOffer(getSellOfferByIdResponse.SellOffer));
-                case Domain.Providers.Common.Enum.ProvideEnumResult.NotFound:
-                    return StatusCode(404);
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-        
-        [HttpGet("sell-offers")]
-        [ProducesResponseType(200, Type = typeof(IList<SellOfferModel>))]
-        [ProducesResponseType(500)]
-        public ActionResult<IList<SellOfferModel>> GetSellOffers()
-        {
-            try
-            {
-                IGetSellOffersResponse getSellOffersResponse = _sellOffersProvider.GetSellOffers();
-                return PrepareResponseAfterGetSellOffers(getSellOffersResponse);
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex);
-                return StatusCode(500);
-            }
-        }
-
-        private ActionResult<IList<SellOfferModel>> PrepareResponseAfterGetSellOffers(IGetSellOffersResponse getSellOffersResponse)
-        {
-            switch (getSellOffersResponse.ProvideResult)
-            {
-                case Domain.Providers.Common.Enum.ProvideEnumResult.Exception:
-                    return StatusCode(500);
-                case Domain.Providers.Common.Enum.ProvideEnumResult.Success:
-                    return Ok(getSellOffersResponse.SellOffers.ToList()
-                        .Select(x => _businessObjectToModelsConverter.ConvertSellOffer(x)));
-                case Domain.Providers.Common.Enum.ProvideEnumResult.NotFound:
-                    return StatusCode(404);
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
         /// <summary>
         /// Method to get valid user sell offers
         /// </summary>
         /// <returns>SellOffersModel</returns>
-        [ProducesResponseType(200, Type = typeof(SellOfferModel))]
+        [ProducesResponseType(200, Type = typeof(IList<SellOfferModel>))]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
         [HttpGet("users/sell-offers")]
         [Authorize("Bearer")]
-        public ActionResult<SellOfferModel> GetSellOffersByUserId()
+        public ActionResult<IList<SellOfferModel>> GetSellOffersByUserId()
         {
             try
             {
+                Stopwatch timer = Stopwatch.StartNew();
                 var identity = HttpContext.User.Identity as ClaimsIdentity;
                 var userId = int.Parse(identity.Claims.Where(c => c.Type == "Id").FirstOrDefault().Value);
-                GetSellOffersByUserIdRequest request = new GetSellOffersByUserIdRequest(userId);
+                IGetSellOffersByUserIdRequest request = new GetSellOffersByUserIdRequest(userId);
                 IGetSellOffersByUserIdResponse getSellOffersByUserIdResponse = _sellOffersProvider.GetSellOffersByUserId(request);
-                return PrepareResponseAfterGetSellOffersByUserId(getSellOffersByUserIdResponse);
+                return PrepareResponseAfterGetSellOffersByUserId(getSellOffersByUserIdResponse, timer);
             }
             catch (Exception ex)
             {
@@ -126,14 +62,15 @@ namespace AI_NETCORE_API.Controllers
             }
         }
 
-        private ActionResult<SellOfferModel> PrepareResponseAfterGetSellOffersByUserId(IGetSellOffersByUserIdResponse getUserByIdResponse)
+        private ActionResult<IList<SellOfferModel>> PrepareResponseAfterGetSellOffersByUserId(IGetSellOffersByUserIdResponse getUserByIdResponse, Stopwatch timer)
         {
             switch (getUserByIdResponse.ProvideResult)
             {
                 case Domain.Providers.Common.Enum.ProvideEnumResult.Exception:
                     return StatusCode(500);
                 case Domain.Providers.Common.Enum.ProvideEnumResult.Success:
-                    return Ok(_businessObjectToModelsConverter.ConvertSellOffer(getUserByIdResponse.SellOffer));
+                    GetSellOffersByUserIdResponseModel response = PrepareSuccessResponseAfterGetSellOffersByUserId(getUserByIdResponse, timer);
+                    return Ok(response);
                 case Domain.Providers.Common.Enum.ProvideEnumResult.NotFound:
                     return StatusCode(404);
                 default:
@@ -141,6 +78,24 @@ namespace AI_NETCORE_API.Controllers
             }
         }
 
+        private GetSellOffersByUserIdResponseModel PrepareSuccessResponseAfterGetSellOffersByUserId(IGetSellOffersByUserIdResponse getUserByIdResponse, Stopwatch timer)
+        {
+            IList<SellOfferModel> resourceModelsList = getUserByIdResponse.SellOffer
+                .Select(x => _businessObjectToModelsConverter.ConvertSellOffer(x)).ToList();
+            timer.Stop();
+
+            GetSellOffersByUserIdResponseModel response = new GetSellOffersByUserIdResponseModel
+            {
+                SellOffers = resourceModelsList,
+                ExecDetails = new ExecutionDetails
+                {
+                    DatabaseTime = getUserByIdResponse.DatabaseExecutionTime,
+                    ExecutionTime = timer.ElapsedMilliseconds
+                }
+            };
+            return response;
+        }
+        /*
         /// <summary>
         /// Method to post new sell offer
         /// </summary>
@@ -179,6 +134,6 @@ namespace AI_NETCORE_API.Controllers
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-        }   
+        }   */
     }
 }
