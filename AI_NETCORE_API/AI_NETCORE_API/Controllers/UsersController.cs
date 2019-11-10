@@ -43,7 +43,6 @@ namespace AI_NETCORE_API.Controllers
         private readonly IPasswordValidator _passwordValidator;
         private readonly IEmailValidator _emailValidator;
         private readonly IUserProvider _userProvider;
-        private readonly ISellOfferProvider _sellOfferProvider;
         private readonly IUserCreator _userCreator;
         private readonly IBusinessObjectToModelsConverter _businessObjectToModelsConverter;
 
@@ -52,8 +51,7 @@ namespace AI_NETCORE_API.Controllers
             IEmailValidator emailValidator,
             IUserProvider userProvider,
             IBusinessObjectToModelsConverter businessObjectToModelsConverter,
-            IUserCreator userCreator,
-            ISellOfferProvider sellOfferProvider)
+            IUserCreator userCreator)
         {
             _logger = logger;
             _passwordValidator = passwordValidator;
@@ -61,7 +59,6 @@ namespace AI_NETCORE_API.Controllers
             _userProvider = userProvider;
             _businessObjectToModelsConverter = businessObjectToModelsConverter;
             _userCreator = userCreator;
-            _sellOfferProvider = sellOfferProvider;
         }
         /// <param name="item"> UserId</param>
         /// <response code="200">Returns found user</response>
@@ -173,44 +170,6 @@ namespace AI_NETCORE_API.Controllers
                     return StatusCode(500);
                 case ProvideEnumResult.Success:
                     return Ok(_businessObjectToModelsConverter.ConvertUser(getUserByIdResponse.User));
-                case ProvideEnumResult.NotFound:
-                    return StatusCode(404);
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
-        /// <summary>
-        /// Method to get valid user sell offers
-        /// </summary>
-        /// <param name="sell-offers"></param>
-        /// <returns>SellOffersModel</returns>
-        [ProducesResponseType(200, Type = typeof(GetSellOffersByUserIdResponseModel))]
-        [ProducesResponseType(500)]
-        [HttpPost("sell-offers")]
-        public ActionResult<SellOfferModel> GetSellOffersByUserId()
-        {
-            try
-            {
-                GetSellOffersByUserIdRequest request = new GetSellOffersByUserIdRequest(0/*Get id from JWT*/);
-                IGetSellOffersByUserIdResponse getSellOffersByUserIdResponse = _sellOfferProvider.GetSellOffersByUserId(request);
-                return PrepareResponseAfterGetSellOffersByUserId(getSellOffersByUserIdResponse);
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex);
-                return StatusCode(500);
-            }
-        }
-
-        private ActionResult<SellOfferModel> PrepareResponseAfterGetSellOffersByUserId(IGetSellOffersByUserIdResponse getUserByIdResponse)
-        {
-            switch (getUserByIdResponse.ProvideResult)
-            {
-                case ProvideEnumResult.Exception:
-                    return StatusCode(500);
-                case ProvideEnumResult.Success:
-                    return Ok(_businessObjectToModelsConverter.ConvertSellOffer(getUserByIdResponse.SellOffer));
                 case ProvideEnumResult.NotFound:
                     return StatusCode(404);
                 default:

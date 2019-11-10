@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstract;
 using AI_NETCORE_API.Models.Objects;
+using AI_NETCORE_API.Models.Response.SellOffers;
 using Domain.Infrastructure.Logging.Abstract;
 using Domain.Providers.SellOffers.Abstract;
 using Domain.Providers.SellOffers.Request.Abstract;
@@ -14,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AI_NETCORE_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class SellOffersController : ControllerBase
     {
@@ -29,7 +30,7 @@ namespace AI_NETCORE_API.Controllers
             _sellOffersProvider = sellOfferProvider;
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("sell-offers/{id:int}")]
         [ProducesResponseType(200, Type = typeof(SellOfferModel))]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]
@@ -63,7 +64,7 @@ namespace AI_NETCORE_API.Controllers
             }
         }
         
-        [HttpGet("")]
+        [HttpGet("sell-offers")]
         [ProducesResponseType(200, Type = typeof(IList<SellOfferModel>))]
         [ProducesResponseType(500)]
         public ActionResult<IList<SellOfferModel>> GetSellOffers()
@@ -89,6 +90,44 @@ namespace AI_NETCORE_API.Controllers
                 case Domain.Providers.Common.Enum.ProvideEnumResult.Success:
                     return Ok(getSellOffersResponse.SellOffers.ToList()
                         .Select(x => _businessObjectToModelsConverter.ConvertSellOffer(x)));
+                case Domain.Providers.Common.Enum.ProvideEnumResult.NotFound:
+                    return StatusCode(404);
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        /// <summary>
+        /// Method to get valid user sell offers
+        /// </summary>
+        /// <param name="sell-offers"></param>
+        /// <returns>SellOffersModel</returns>
+        [ProducesResponseType(200, Type = typeof(GetSellOffersByUserIdResponseModel))]
+        [ProducesResponseType(500)]
+        [HttpPost("user/sell-offers")]
+        public ActionResult<SellOfferModel> GetSellOffersByUserId()
+        {
+            try
+            {
+                GetSellOffersByUserIdRequest request = new GetSellOffersByUserIdRequest(0/*Get id from JWT*/);
+                IGetSellOffersByUserIdResponse getSellOffersByUserIdResponse = _sellOffersProvider.GetSellOffersByUserId(request);
+                return PrepareResponseAfterGetSellOffersByUserId(getSellOffersByUserIdResponse);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex);
+                return StatusCode(500);
+            }
+        }
+
+        private ActionResult<SellOfferModel> PrepareResponseAfterGetSellOffersByUserId(IGetSellOffersByUserIdResponse getUserByIdResponse)
+        {
+            switch (getUserByIdResponse.ProvideResult)
+            {
+                case Domain.Providers.Common.Enum.ProvideEnumResult.Exception:
+                    return StatusCode(500);
+                case Domain.Providers.Common.Enum.ProvideEnumResult.Success:
+                    return Ok(_businessObjectToModelsConverter.ConvertSellOffer(getUserByIdResponse.SellOffer));
                 case Domain.Providers.Common.Enum.ProvideEnumResult.NotFound:
                     return StatusCode(404);
                 default:
