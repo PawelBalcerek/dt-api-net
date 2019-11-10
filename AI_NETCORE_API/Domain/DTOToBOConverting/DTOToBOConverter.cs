@@ -48,5 +48,12 @@ namespace Domain.DTOToBOConverting
             else
                 return new Domain.BusinessObject.Transaction(transaction.Id, transaction.SellOfferId, transaction.BuyOfferId, transaction.Date, transaction.Price, transaction.Amount);
         }
+        public Domain.BusinessObject.Configuration ConvertConfiguration(Data.Models.Configuration configuration)
+        {
+            if (configuration == null)
+                return null;
+            else
+                return new Domain.BusinessObject.Configuration(configuration.Name, configuration.Value);
+        }
     }
 }

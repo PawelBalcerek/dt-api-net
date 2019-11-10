@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Linq;
 
 namespace Domain.Repositories.ConfigurationRepo.Concrete
 {
@@ -19,7 +20,15 @@ namespace Domain.Repositories.ConfigurationRepo.Concrete
             _converter = converter;
         }
 
-    public RepositoryResponse<bool> UpdateConfiguration(string name, int value)
+        public RepositoryResponse<BusinessObject.Configuration> GetConfiguration(string name)
+        {
+            Stopwatch timer = Stopwatch.StartNew();
+            var configuration = FindByCondition(c => c.Name == name).FirstOrDefault();
+            timer.Stop();
+            return new RepositoryResponse<BusinessObject.Configuration>(_converter.ConvertConfiguration(configuration), timer.ElapsedMilliseconds);
+        }
+
+        public RepositoryResponse<bool> UpdateConfiguration(string name, int value)
         {
             bool success;
             Stopwatch timer = Stopwatch.StartNew();

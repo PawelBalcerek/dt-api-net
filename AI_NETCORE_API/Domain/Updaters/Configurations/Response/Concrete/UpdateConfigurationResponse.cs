@@ -1,9 +1,9 @@
-﻿using Domain.Creators.Configurations.Response.Abstract;
+﻿using Domain.Updaters.Configurations.Response.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Creators.Configurations.Response.Concrete
+namespace Domain.Updaters.Configurations.Response.Concrete
 {
     public class UpdateConfigurationResponse : IUpdateConfigurationResponse
     {

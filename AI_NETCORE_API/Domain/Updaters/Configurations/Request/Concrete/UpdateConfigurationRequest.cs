@@ -1,9 +1,9 @@
-﻿using Domain.Creators.Configurations.Request.Abstract;
+﻿using Domain.Updaters.Configurations.Request.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Creators.Configurations.Request.Concrete
+namespace Domain.Updaters.Configurations.Request.Concrete
 {
     public class UpdateConfigurationRequest : IUpdateConfigurationRequest
     {
