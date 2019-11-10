@@ -33,5 +33,23 @@ namespace Domain.Repositories.SellOfferRepo.Concrete
             }
             
         }
+
+        public long CreateSellOffer(int resourceId, int amount, decimal price)
+        {
+            var timer = Stopwatch.StartNew();
+            RepositoryContext.SellOffers.Add(new SellOffer
+            {
+                Amount = amount,
+                StartAmount = amount,
+                IsValid = true,
+                Price = price,
+                ResourceId = resourceId,
+                Date = DateTime.Now
+            });
+            RepositoryContext.SaveChanges(true);
+            timer.Stop();
+            var time = timer.ElapsedMilliseconds;
+            return time;
+        }
     }
 }

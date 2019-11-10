@@ -9,6 +9,9 @@ using AI_NETCORE_API.Models.Objects;
 using AI_NETCORE_API.Models.Request.SellOffers;
 using AI_NETCORE_API.Models.Response.ExecutingTimes;
 using AI_NETCORE_API.Models.Response.SellOffers;
+using Domain.Creators.SellOffer.Abstract;
+using Domain.Creators.SellOffer.Request.Concrete;
+using Domain.Creators.SellOffer.Response.Abstract;
 using Domain.Infrastructure.Logging.Abstract;
 using Domain.Providers.SellOffers.Abstract;
 using Domain.Providers.SellOffers.Request.Abstract;
@@ -27,12 +30,18 @@ namespace AI_NETCORE_API.Controllers
         private readonly IBusinessObjectToModelsConverter _businessObjectToModelsConverter;
         private readonly ILogger _logger;
         private readonly ISellOfferProvider _sellOffersProvider;
+        private readonly ISellOfferCreator _sellOfferCreator;
 
-        public SellOffersController(IBusinessObjectToModelsConverter businessObjectToModelsConverter, ILogger logger, ISellOfferProvider sellOfferProvider)
+        public SellOffersController(
+            IBusinessObjectToModelsConverter businessObjectToModelsConverter,
+            ILogger logger,
+            ISellOfferProvider sellOfferProvider,
+            ISellOfferCreator sellOfferCreator)
         {
             _businessObjectToModelsConverter = businessObjectToModelsConverter;
             _logger = logger;
             _sellOffersProvider = sellOfferProvider;
+            _sellOfferCreator = sellOfferCreator;
         }
 
         /// <summary>
@@ -95,23 +104,24 @@ namespace AI_NETCORE_API.Controllers
             };
             return response;
         }
-        /*
+
         /// <summary>
         /// Method to post new sell offer
         /// </summary>
-        /// <param name="sell-offers"></param>
+        /// <param name="request">Data for sell offer creation.</param>
         /// <returns></returns>
-        [ProducesResponseType(200, Type = typeof(IList<SellOfferModel>))]
+        [ProducesResponseType(200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
         [HttpPost("sell-offers")]
         [Authorize("Bearer")]
-        public ActionResult<IList<SellOfferModel>> PostSellOffers([FromBody] CreateSellOfferRequest request)
+        public async Task<ActionResult> PostSellOffers([FromBody] CreateSellOfferRequest request)
         {
             try
             {
-                IGetSellOffersResponse getSellOffersResponse = _sellOffersProvider.GetSellOffers();
-                return PrepareResponseAfterPostSellOffers(getSellOffersResponse);
+                Stopwatch timer = Stopwatch.StartNew();
+                ISellOfferCreateResponse getSellOffersCreateResponse = _sellOfferCreator.CreateSellOffer(new SellOfferCreateRequest(request.ResourceId, request.Amount, request.Price));
+                return await PrepareResponseAfterPostSellOffers(getSellOffersCreateResponse, timer);
             }
             catch (Exception ex)
             {
@@ -120,20 +130,34 @@ namespace AI_NETCORE_API.Controllers
             }
         }
 
-        private ActionResult<IList<SellOfferModel>> PrepareResponseAfterPostSellOffers(IGetSellOffersResponse getSellOffersResponse)
+        private async Task<ActionResult> PrepareResponseAfterPostSellOffers(ISellOfferCreateResponse getSellOffersCreateResponse, Stopwatch timer)
         {
-            switch (getSellOffersResponse.ProvideResult)
+            switch (getSellOffersCreateResponse.ProvideResult)
             {
                 case Domain.Providers.Common.Enum.ProvideEnumResult.Exception:
                     return StatusCode(500);
                 case Domain.Providers.Common.Enum.ProvideEnumResult.Success:
-                    return Ok(getSellOffersResponse.SellOffers.ToList()
-                        .Select(x => _businessObjectToModelsConverter.ConvertSellOffer(x)));
+                    return Ok(200);
                 case Domain.Providers.Common.Enum.ProvideEnumResult.NotFound:
                     return StatusCode(404);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-        }   */
+        }
+
+        private CreateSellOfferResponseModel PrepareSuccessResponseAfterPostSellOffer(IGetSellOffersByUserIdResponse getUserByIdResponse, Stopwatch timer)
+        {
+            timer.Stop();
+
+            CreateSellOfferResponseModel response = new CreateSellOfferResponseModel
+            {
+                ExecDetails = new ExecutionDetails
+                {
+                    DatabaseTime = getUserByIdResponse.DatabaseExecutionTime,
+                    ExecutionTime = timer.ElapsedMilliseconds
+                }
+            };
+            return response;
+        }
     }
 }

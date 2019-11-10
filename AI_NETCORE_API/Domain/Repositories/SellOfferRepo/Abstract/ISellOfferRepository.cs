@@ -11,5 +11,6 @@ namespace Domain.Repositories.SellOfferRepo.Abstract
     public interface ISellOfferRepository : IRepositoryBase<SellOffer>
     {
         RepositoryResponse<IEnumerable<BusinessObject.SellOffer>> GetSellOffersByUserId(int id);
+        long CreateSellOffer(int resourceId, int amount, decimal price);
     }
 }
