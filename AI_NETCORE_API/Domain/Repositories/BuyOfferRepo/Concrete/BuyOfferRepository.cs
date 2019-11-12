@@ -6,6 +6,10 @@ using Domain.Repositories.BuyOfferRepo.Abstract;
 using Data.Models;
 using System.Linq;
 using Domain.DTOToBOConverting;
+using Domain.Repositories.BaseRepo.Response;
+using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
+
 namespace Domain.Repositories.BuyOfferRepo.Concrete
 {
     public class BuyOfferRepository: RepositoryBase<BuyOffer>, IBuyOfferRepository
@@ -26,6 +30,15 @@ namespace Domain.Repositories.BuyOfferRepo.Concrete
         public IEnumerable<BusinessObject.BuyOffer> GetAllBuyOffers()
         {
             return FindAll().Select(b => _converter.ConvertBuyOffer(b));
+        }
+
+        public RepositoryResponse<IEnumerable<BusinessObject.BuyOffer>> GetBuyOffersByUserId(int id)
+        {
+            var timer = Stopwatch.StartNew();
+            var buyOffers = FindByCondition(p => p.Resource.UserId == id && p.IsValid == true).Include(p => p.Resource).Include(p => p.Resource.Comp).Select(p => _converter.ConvertBuyOffer(p));
+            timer.Stop();
+            var time = timer.ElapsedMilliseconds;
+            return new RepositoryResponse<IEnumerable<BusinessObject.BuyOffer>>(buyOffers, time);
         }
     }
 }

@@ -10,5 +10,6 @@ namespace Domain.Providers.BuyOffers.Abstract
     {
         IGetBuyOfferByIdResponse GetBuyOfferById(IGetBuyOfferByIdRequest getBuyOfferByIdRequest);
         IGetBuyOffersResponse GetBuyOffers();
+        IGetBuyOffersByUserIdResponse GetBuyOffersByUserId(IGetBuyOffersByUserIdRequest getBuyOffersByUserIdRequest);
     }
 }

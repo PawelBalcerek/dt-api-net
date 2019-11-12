@@ -47,5 +47,20 @@ namespace Domain.Providers.BuyOffers.Concrete
                 return new GetBuyOffersResponse();
             }
         }
+
+        IGetBuyOffersByUserIdResponse GetBuyOffersByUserId(IGetBuyOffersByUserIdRequest getBuyOffersByUserIdRequest)
+        {
+            try
+            {
+                var result = _buyOffers.GetBuyOffersByUserId(getBuyOffersByUserIdRequest.UserId);
+                return new GetBuyOffersByUserIdResponse(result.Object.ToList(), result.DatabaseTime);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex);
+                return new GetBuyOffersByUserIdResponse();
+            }
+        }
     }
 }
