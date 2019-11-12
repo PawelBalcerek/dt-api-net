@@ -50,5 +50,20 @@ namespace Domain.Repositories.BuyOfferRepo.Concrete
             var time = timer.ElapsedMilliseconds;
             return time;
         }
+
+        public long WithdrawBuyOffer(int buyOfferId)
+        {
+            var timer = Stopwatch.StartNew();
+            using (var dbContext = new RepositoryContext())
+            {
+                BuyOffer offer = dbContext.BuyOffers.Where(p => p.Id == buyOfferId).First();
+                offer.IsValid = false;
+
+            }
+            RepositoryContext.SaveChanges(true);
+            timer.Stop();
+            var time = timer.ElapsedMilliseconds;
+            return time;
+        }
     }
 }

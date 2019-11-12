@@ -161,5 +161,62 @@ namespace AI_NETCORE_API.Controllers
             return response;
         }
 
+        /// <summary>
+        /// Method to withdraw buy offer
+        /// </summary>
+        /// <param name="id">Id of buy offer.</param>
+        /// <returns>Response with time</returns>
+        [ProducesResponseType(200, Type = typeof(WithdrawBuyOfferResponseModel))]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(500)]
+        [HttpPut("buy-offers/:id")]
+        [Authorize("Bearer")]
+        public async Task<ActionResult> GetBuyOffersByUserId(int id)
+        {
+            try
+            {
+                Stopwatch timer = Stopwatch.StartNew();
+                IWithdrawBuyOfferByIdRequest request = new WithdrawBuyOfferByIdRequest(id);
+                IWithdrawBuyOfferByIdResponse withdrawBuyOfferByIdResponse = _buyOffersProvider.WithdrawBuyOfferById(request);
+                return await PrepareResponseAfterWithdrawBuyOfferById(withdrawBuyOfferByIdResponse, timer);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex);
+                return StatusCode(500);
+            }
+        }
+
+        private async Task<ActionResult> PrepareResponseAfterWithdrawBuyOfferById(IWithdrawBuyOfferByIdResponse withdrawBuyOfferResponse, Stopwatch timer)
+        {
+            switch (withdrawBuyOfferResponse.ProvideResult)
+            {
+                case Domain.Providers.Common.Enum.ProvideEnumResult.Exception:
+                    return StatusCode(500);
+                case Domain.Providers.Common.Enum.ProvideEnumResult.Success:
+                    WithdrawBuyOfferResponseModel response = PrepareSuccessResponseAfterWithdrawBuyOfferById(withdrawBuyOfferResponse, timer);
+                    return Ok(response);
+                case Domain.Providers.Common.Enum.ProvideEnumResult.NotFound:
+                    return StatusCode(404);
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private WithdrawBuyOfferResponseModel PrepareSuccessResponseAfterWithdrawBuyOfferById(IWithdrawBuyOfferByIdResponse withdrawBuyOfferResponse, Stopwatch timer)
+        {
+            timer.Stop();
+
+            WithdrawBuyOfferResponseModel response = new WithdrawBuyOfferResponseModel
+            {
+                ExecDetails = new ExecutionDetails
+                {
+                    DbTime = withdrawBuyOfferResponse.DatabaseExecutionTime,
+                    ExecTime = timer.ElapsedMilliseconds
+                }
+            };
+            return response;
+        }
+
     }
 }
