@@ -48,7 +48,7 @@ namespace AI_NETCORE_API.Controllers
         /// Method to get valid user sell offers
         /// </summary>
         /// <returns>SellOffersModel</returns>
-        [ProducesResponseType(200, Type = typeof(IList<SellOfferModel>))]
+        [ProducesResponseType(200, Type = typeof(GetSellOffersByUserIdResponseModel))]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
         [HttpGet("users/sell-offers")]
@@ -110,7 +110,7 @@ namespace AI_NETCORE_API.Controllers
         /// </summary>
         /// <param name="request">Data for sell offer creation.</param>
         /// <returns></returns>
-        [ProducesResponseType(200)]
+        [ProducesResponseType(200, Type = typeof(CreateSellOfferResponseModel))]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
         [HttpPost("sell-offers")]
@@ -137,7 +137,8 @@ namespace AI_NETCORE_API.Controllers
                 case Domain.Providers.Common.Enum.ProvideEnumResult.Exception:
                     return StatusCode(500);
                 case Domain.Providers.Common.Enum.ProvideEnumResult.Success:
-                    return Ok(200);
+                    CreateSellOfferResponseModel response = PrepareSuccessResponseAfterPostSellOffer(getSellOffersCreateResponse, timer);
+                    return Ok(response);
                 case Domain.Providers.Common.Enum.ProvideEnumResult.NotFound:
                     return StatusCode(404);
                 default:
@@ -145,7 +146,7 @@ namespace AI_NETCORE_API.Controllers
             }
         }
 
-        private CreateSellOfferResponseModel PrepareSuccessResponseAfterPostSellOffer(IGetSellOffersByUserIdResponse getUserByIdResponse, Stopwatch timer)
+        private CreateSellOfferResponseModel PrepareSuccessResponseAfterPostSellOffer(ISellOfferCreateResponse getSellOffersCreateResponse, Stopwatch timer)
         {
             timer.Stop();
 
@@ -153,7 +154,7 @@ namespace AI_NETCORE_API.Controllers
             {
                 ExecDetails = new ExecutionDetails
                 {
-                    DatabaseTime = getUserByIdResponse.DatabaseExecutionTime,
+                    DatabaseTime = getSellOffersCreateResponse.DatabaseExecutionTime,
                     ExecutionTime = timer.ElapsedMilliseconds
                 }
             };
