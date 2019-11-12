@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <Folder Include="Creators\BuyOffer\" />
+    <Folder Include="Creators\SellOffer\" />
     <Folder Include="Creators\Company\" />
   </ItemGroup>
 
