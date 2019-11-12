@@ -48,5 +48,19 @@ namespace Domain.Providers.Transactions.Concrete
             }
         }
 
+        public IGetTransactionsByUserIdResponse GetTransactionsByUserId(IGetTransactionsByUserIdRequest getTransactionsByUserIdRequest)
+        {
+            try
+            {
+                var result = _transactions.GetTransactionsByUserId(getTransactionsByUserIdRequest.UserId);
+                return new GetTransactionsByUserIdResponse(result.Object.ToList(), result.DatabaseTime);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex);
+                return new GetTransactionsByUserIdResponse();
+            }
+        }
     }
 }

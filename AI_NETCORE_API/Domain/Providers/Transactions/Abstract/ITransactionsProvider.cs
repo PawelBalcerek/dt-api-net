@@ -7,5 +7,6 @@ namespace Domain.Providers.Transactions.Abstract
     {
         IGetTransactionByIdResponse GetTransactionById(IGetTransactionByIdRequest getTransactionByIdRequest);
         IGetTransactionsResponse GetTransactions();
+        IGetTransactionsByUserIdResponse GetTransactionsByUserId(IGetTransactionsByUserIdRequest getTransactionsByUserIdRequest);
     }
 }
