@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AI_NETCORE_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class BuyOffersController : ControllerBase
     {
@@ -32,74 +32,6 @@ namespace AI_NETCORE_API.Controllers
             _businessObjectToModelsConverter = businessObjectToModelsConverter;
             _logger = logger;
             _buyOffersProvider = buyOffersProvider;
-        }
-
-        [HttpGet("{id:int}")]
-        [ProducesResponseType(200, Type = typeof(BuyOfferModel))]
-        [ProducesResponseType(500)]
-        [ProducesResponseType(404)]
-        public ActionResult<BuyOfferModel> GetBuyOfferById(int id)
-        {
-            try
-            {
-                IGetBuyOfferByIdRequest getBuyOfferByIdRequest = new GetBuyOfferByIdRequest(id);
-                IGetBuyOfferByIdResponse getBuyOfferByIdResponse = _buyOffersProvider.GetBuyOfferById(getBuyOfferByIdRequest);
-                return PrepareResponseAfterGetBuyOfferById(getBuyOfferByIdResponse);
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex);
-                return StatusCode(500);
-            }
-        }
-
-        private ActionResult<BuyOfferModel> PrepareResponseAfterGetBuyOfferById(IGetBuyOfferByIdResponse getBuyOfferByIdResponse)
-        {
-            switch (getBuyOfferByIdResponse.ProvideResult)
-            {
-                case Domain.Providers.Common.Enum.ProvideEnumResult.Exception:
-                    return StatusCode(500);
-                case Domain.Providers.Common.Enum.ProvideEnumResult.Success:
-                    return Ok(_businessObjectToModelsConverter.ConvertBuyOffer(getBuyOfferByIdResponse.BuyOffer));
-                case Domain.Providers.Common.Enum.ProvideEnumResult.NotFound:
-                    return StatusCode(404);
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-        
-
-        [HttpGet("")]
-        [ProducesResponseType(200, Type = typeof(IList<BuyOfferModel>))]
-        [ProducesResponseType(500)]
-        public ActionResult<IList<BuyOfferModel>> GetBuyOffers()
-        {
-            try
-            {
-                IGetBuyOffersResponse getBuyOffersResponse = _buyOffersProvider.GetBuyOffers();
-                return PrepareResponseAfterGetBuyOffers(getBuyOffersResponse);
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex);
-                return StatusCode(500);
-            }
-        }
-
-        private ActionResult<IList<BuyOfferModel>> PrepareResponseAfterGetBuyOffers(IGetBuyOffersResponse getBuyOffersResponse)
-        {
-            switch (getBuyOffersResponse.ProvideResult)
-            {
-                case Domain.Providers.Common.Enum.ProvideEnumResult.Exception:
-                    return StatusCode(500);
-                case Domain.Providers.Common.Enum.ProvideEnumResult.Success:
-                    return Ok(getBuyOffersResponse.BuyOffers.ToList()
-                        .Select(x => _businessObjectToModelsConverter.ConvertBuyOffer(x)));
-                case Domain.Providers.Common.Enum.ProvideEnumResult.NotFound:
-                    return StatusCode(404);
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
         }
 
         /// <summary>

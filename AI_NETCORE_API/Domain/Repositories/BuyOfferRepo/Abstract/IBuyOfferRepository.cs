@@ -10,8 +10,6 @@ namespace Domain.Repositories.BuyOfferRepo.Abstract
 {
     public interface IBuyOfferRepository : IRepositoryBase<BuyOffer>
     {
-        BusinessObject.BuyOffer GetBuyOfferById(int id);
-        IEnumerable<BusinessObject.BuyOffer> GetAllBuyOffers();
         RepositoryResponse<IEnumerable<BusinessObject.BuyOffer>> GetBuyOffersByUserId(int id);
     }
 }

@@ -22,33 +22,8 @@ namespace Domain.Providers.BuyOffers.Concrete
             _logger = logger;
             _buyOffers = buyOffers;
         }
-        public IGetBuyOfferByIdResponse GetBuyOfferById(IGetBuyOfferByIdRequest getBuyOfferByIdRequest)
-        {
-            try
-            {
-                return new GetBuyOfferByIdResponse(_buyOffers.GetBuyOfferById(getBuyOfferByIdRequest.BuyOfferId));
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex);
-                return new GetBuyOfferByIdResponse();
-            }
-        }
 
-        public IGetBuyOffersResponse GetBuyOffers()
-        {
-            try
-            {
-                return new GetBuyOffersResponse(_buyOffers.GetAllBuyOffers().ToList());
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex);
-                return new GetBuyOffersResponse();
-            }
-        }
-
-        IGetBuyOffersByUserIdResponse GetBuyOffersByUserId(IGetBuyOffersByUserIdRequest getBuyOffersByUserIdRequest)
+        public IGetBuyOffersByUserIdResponse GetBuyOffersByUserId(IGetBuyOffersByUserIdRequest getBuyOffersByUserIdRequest)
         {
             try
             {

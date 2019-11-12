@@ -21,17 +21,6 @@ namespace Domain.Repositories.BuyOfferRepo.Concrete
             _converter = converter;
         }
 
-        public BusinessObject.BuyOffer GetBuyOfferById(int id)
-        {
-            BuyOffer buyOffer = FindByCondition(buyOfferExpr => buyOfferExpr.Id == id).FirstOrDefault();
-            return _converter.ConvertBuyOffer(buyOffer);
-        }
-
-        public IEnumerable<BusinessObject.BuyOffer> GetAllBuyOffers()
-        {
-            return FindAll().Select(b => _converter.ConvertBuyOffer(b));
-        }
-
         public RepositoryResponse<IEnumerable<BusinessObject.BuyOffer>> GetBuyOffersByUserId(int id)
         {
             var timer = Stopwatch.StartNew();
