@@ -29,5 +29,26 @@ namespace Domain.Repositories.BuyOfferRepo.Concrete
             var time = timer.ElapsedMilliseconds;
             return new RepositoryResponse<IEnumerable<BusinessObject.BuyOffer>>(buyOffers, time);
         }
+
+        public long CreateBuyOffer(int companyId, int amount, decimal price)
+        {
+            var timer = Stopwatch.StartNew();
+            RepositoryContext.BuyOffers.Add(new BuyOffer
+            {
+                Amount = amount,
+                StartAmount = amount,
+                IsValid = true,
+                MaxPrice = price,
+                Resource = new Resource()
+                {
+                    CompId = companyId
+                },
+                Date = DateTime.Now
+            });
+            RepositoryContext.SaveChanges(true);
+            timer.Stop();
+            var time = timer.ElapsedMilliseconds;
+            return time;
+        }
     }
 }
