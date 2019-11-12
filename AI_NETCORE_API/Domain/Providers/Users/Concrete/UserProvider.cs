@@ -25,8 +25,8 @@ namespace Domain.Providers.Users.Concrete
         {
             try
             {
-                User user = _users.GetUserById(getUserByIdRequest.Id);
-                return new GetUserByIdResponse(user);
+                var response = _users.GetUserById(getUserByIdRequest.Id);
+                return new GetUserByIdResponse(response.Object, response.DatabaseTime);
             }
             catch(Exception ex)
             {
@@ -38,10 +38,9 @@ namespace Domain.Providers.Users.Concrete
         public ILoginUserResponse LoginUser(ILoginUserRequest loginUserRequest)
         {
 
-            var token =_users.Authenticate(loginUserRequest.Login, loginUserRequest.Password);
-            var response = new LoginUserResponse(token);
+            var response =_users.Authenticate(loginUserRequest.Email, loginUserRequest.Password);
 
-            return response;
+            return new LoginUserResponse(response.Object, response.DatabaseTime);
         }
     }
 }

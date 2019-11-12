@@ -8,10 +8,10 @@ using AI_NETCORE_API.Models.Objects;
 using AI_NETCORE_API.Models.Request;
 using AI_NETCORE_API.Models.Response.Configurations;
 using AI_NETCORE_API.Models.Response.ExecutingTimes;
-using Domain.Creators.Configurations.Abstract;
-using Domain.Creators.Configurations.Concrete;
-using Domain.Creators.Configurations.Request.Concrete;
-using Domain.Creators.Configurations.Response.Abstract;
+using Domain.Updaters.Configurations.Abstract;
+using Domain.Updaters.Configurations.Concrete;
+using Domain.Updaters.Configurations.Request.Concrete;
+using Domain.Updaters.Configurations.Response.Abstract;
 using Domain.Infrastructure.Logging.Abstract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,10 +23,10 @@ namespace AI_NETCORE_API.Controllers
     public class ConfigurationsController : ControllerBase
     {
         private readonly ILogger _logger;
-        private readonly IConfigurationCreator _configurationsCreator;
+        private readonly IConfigurationUpdater _configurationsCreator;
         private readonly IBusinessObjectToModelsConverter _businessObjectToModelsConverter;
 
-        public ConfigurationsController(ILogger logger, IConfigurationCreator configurationsCreator, IBusinessObjectToModelsConverter businessObjectToModelsConverter)
+        public ConfigurationsController(ILogger logger, IConfigurationUpdater configurationsCreator, IBusinessObjectToModelsConverter businessObjectToModelsConverter)
         {
             _logger = logger;
             _configurationsCreator = configurationsCreator;
@@ -71,8 +71,8 @@ namespace AI_NETCORE_API.Controllers
             {
                 executionDetails = new ExecutionDetails
                 {
-                    DatabaseTime = updateConfigurationResponse.DbTime,
-                    ExecutionTime = timer.ElapsedMilliseconds
+                    DbTime = updateConfigurationResponse.DbTime,
+                    ExecTime = timer.ElapsedMilliseconds
                 }
             };
         }

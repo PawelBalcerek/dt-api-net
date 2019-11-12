@@ -49,7 +49,7 @@ namespace AI_NETCORE_API.Controllers
                 var identity = HttpContext.User.Identity as ClaimsIdentity;
                 var userId = int.Parse(identity.Claims.Where(c => c.Type == "Id").FirstOrDefault().Value);
                 IGetUserResourcesRequest getUserResourcesRequest = new GetUserResourcesRequest(userId);
-                IGetResourcesResponse getResourcesResponse = _resourcesProvider.GetUserResources(getUserResourcesRequest);
+                IGetUserResourcesResponse getResourcesResponse = _resourcesProvider.GetUserResources(getUserResourcesRequest);
                 return PrepareResponseAfterGetResources(getResourcesResponse, timer);
             }
             catch (Exception ex)
@@ -59,7 +59,7 @@ namespace AI_NETCORE_API.Controllers
             }
         }
 
-        private ActionResult<IList<ResourceModel>> PrepareResponseAfterGetResources(IGetResourcesResponse getResourcesResponse, Stopwatch timer)
+        private ActionResult<IList<ResourceModel>> PrepareResponseAfterGetResources(IGetUserResourcesResponse getResourcesResponse, Stopwatch timer)
         {
             switch (getResourcesResponse.ProvideResult)
             {
@@ -75,7 +75,7 @@ namespace AI_NETCORE_API.Controllers
             }
         }
 
-        private GetUserResourcesResponseModel PrepareSuccessResponseAfterGetUserResources(IGetResourcesResponse getResourcesResponse, Stopwatch timer)
+        private GetUserResourcesResponseModel PrepareSuccessResponseAfterGetUserResources(IGetUserResourcesResponse getResourcesResponse, Stopwatch timer)
         {
             IList<ResourceModel> resourceModelsList = getResourcesResponse.Resources
                 .Select(x => _businessObjectToModelsConverter.ConvertResource(x)).ToList();
@@ -86,8 +86,8 @@ namespace AI_NETCORE_API.Controllers
                 Resources = resourceModelsList,
                 ExecutionDetails = new ExecutionDetails
                 {
-                    DatabaseTime = getResourcesResponse.DatabaseExecutionTime,
-                    ExecutionTime = timer.ElapsedMilliseconds
+                    DbTime = getResourcesResponse.DatabaseExecutionTime,
+                    ExecTime = timer.ElapsedMilliseconds
                 }
             };
             return response;

@@ -7,5 +7,6 @@ namespace Domain.Providers.Users.Response.Abstract
     public interface ILoginUserResponse
     {
         string Token { get; }
+        long DbTime { get; }
     }
 }

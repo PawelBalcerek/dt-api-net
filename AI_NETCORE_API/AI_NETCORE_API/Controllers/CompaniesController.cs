@@ -109,8 +109,8 @@ namespace AI_NETCORE_API.Controllers
                 Companies = companiesModelList,
                 ExecutionDetails = new ExecutionDetails
                 {
-                    DatabaseTime = getCompaniesResponse.DatabaseExecutionTime,
-                    ExecutionTime = timer.ElapsedMilliseconds
+                    DbTime = getCompaniesResponse.DatabaseExecutionTime,
+                    ExecTime = timer.ElapsedMilliseconds
                 }
             };
             return response;

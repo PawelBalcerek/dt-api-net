@@ -79,8 +79,10 @@ namespace AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Concret
         {
             return new UserModel
             {
+                Id = user.Id,
                 Email = user.Email,
-                Name = user.Name
+                Name = user.Name,
+                Cash = user.Cash
             };
         }
     }

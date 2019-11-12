@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Creators.Configurations.Request.Abstract
+namespace Domain.Updaters.Configurations.Request.Abstract
 {
     public interface IUpdateConfigurationRequest
     {

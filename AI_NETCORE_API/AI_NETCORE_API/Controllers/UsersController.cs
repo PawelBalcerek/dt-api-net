@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -8,8 +9,8 @@ using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstract;
 using AI_NETCORE_API.Models;
 using AI_NETCORE_API.Models.Objects;
 using AI_NETCORE_API.Models.Request;
-using AI_NETCORE_API.Models.Response;
-using AI_NETCORE_API.Models.Response.SellOffers;
+using AI_NETCORE_API.Models.Response.ExecutingTimes;
+using AI_NETCORE_API.Models.Response.Users;
 using Domain.Creators.Users.Abstract;
 using Domain.Creators.Users.Request.Concrete;
 using Domain.Creators.Users.Response.Abstract;
@@ -60,24 +61,23 @@ namespace AI_NETCORE_API.Controllers
             _businessObjectToModelsConverter = businessObjectToModelsConverter;
             _userCreator = userCreator;
         }
-        /// <param name="item"> UserId</param>
-        /// <response code="200">Returns found user</response>
-        /// <response code="404"> If the User not found, empty response</response>  
-        /// <response code="500"> Exception, empty response</response>  
-        [HttpGet("user/{id:int}")]
-        [ProducesResponseType(200, Type = typeof(UserModel))]
+        /// <response code="200">Returns logged in user</response>
+        /// <response code="500">Exception, empty response</response>  
+        [HttpGet("users")]
+        [ProducesResponseType(200, Type = typeof(GetUserResponse))]
         [ProducesResponseType(500)]
-        [ProducesResponseType(404)]
         [Authorize]
-        public ActionResult<UserModel> GetUserById(int id)
+        public ActionResult<GetUserResponse> GetUser()
         {
             try
             {
-
-
+                Stopwatch timer = Stopwatch.StartNew();
+                var identity = HttpContext.User.Identity as ClaimsIdentity;
+                var id = int.Parse(identity.Claims.Where(c => c.Type == "Id").FirstOrDefault().Value);
+              
                 IGetUserByIdRequest getUserByIdRequest = new GetUserByIdRequest(id);
                 IGetUserByIdResponse getUserByIdResponse = _userProvider.GetUserById(getUserByIdRequest);
-                return PrepareResponseAfterGetUserById(getUserByIdResponse);
+                return PrepareResponseAfterGetUserById(getUserByIdResponse, timer);
             }
             catch (Exception ex)
             {
@@ -90,15 +90,24 @@ namespace AI_NETCORE_API.Controllers
         /// Method to login user to API
         /// </summary>
         /// <param name="loginRequest"></param>
-        /// <returns>UserModel</returns>
+        /// <returns>LoginResponse</returns>
         [ProducesResponseType(200, Type = typeof(LoginResponse))]
         [ProducesResponseType(500)]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(400)]
         [HttpPost("login")]
-        public async Task<ActionResult<ILoginUserResponse>> Login([FromBody] LoginRequest loginRequest)
+        public async Task<ActionResult<LoginResponse>> Login([FromBody] LoginRequest loginRequest)
         {
             try
             {
-                ILoginUserRequest loginRequestData = new LoginUserRequest(loginRequest.Login, loginRequest.Password);
+                Stopwatch timer = Stopwatch.StartNew();
+
+                if (!TryValidateModel(loginRequest))
+                {
+                    return StatusCode(400);
+                }
+
+                ILoginUserRequest loginRequestData = new LoginUserRequest(loginRequest.Email, loginRequest.Password);
                 var loginResponse = _userProvider.LoginUser(loginRequestData);
 
                 if(loginResponse.Token == null)
@@ -106,7 +115,18 @@ namespace AI_NETCORE_API.Controllers
                     return StatusCode(401);
                 }
 
-                return Ok(loginResponse);
+                timer.Stop();
+                var response = new LoginResponse
+                {
+                    Token = loginResponse.Token,
+                    ExecDetails = new ExecutionDetails
+                    {
+                        DbTime = loginResponse.DbTime,
+                        ExecTime = timer.ElapsedMilliseconds
+                    }
+                };
+
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -114,6 +134,8 @@ namespace AI_NETCORE_API.Controllers
                 return StatusCode(500);
             }
         }
+
+        /*
         /// <summary>
         /// Method to logout user from API
         /// </summary>
@@ -133,20 +155,21 @@ namespace AI_NETCORE_API.Controllers
                 return StatusCode(500);
             }
         }
-
+        */
         /// <summary>
         /// Method to create new user 
         /// </summary>
         /// <param name="registerRequest"> Request object required to create new user </param>
-        /// <returns>UserModel</returns>
+        /// <returns>RegisterResponse</returns>
         [HttpPost("register")]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        [ProducesResponseType(200, Type = typeof(UserModel))]
-        public async Task<ActionResult> Register([FromBody] RegisterRequest registerRequest)
+        [ProducesResponseType(200, Type = typeof(RegisterResponse))]
+        public async Task<ActionResult<RegisterResponse>> Register([FromBody] RegisterRequest registerRequest)
         {
             try
             {
+                Stopwatch timer = Stopwatch.StartNew();
                 if (!registerRequest.IsValid(_passwordValidator, _emailValidator))
                 {
                     return StatusCode(400);
@@ -154,7 +177,26 @@ namespace AI_NETCORE_API.Controllers
 
                 IUserCreateResponse result = _userCreator.CreateUser(new UserCreateRequest(registerRequest.Name, registerRequest.Password,
                     registerRequest.Email));
-                return result.Success ? Ok() : StatusCode(500);
+
+                timer.Stop();
+
+                if (result.Success)
+                {
+                    var response = new RegisterResponse
+                    {
+                        ExecDetails = new ExecutionDetails
+                        {
+                            DbTime = result.DbTime,
+                            ExecTime = timer.ElapsedMilliseconds
+                        }
+                    };
+                    return Ok(response);
+                }
+                else
+                {
+                    return StatusCode(500);
+                }
+                
             }
             catch (Exception ex)
             {
@@ -162,19 +204,35 @@ namespace AI_NETCORE_API.Controllers
                 return StatusCode(500);
             }
         }
-        private ActionResult<UserModel> PrepareResponseAfterGetUserById(IGetUserByIdResponse getUserByIdResponse)
+
+        private ActionResult<GetUserResponse> PrepareResponseAfterGetUserById(IGetUserByIdResponse getUserByIdResponse, Stopwatch timer)
         {
             switch (getUserByIdResponse.ProvideResult)
             {
                 case ProvideEnumResult.Exception:
                     return StatusCode(500);
                 case ProvideEnumResult.Success:
-                    return Ok(_businessObjectToModelsConverter.ConvertUser(getUserByIdResponse.User));
+                    return Ok(PrepareSuccessResponseAfterGetUserById(getUserByIdResponse, timer));
                 case ProvideEnumResult.NotFound:
                     return StatusCode(404);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private GetUserResponse PrepareSuccessResponseAfterGetUserById(IGetUserByIdResponse getUserByIdResponse, Stopwatch timer)
+        {
+            var user = _businessObjectToModelsConverter.ConvertUser(getUserByIdResponse.User);
+            timer.Stop();
+            return new GetUserResponse
+            {
+                user = user,
+                execDetails = new ExecutionDetails
+                {
+                    DbTime = getUserByIdResponse.DbTime,
+                    ExecTime = timer.ElapsedMilliseconds
+                }
+            };
         }
     }
 }

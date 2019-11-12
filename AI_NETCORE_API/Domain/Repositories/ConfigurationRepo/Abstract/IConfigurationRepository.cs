@@ -9,6 +9,7 @@ namespace Domain.Repositories.ConfigurationRepo.Abstract
 {
     public interface IConfigurationRepository : IRepositoryBase<Configuration>
     {
+        RepositoryResponse<BusinessObject.Configuration> GetConfiguration(string name);
         RepositoryResponse<bool> UpdateConfiguration(string name, int value);
     }
 }

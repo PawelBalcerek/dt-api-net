@@ -7,7 +7,7 @@ namespace AI_NETCORE_API.Models.Request
 {
     public class LoginRequest
     {
-        public string Login { get; set; }
+        public string Email { get; set; }
         public string Password { get; set; }
     }
 }
