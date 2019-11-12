@@ -109,7 +109,7 @@ namespace AI_NETCORE_API.Controllers
         /// Method to post new sell offer
         /// </summary>
         /// <param name="request">Data for sell offer creation.</param>
-        /// <returns></returns>
+        /// <returns>Response with time</returns>
         [ProducesResponseType(200, Type = typeof(CreateSellOfferResponseModel))]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
@@ -155,6 +155,63 @@ namespace AI_NETCORE_API.Controllers
                 ExecDetails = new ExecutionDetails
                 {
                     DatabaseTime = getSellOffersCreateResponse.DatabaseExecutionTime,
+                    ExecutionTime = timer.ElapsedMilliseconds
+                }
+            };
+            return response;
+        }
+
+        /// <summary>
+        /// Method to withdraw sell offer
+        /// </summary>
+        /// <param name="id">Id of sell offer.</param>
+        /// <returns>Response with time</returns>
+        [ProducesResponseType(200, Type = typeof(WithdrawSellOfferResponseModel))]
+        [ProducesResponseType(401)]
+        [ProducesResponseType(500)]
+        [HttpPut("sell-offers/:id")]
+        [Authorize("Bearer")]
+        public async Task<ActionResult> GetSellOffersByUserId(int id)
+        {
+            try
+            {
+                Stopwatch timer = Stopwatch.StartNew();
+                IWithdrawSellOfferByIdRequest request = new WithdrawSellOfferByIdRequest(id);
+                IWithdrawSellOfferByIdResponse withdrawSellOfferByIdResponse = _sellOffersProvider.WithdrawSellOfferById(request);
+                return await PrepareResponseAfterWithdrawSellOfferById(withdrawSellOfferByIdResponse, timer);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex);
+                return StatusCode(500);
+            }
+        }
+
+        private async Task<ActionResult> PrepareResponseAfterWithdrawSellOfferById(IWithdrawSellOfferByIdResponse withdrawSellOfferResponse, Stopwatch timer)
+        {
+            switch (withdrawSellOfferResponse.ProvideResult)
+            {
+                case Domain.Providers.Common.Enum.ProvideEnumResult.Exception:
+                    return StatusCode(500);
+                case Domain.Providers.Common.Enum.ProvideEnumResult.Success:
+                    WithdrawSellOfferResponseModel response = PrepareSuccessResponseAfterWithdrawSellOfferById(withdrawSellOfferResponse, timer);
+                    return Ok(response);
+                case Domain.Providers.Common.Enum.ProvideEnumResult.NotFound:
+                    return StatusCode(404);
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private WithdrawSellOfferResponseModel PrepareSuccessResponseAfterWithdrawSellOfferById(IWithdrawSellOfferByIdResponse withdrawSellOfferResponse, Stopwatch timer)
+        {
+            timer.Stop();
+
+            WithdrawSellOfferResponseModel response = new WithdrawSellOfferResponseModel
+            {
+                ExecDetails = new ExecutionDetails
+                {
+                    DatabaseTime = withdrawSellOfferResponse.DatabaseExecutionTime,
                     ExecutionTime = timer.ElapsedMilliseconds
                 }
             };
