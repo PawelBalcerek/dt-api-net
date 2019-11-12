@@ -16,11 +16,17 @@ namespace AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Concret
             {
                 Id = buyOffer.Id,
                 Amount = buyOffer.Amount,
+                StartAmount = buyOffer.StartAmount,
                 Date = buyOffer.Date,
                 IsValid = buyOffer.IsValid,
                 MaxPrice = buyOffer.MaxPrice,
-                ResourceId = buyOffer.ResourceId
-                
+                ResourceId = buyOffer.ResourceId,
+                Company = new CompanyModel
+                {
+                    Id = buyOffer.Company.Id,
+                    Name = buyOffer.Company.Name
+                }
+
             };
         }
 

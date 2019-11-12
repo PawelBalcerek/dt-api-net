@@ -25,7 +25,7 @@ namespace Domain.DTOToBOConverting
             if (buyOffer == null)
                 return null;
             else
-                return new Domain.BusinessObject.BuyOffer(buyOffer.Id, buyOffer.ResourceId, buyOffer.Amount, buyOffer.Date, buyOffer.IsValid, buyOffer.MaxPrice);
+                return new Domain.BusinessObject.BuyOffer(buyOffer.Id, buyOffer.ResourceId, buyOffer.Amount, buyOffer.Date, buyOffer.IsValid, buyOffer.MaxPrice, buyOffer.StartAmount, new BusinessObject.Company(buyOffer.Resource.Comp.Id, buyOffer.Resource.Comp.Name));
         }
         public Domain.BusinessObject.SellOffer ConvertSellOffer(Data.Models.SellOffer sellOffer)
         {

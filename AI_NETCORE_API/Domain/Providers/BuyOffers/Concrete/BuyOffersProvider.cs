@@ -22,29 +22,34 @@ namespace Domain.Providers.BuyOffers.Concrete
             _logger = logger;
             _buyOffers = buyOffers;
         }
-        public IGetBuyOfferByIdResponse GetBuyOfferById(IGetBuyOfferByIdRequest getBuyOfferByIdRequest)
+
+        public IGetBuyOffersByUserIdResponse GetBuyOffersByUserId(IGetBuyOffersByUserIdRequest getBuyOffersByUserIdRequest)
         {
             try
             {
-                return new GetBuyOfferByIdResponse(_buyOffers.GetBuyOfferById(getBuyOfferByIdRequest.BuyOfferId));
+                var result = _buyOffers.GetBuyOffersByUserId(getBuyOffersByUserIdRequest.UserId);
+                return new GetBuyOffersByUserIdResponse(result.Object.ToList(), result.DatabaseTime);
+
             }
             catch (Exception ex)
             {
                 _logger.Log(ex);
-                return new GetBuyOfferByIdResponse();
+                return new GetBuyOffersByUserIdResponse();
             }
         }
 
-        public IGetBuyOffersResponse GetBuyOffers()
+        public IWithdrawBuyOfferByIdResponse WithdrawBuyOfferById(IWithdrawBuyOfferByIdRequest withdrawBuyOfferByIdRequest)
         {
             try
             {
-                return new GetBuyOffersResponse(_buyOffers.GetAllBuyOffers().ToList());
+                var result = _buyOffers.WithdrawBuyOffer(withdrawBuyOfferByIdRequest.BuyOfferId);
+                return new WithdrawBuyOfferByIdResponse(result);
+
             }
             catch (Exception ex)
             {
                 _logger.Log(ex);
-                return new GetBuyOffersResponse();
+                return new WithdrawBuyOfferByIdResponse();
             }
         }
     }
