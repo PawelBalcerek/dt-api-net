@@ -10,7 +10,6 @@ using AI_NETCORE_API.Models.Response.Companies;
 using AI_NETCORE_API.Models.Response.ExecutingTimes;
 using Domain.Creators.Company.Abstract;
 using Domain.Creators.Company.Response.Abstract;
-using Domain.Infrastructure.Logging.Abstract;
 using Domain.Providers.Companies.Abstract;
 using Domain.Providers.Companies.Response.Abstract;
 using Microsoft.AspNetCore.Mvc;
