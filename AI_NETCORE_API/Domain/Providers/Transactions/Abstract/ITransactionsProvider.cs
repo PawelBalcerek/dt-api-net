@@ -5,8 +5,6 @@ namespace Domain.Providers.Transactions.Abstract
 {
     public interface ITransactionsProvider
     {
-        IGetTransactionByIdResponse GetTransactionById(IGetTransactionByIdRequest getTransactionByIdRequest);
-        IGetTransactionsResponse GetTransactions();
         IGetTransactionsByUserIdResponse GetTransactionsByUserId(IGetTransactionsByUserIdRequest getTransactionsByUserIdRequest);
     }
 }

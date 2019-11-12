@@ -21,17 +21,6 @@ namespace Domain.Repositories.TransactionRepo.Concrete
             _converter = converter;
         }
 
-        public BusinessObject.Transaction GetTransactionById(int id)
-        {
-            Transaction transaction = FindByCondition(transExpr => transExpr.Id == id).FirstOrDefault();
-            return _converter.ConvertTransaction(transaction);
-        }
-
-        public IEnumerable<BusinessObject.Transaction> GetAllTransactions()
-        {
-            return FindAll().Select(t => _converter.ConvertTransaction(t));
-        }
-
         public RepositoryResponse<IEnumerable<BusinessObject.Transaction>> GetTransactionsByUserId(int id)
         {
             using (var databaseContext = new RepositoryContext())

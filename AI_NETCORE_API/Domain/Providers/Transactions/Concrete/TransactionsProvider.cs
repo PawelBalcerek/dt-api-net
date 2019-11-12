@@ -22,32 +22,6 @@ namespace Domain.Providers.Transactions.Concrete
             _transactions = transactions;
         }
 
-        public IGetTransactionByIdResponse GetTransactionById(IGetTransactionByIdRequest getTransactionByIdRequest)
-        {
-            try
-            {
-                return new GetTransactionByIdResponse(_transactions.GetTransactionById(getTransactionByIdRequest.Id));
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex);
-                return new GetTransactionByIdResponse();
-            }
-        }
-
-        public IGetTransactionsResponse GetTransactions()
-        {
-            try
-            {
-                return new GetTransactionsResponse(_transactions.GetAllTransactions().ToList());
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex);
-                return new GetTransactionsResponse();
-            }
-        }
-
         public IGetTransactionsByUserIdResponse GetTransactionsByUserId(IGetTransactionsByUserIdRequest getTransactionsByUserIdRequest)
         {
             try
