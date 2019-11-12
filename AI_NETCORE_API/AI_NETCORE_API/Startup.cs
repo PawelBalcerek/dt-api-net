@@ -104,7 +104,7 @@ namespace AI_NETCORE_API
             services.AddTransient<ISellOfferProvider, SellOfferProvider>();
             services.AddTransient<IUserCreator, UserCreator>();
             services.AddTransient<ISellOfferCreator, SellOfferCreator>();
-            services.AddTransient<IConfigurationCreator, ConfigurationCreator>();
+            //services.AddTransient<IConfigurationCreator, ConfigurationCreator>();
             services.AddTransient<IConfigurationUpdater, ConfigurationUpdater>();
             
 

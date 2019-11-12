@@ -10,6 +10,7 @@ using AI_NETCORE_API.Models.Response.Companies;
 using AI_NETCORE_API.Models.Response.ExecutingTimes;
 using Domain.Creators.Company.Abstract;
 using Domain.Creators.Company.Response.Abstract;
+using Domain.Infrastructure.Logging.Abstract;
 using Domain.Providers.Companies.Abstract;
 using Domain.Providers.Companies.Response.Abstract;
 using Microsoft.AspNetCore.Mvc;
@@ -73,8 +74,8 @@ namespace AI_NETCORE_API.Controllers
                 if (!companyCreationResponse.Success) return StatusCode(500);
                 return Ok(new CreateCompanyResponseModel{ ExecutionDetails = new ExecutionDetails
                 {
-                    DatabaseTime = companyCreationResponse.DatabaseExecutionTime,
-                    ExecutionTime = timer.ElapsedMilliseconds
+                    DbTime = companyCreationResponse.DatabaseExecutionTime,
+                    ExecTime = timer.ElapsedMilliseconds
                 }});
             }
             catch (Exception ex)
@@ -89,7 +90,7 @@ namespace AI_NETCORE_API.Controllers
             timer.Stop();
             return StatusCode(400,
                 new CreateCompanyResponseModel
-                { ExecutionDetails = new ExecutionDetails { ExecutionTime = timer.ElapsedMilliseconds } });
+                { ExecutionDetails = new ExecutionDetails { ExecTime = timer.ElapsedMilliseconds } });
         }
 
 
