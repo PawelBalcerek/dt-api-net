@@ -46,7 +46,7 @@ namespace Domain.DTOToBOConverting
             if (transaction == null)
                 return null;
             else
-                return new Domain.BusinessObject.Transaction(transaction.Id, transaction.SellOfferId, transaction.BuyOfferId, transaction.Date, transaction.Price, transaction.Amount);
+                return new Domain.BusinessObject.Transaction(transaction.Id, transaction.SellOfferId, transaction.BuyOfferId, transaction.Date, transaction.Price, transaction.Amount, new BusinessObject.Company(transaction.SellOffer.Resource.Comp.Id, transaction.SellOffer.Resource.Comp.Name));
         }
         public Domain.BusinessObject.Configuration ConvertConfiguration(Data.Models.Configuration configuration)
         {

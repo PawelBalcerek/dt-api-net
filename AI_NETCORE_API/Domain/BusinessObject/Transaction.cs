@@ -6,7 +6,7 @@ namespace Domain.BusinessObject
 {
     public class Transaction
     {
-        public Transaction(int id, int sellOfferId, int buyOfferId, DateTime date, decimal price, int amount)
+        public Transaction(int id, int sellOfferId, int buyOfferId, DateTime date, decimal price, int amount, Company company)
         {
             Id = id;
             SellOfferId = sellOfferId;
@@ -14,6 +14,7 @@ namespace Domain.BusinessObject
             Date = date;
             Price = price;
             Amount = amount;
+            Company = company;
         }
 
         public int Id { get; }
@@ -22,5 +23,6 @@ namespace Domain.BusinessObject
         public DateTime Date { get; }
         public decimal Price { get; }
         public int Amount { get; }
+        public Company Company { get; }
     }
 }
