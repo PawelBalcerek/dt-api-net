@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Domain.Providers.SellOffers.Request.Abstract
 {
-    public interface IGetSellOfferByIdRequest
+    public interface IWithdrawSellOfferByIdRequest
     {
         int SellOfferId { get; }
     }

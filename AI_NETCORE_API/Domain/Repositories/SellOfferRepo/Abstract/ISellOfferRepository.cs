@@ -4,11 +4,14 @@ using System.Text;
 using Domain.Repositories.BaseRepo.Abstract;
 using Domain.Repositories.BaseRepo.Concrete;
 using Data.Models;
+using Domain.Repositories.BaseRepo.Response;
+
 namespace Domain.Repositories.SellOfferRepo.Abstract
 {
     public interface ISellOfferRepository : IRepositoryBase<SellOffer>
     {
-        BusinessObject.SellOffer GetSellOfferById(int id);
-        IEnumerable<BusinessObject.SellOffer> GetAllSellOffers();
+        RepositoryResponse<IEnumerable<BusinessObject.SellOffer>> GetSellOffersByUserId(int id);
+        long CreateSellOffer(int resourceId, int amount, decimal price);
+        long WithdrawSellOffer(int sellOfferId);
     }
 }
