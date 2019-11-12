@@ -32,7 +32,7 @@ namespace Domain.DTOToBOConverting
             if (sellOffer == null)
                 return null;
             else
-                return new Domain.BusinessObject.SellOffer(sellOffer.Id, sellOffer.ResourceId, sellOffer.Amount, sellOffer.Date, sellOffer.IsValid, sellOffer.Price);
+                return new Domain.BusinessObject.SellOffer(sellOffer.Id, sellOffer.ResourceId, sellOffer.Amount, sellOffer.Date, sellOffer.IsValid, sellOffer.Price, sellOffer.StartAmount, new BusinessObject.Company(sellOffer.Resource.Comp.Id, sellOffer.Resource.Comp.Name));
         }
         public Domain.BusinessObject.Resource ConvertResource(Data.Models.Resource resource)
         {

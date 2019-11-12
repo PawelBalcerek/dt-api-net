@@ -6,6 +6,10 @@ using Domain.Repositories.SellOfferRepo.Abstract;
 using Data.Models;
 using Domain.DTOToBOConverting;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using Domain.Repositories.BaseRepo.Response;
+using System.Diagnostics;
+
 namespace Domain.Repositories.SellOfferRepo.Concrete
 {
     public class SellOfferRepository: RepositoryBase<SellOffer>, ISellOfferRepository
@@ -17,15 +21,50 @@ namespace Domain.Repositories.SellOfferRepo.Concrete
             _converter = converter;
         }
 
-        public BusinessObject.SellOffer GetSellOfferById(int id)
+        public RepositoryResponse<IEnumerable<BusinessObject.SellOffer>> GetSellOffersByUserId(int id)
         {
-            SellOffer sellOffer = FindByCondition(sellOfferExpr => sellOfferExpr.Id == id).FirstOrDefault();
-            return _converter.ConvertSellOffer(sellOffer);
+            using (var databaseContext = new RepositoryContext())
+            {
+                var timer = Stopwatch.StartNew();
+                var sellOffers = FindByCondition(p => p.Resource.UserId == id && p.IsValid == true).Include(p => p.Resource).Include(p => p.Resource.Comp).Select(p => _converter.ConvertSellOffer(p));
+                timer.Stop();
+                var time = timer.ElapsedMilliseconds;
+                return new RepositoryResponse<IEnumerable<BusinessObject.SellOffer>>(sellOffers, time);
+            }
+            
         }
 
-        public IEnumerable<BusinessObject.SellOffer> GetAllSellOffers()
+        public long CreateSellOffer(int resourceId, int amount, decimal price)
         {
-            return FindAll().Select(s => _converter.ConvertSellOffer(s));
+            var timer = Stopwatch.StartNew();
+            RepositoryContext.SellOffers.Add(new SellOffer
+            {
+                Amount = amount,
+                StartAmount = amount,
+                IsValid = true,
+                Price = price,
+                ResourceId = resourceId,
+                Date = DateTime.Now
+            });
+            RepositoryContext.SaveChanges(true);
+            timer.Stop();
+            var time = timer.ElapsedMilliseconds;
+            return time;
+        }
+
+        public long WithdrawSellOffer(int sellOfferId)
+        {
+            var timer = Stopwatch.StartNew();
+            using (var dbContext = new RepositoryContext())
+            {
+                SellOffer offer = dbContext.SellOffers.Where(p => p.Id == sellOfferId).First();
+                offer.IsValid = false;
+
+            }
+            RepositoryContext.SaveChanges(true);
+            timer.Stop();
+            var time = timer.ElapsedMilliseconds;
+            return time;
         }
     }
 }

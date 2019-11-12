@@ -5,13 +5,13 @@ using System.Text;
 
 namespace Domain.Providers.SellOffers.Request.Concrete
 {
-    public class GetSellOfferByIdRequest : IGetSellOfferByIdRequest
+    public class GetSellOffersByUserIdRequest : IGetSellOffersByUserIdRequest
     {
-        public GetSellOfferByIdRequest(int sellOfferId)
+        public GetSellOffersByUserIdRequest(int userId)
         {
-            SellOfferId = sellOfferId;
+            UserId = userId;
         }
 
-        public int SellOfferId { get; }
-    }
+        public int UserId { get; }
+    }   
 }
