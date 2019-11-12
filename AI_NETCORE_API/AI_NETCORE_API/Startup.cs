@@ -51,6 +51,8 @@ using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using AI_NETCORE_API.Infrastructure.GettingUserIdentifierFromRequest.Abstract;
+using AI_NETCORE_API.Infrastructure.GettingUserIdentifierFromRequest.Concrete;
 using Domain.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Domain.Updaters.Configurations.Concrete;
@@ -81,6 +83,7 @@ namespace AI_NETCORE_API
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddTransient<IUserIdentifierFromHttpRequestProvider, UserIdentifierFromHttpRequestProvider>();
             services.AddTransient<RepositoryContext>();
             services.AddTransient<IDTOToBOConverter, DTOToBOConverter>();
             services.AddTransient<IUserRepository, UserRepository>();
@@ -104,7 +107,7 @@ namespace AI_NETCORE_API
             services.AddTransient<IBuyOfferCreator, BuyOfferCreator>(); 
             services.AddTransient<IUserCreator, UserCreator>();
             services.AddTransient<ISellOfferCreator, SellOfferCreator>();
-            services.AddTransient<IConfigurationCreator, ConfigurationCreator>();
+            //services.AddTransient<IConfigurationCreator, ConfigurationCreator>();
             services.AddTransient<IConfigurationUpdater, ConfigurationUpdater>();
             
 

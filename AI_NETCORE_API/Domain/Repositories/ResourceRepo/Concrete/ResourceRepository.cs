@@ -64,5 +64,21 @@ namespace Domain.Repositories.ResourceRepo.Concrete
             long time = timer.ElapsedMilliseconds;
             return new RepositoryResponse<bool>(success, time);
         }
+
+        public RepositoryResponse<BusinessObject.Resource> AddResource(int amount, int userId,int companyId)
+        {
+            Stopwatch timer = Stopwatch.StartNew();
+            Resource resource = new Resource
+            {
+                Amount = amount,
+                UserId = userId,
+                CompId = companyId
+            };
+            RepositoryContext.Resources.Add(resource);
+            RepositoryContext.SaveChanges();
+            BusinessObject.Resource businessResource = _converter.ConvertResource(resource);
+            timer.Stop();
+            return new RepositoryResponse<BusinessObject.Resource>(businessResource, timer.ElapsedMilliseconds);
+        }
     }
 }

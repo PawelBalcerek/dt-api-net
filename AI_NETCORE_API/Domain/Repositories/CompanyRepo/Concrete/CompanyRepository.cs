@@ -7,6 +7,7 @@ using Data.Models;
 using Domain.DTOToBOConverting;
 using System.Linq;
 using System.Timers;
+using Domain.Creators.Company.Request.Abstract;
 using Domain.Repositories.BaseRepo.Response;
 
 namespace Domain.Repositories.CompanyRepo.Concrete
@@ -34,6 +35,19 @@ namespace Domain.Repositories.CompanyRepo.Concrete
             IQueryable<BusinessObject.Company> result = FindAll().Select(c => _converter.ConvertCompany(c));
             stopWatch.Stop();
             return new RepositoryResponse<IEnumerable<BusinessObject.Company>>(result,stopWatch.ElapsedMilliseconds);
+        }
+
+        public RepositoryResponse<BusinessObject.Company> CreateCompany(ICreateCompanyRequest createCompanyRequest)
+        {
+            Stopwatch stopWatch = Stopwatch.StartNew();
+            Company company = new Company
+            {
+                Name = createCompanyRequest.Name
+            };
+            RepositoryContext.Companies.Add(company);
+            RepositoryContext.SaveChanges();
+            stopWatch.Stop();
+            return new RepositoryResponse<BusinessObject.Company>(_converter.ConvertCompany(company),stopWatch.ElapsedMilliseconds);
         }
     }
 }
