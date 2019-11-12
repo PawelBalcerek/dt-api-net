@@ -13,5 +13,6 @@ namespace Domain.Repositories.ResourceRepo.Abstract
         RepositoryResponse<IEnumerable<BusinessObject.Resource>> GetUserResources(int userId);
         RepositoryResponse<BusinessObject.Resource> GetResourceById(int id);
         RepositoryResponse<bool> UpdateResource(BusinessObject.Resource resource);
+        RepositoryResponse<BusinessObject.Resource> AddResource(int amount, int userId, int companyId);
     }
 }

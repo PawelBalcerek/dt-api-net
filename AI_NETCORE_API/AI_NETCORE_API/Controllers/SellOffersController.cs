@@ -98,8 +98,8 @@ namespace AI_NETCORE_API.Controllers
                 SellOffers = resourceModelsList,
                 ExecDetails = new ExecutionDetails
                 {
-                    DatabaseTime = getUserByIdResponse.DatabaseExecutionTime,
-                    ExecutionTime = timer.ElapsedMilliseconds
+                    DbTime = getUserByIdResponse.DatabaseExecutionTime,
+                    ExecTime = timer.ElapsedMilliseconds
                 }
             };
             return response;
@@ -154,8 +154,8 @@ namespace AI_NETCORE_API.Controllers
             {
                 ExecDetails = new ExecutionDetails
                 {
-                    DatabaseTime = getSellOffersCreateResponse.DatabaseExecutionTime,
-                    ExecutionTime = timer.ElapsedMilliseconds
+                    DbTime = getSellOffersCreateResponse.DatabaseExecutionTime,
+                    ExecTime = timer.ElapsedMilliseconds
                 }
             };
             return response;
@@ -211,8 +211,8 @@ namespace AI_NETCORE_API.Controllers
             {
                 ExecDetails = new ExecutionDetails
                 {
-                    DatabaseTime = withdrawSellOfferResponse.DatabaseExecutionTime,
-                    ExecutionTime = timer.ElapsedMilliseconds
+                    DbTime = withdrawSellOfferResponse.DatabaseExecutionTime,
+                    ExecTime = timer.ElapsedMilliseconds
                 }
             };
             return response;
