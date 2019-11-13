@@ -1,4 +1,5 @@
-﻿using Domain.Providers.Common.Enum;
+﻿using Domain.BusinessObject;
+using Domain.Providers.Common.Enum;
 using Domain.Providers.Transactions.Response.Abstract;
 using System;
 using System.Collections.Generic;
@@ -6,13 +7,14 @@ using System.Text;
 
 namespace Domain.Providers.Transactions.Response.Concrete
 {
-    public class GetTransactionByIdResponse : IGetTransactionByIdResponse
+    public class GetTransactionsByUserIdResponse : IGetTransactionsByUserIdResponse
     {
-        public GetTransactionByIdResponse()
+        public GetTransactionsByUserIdResponse()
         {
             ProvideResult = ProvideEnumResult.Exception;
         }
-        public GetTransactionByIdResponse(dynamic transaction)
+
+        public GetTransactionsByUserIdResponse(IList<Transaction> transaction, long databaseExecutionTime)
         {
             if (transaction == null)
             {
@@ -20,13 +22,14 @@ namespace Domain.Providers.Transactions.Response.Concrete
             }
             else
             {
-                Transaction = transaction;
+                Transactions = transaction;
+                DatabaseExecutionTime = databaseExecutionTime;
                 ProvideResult = ProvideEnumResult.Success;
             }
         }
 
-        public dynamic Transaction { get; }
-
+        public IList<Transaction> Transactions { get; }
+        public long DatabaseExecutionTime { get; }
         public ProvideEnumResult ProvideResult { get; }
     }
 }

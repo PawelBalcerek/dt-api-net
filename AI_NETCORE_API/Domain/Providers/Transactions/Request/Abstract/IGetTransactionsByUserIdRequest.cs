@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Domain.Providers.Transactions.Request.Abstract
 {
-    public interface IGetTransactionByIdRequest
+    public interface IGetTransactionsByUserIdRequest
     {
-        int Id { get; }
+        int UserId { get; }
     }
 }

@@ -77,7 +77,12 @@ namespace AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Concret
                 BuyOfferId = transaction.BuyOfferId, 
                 Date = transaction.Date,
                 Price = transaction.Price,
-                SellOfferId = transaction.SellOfferId
+                SellOfferId = transaction.SellOfferId,
+                Company = new CompanyModel
+                {
+                    Id = transaction.Company.Id,
+                    Name = transaction.Company.Name
+                }
             };
         }
 
