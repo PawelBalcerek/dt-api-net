@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Domain.BusinessObject;
+using Domain.Creators.Transaction.Request.Abstract;
+using Domain.Creators.Transaction.Request.Concrete;
 using Domain.Infrastructure.Logging.Abstract;
 using Domain.Infrastructure.TransactionProcessing.Responses.Abstract;
 using Domain.Infrastructure.TransactionProcessing.Responses.Concrete;
@@ -31,9 +33,7 @@ namespace Domain.Infrastructure.TransactionProcessing
             {
                 IList<SellOffer> sellOffersToDelete = new List<SellOffer>();
                 IList<BuyOffer> buyOffersToDelete = new List<BuyOffer>();
-                IList<Transaction>
-                    transactionsToSave =
-                        new List<Transaction>(); // TODO MUST BE : Change this to transactionCreateRequest
+                IList<ICreateTransactionRequest>transactionsToSave = new List<ICreateTransactionRequest>(); // TODO MUST BE : Change this to transactionCreateRequest
                 for (int i = 0; i < Size; i++)
                 {
                     SellOffer actualSellOffer = SellOffers.FirstOrDefault();
@@ -50,30 +50,17 @@ namespace Domain.Infrastructure.TransactionProcessing
 
                     if (amountIsTheSame)
                     {
-                        transactionsToSave.Add(new Transaction(-1, actualSellOffer.Id, actualBuyOffer.Id, DateTime.Now,
-                            actualSellOffer.Price, actualSellOffer.Amount));
-                        sellOffersToDelete.Add(actualSellOffer);
-                        SellOffers.Remove(actualSellOffer);
-                        buyOffersToDelete.Add(actualBuyOffer);
-                        BuyOffers.Remove(actualBuyOffer);
+                        ProcessWhenAmountsAreEquals(transactionsToSave, actualSellOffer, actualBuyOffer, sellOffersToDelete, buyOffersToDelete);
                     }
 
                     bool sellOfferWillByEntirelyDone = actualSellOffer.Amount < actualBuyOffer.Amount;
                     if (sellOfferWillByEntirelyDone)
                     {
-                        int quantityToTransaction = actualBuyOffer.Amount - actualSellOffer.Amount;
-                        transactionsToSave.Add(new Transaction(-1, actualSellOffer.Id, actualBuyOffer.Id, DateTime.Now,
-                            actualSellOffer.Price, quantityToTransaction));
-                        actualSellOffer.UpdateActualAmount(actualSellOffer.Amount - quantityToTransaction);
-                        SellOffers.Remove(actualSellOffer);
+                        ProcessWhenAmountOnBuyOfferIsBigger(actualBuyOffer, actualSellOffer, transactionsToSave);
                     }
                     else
                     {
-                        int quantityToTransaction = actualSellOffer.Amount - actualBuyOffer.Amount;
-                        transactionsToSave.Add(new Transaction(-1, actualSellOffer.Id, actualBuyOffer.Id, DateTime.Now,
-                            actualSellOffer.Price, quantityToTransaction));
-                        actualBuyOffer.UpdateActualAmount(quantityToTransaction);
-                        BuyOffers.Remove(actualBuyOffer);
+                        ProcessWhenAmountOnSellOfferIsBigger(actualSellOffer, actualBuyOffer, transactionsToSave);
                     }
                 }
 
@@ -84,6 +71,37 @@ namespace Domain.Infrastructure.TransactionProcessing
                 logger.Log(ex);
                 return new ProcessingTransactionWindowResult();
             }
+        }
+
+        private void ProcessWhenAmountOnSellOfferIsBigger(SellOffer actualSellOffer, BuyOffer actualBuyOffer,
+            IList<ICreateTransactionRequest> transactionsToSave)
+        {
+            int quantityToTransaction = actualSellOffer.Amount - actualBuyOffer.Amount;
+            transactionsToSave.Add(new CreateTransactionRequest(actualSellOffer.Id, actualBuyOffer.Id,
+                actualSellOffer.Price, quantityToTransaction));
+            actualBuyOffer.UpdateActualAmount(quantityToTransaction);
+            BuyOffers.Remove(actualBuyOffer);
+        }
+
+        private void ProcessWhenAmountOnBuyOfferIsBigger(BuyOffer actualBuyOffer, SellOffer actualSellOffer,
+            IList<ICreateTransactionRequest> transactionsToSave)
+        {
+            int quantityToTransaction = actualBuyOffer.Amount - actualSellOffer.Amount;
+            transactionsToSave.Add(new CreateTransactionRequest(actualSellOffer.Id, actualBuyOffer.Id,
+                actualSellOffer.Price, quantityToTransaction));
+            actualSellOffer.UpdateActualAmount(actualSellOffer.Amount - quantityToTransaction);
+            SellOffers.Remove(actualSellOffer);
+        }
+
+        private void ProcessWhenAmountsAreEquals(IList<ICreateTransactionRequest> transactionsToSave, SellOffer actualSellOffer, BuyOffer actualBuyOffer,
+            IList<SellOffer> sellOffersToDelete, IList<BuyOffer> buyOffersToDelete)
+        {
+            transactionsToSave.Add(new CreateTransactionRequest(actualSellOffer.Id, actualBuyOffer.Id,
+                actualSellOffer.Price, actualSellOffer.Amount));
+            sellOffersToDelete.Add(actualSellOffer);
+            SellOffers.Remove(actualSellOffer);
+            buyOffersToDelete.Add(actualBuyOffer);
+            BuyOffers.Remove(actualBuyOffer);
         }
     }
 }

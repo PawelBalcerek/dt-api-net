@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using Domain.BusinessObject;
+using Domain.Creators.Transaction.Request.Abstract;
 using Domain.Infrastructure.TransactionProcessing.Responses.Abstract;
 
 namespace Domain.Infrastructure.TransactionProcessing.Responses.Concrete
 {
     public class ProcessingTransactionWindowResult : IProcessingTransactionWindowResult
     {
-        public ProcessingTransactionWindowResult(IList<SellOffer> sellOffersToSave, IList<BuyOffer> buyOffersToSave, IList<Transaction> transactionsToSave)
+        public ProcessingTransactionWindowResult(IList<SellOffer> sellOffersToSave, IList<BuyOffer> buyOffersToSave, IList<ICreateTransactionRequest> transactionsToSave)
         {
             SellOffersToSave = sellOffersToSave;
             BuyOffersToSave = buyOffersToSave;
@@ -21,7 +22,7 @@ namespace Domain.Infrastructure.TransactionProcessing.Responses.Concrete
 
         public IList<SellOffer> SellOffersToSave { get; }
         public IList<BuyOffer> BuyOffersToSave { get; }
-        public IList<Transaction> TransactionsToSave { get; }
+        public IList<ICreateTransactionRequest> TransactionsToSave { get; }
 
         public bool SomethingDone => (SellOffersToSave == null || SellOffersToSave.Count == 0) &&
                                      (BuyOffersToSave == null || BuyOffersToSave.Count == 0) &&

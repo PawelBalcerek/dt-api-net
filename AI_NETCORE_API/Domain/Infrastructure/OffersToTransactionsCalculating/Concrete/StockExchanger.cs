@@ -7,6 +7,7 @@ using Domain.Infrastructure.Logging.Abstract;
 using Domain.Infrastructure.OffersToTransactionsCalculating.Abstract;
 using Domain.Infrastructure.OffersToTransactionsCalculating.Response.Abstract;
 using Domain.Infrastructure.TransactionProcessing;
+using Domain.Infrastructure.TransactionProcessing.Responses.Abstract;
 using Domain.Providers.BuyOffers.Abstract;
 using Domain.Providers.BuyOffers.Response.Abstract;
 using Domain.Providers.Common.Enum;
@@ -51,12 +52,20 @@ namespace Domain.Infrastructure.OffersToTransactionsCalculating.Concrete
                 TransactionWindow transactionWindow = new TransactionWindow(buyOffersToStockExecutionResponse.BuyOffers,
                     sellOffersToStockExecutionResponse.SellOffers, quantityFromConfiguration);
 
+                if (!transactionWindow.IsValid)
+                {
+                    //TODO inform
+                }
+
+                IProcessingTransactionWindowResult processingTransactionWindowResult = transactionWindow.Process(_logger);
+
             }
             catch (Exception ex)
             {
                 _logger.Log(ex);
+                
             }
-
+            throw new NotImplementedException();
 
         }
     }
