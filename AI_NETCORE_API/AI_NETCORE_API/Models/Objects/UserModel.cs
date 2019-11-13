@@ -23,7 +23,7 @@ namespace AI_NETCORE_API.Models.Objects
         /// <summary>
         /// User Cash
         /// </summary>
-        public decimal Cash { get; set; }
+        public double Cash { get; set; }
         
     }
 }

@@ -11,7 +11,7 @@ namespace AI_NETCORE_API.Models.Objects
         public int Amount { get; set; }
         public int StartAmount { get; set; }
         public int ResourceId { get; set; }
-        public decimal MaxPrice { get; set; }
+        public double MaxPrice { get; set; }
         public DateTime Date { get; set; }
         public bool IsValid { get; set; }
         public CompanyModel Company { get; set; }

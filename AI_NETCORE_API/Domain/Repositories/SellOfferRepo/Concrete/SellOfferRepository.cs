@@ -34,7 +34,7 @@ namespace Domain.Repositories.SellOfferRepo.Concrete
             
         }
 
-        public long CreateSellOffer(int resourceId, int amount, decimal price)
+        public long CreateSellOffer(int resourceId, int amount, double price)
         {
             var timer = Stopwatch.StartNew();
             RepositoryContext.SellOffers.Add(new SellOffer

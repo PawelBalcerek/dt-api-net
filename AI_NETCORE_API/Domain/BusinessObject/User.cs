@@ -6,7 +6,7 @@ namespace Domain.BusinessObject
 {
     public class User
     {
-        public User(int id, string name, string email, string password, decimal cash)
+        public User(int id, string name, string email, string password, double cash)
         {
             Id = id;
             Name = name;
@@ -19,6 +19,6 @@ namespace Domain.BusinessObject
         public string Name { get; }
         public string Email { get; }
         public string Password { get; }
-        public decimal Cash { get; }  
+        public double Cash { get; }  
     }
 }
