@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Domain.Providers.BuyOffers.Request.Concrete
 {
-    public class GetBuyOfferByIdRequest : IGetBuyOfferByIdRequest
+    public class WithdrawBuyOfferByIdRequest : IWithdrawBuyOfferByIdRequest
     {
-        public GetBuyOfferByIdRequest(int buyOfferId)
+        public WithdrawBuyOfferByIdRequest(int buyOfferId)
         {
             BuyOfferId = buyOfferId;
         }

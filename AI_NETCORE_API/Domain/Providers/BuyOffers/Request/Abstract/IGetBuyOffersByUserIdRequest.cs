@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Domain.Providers.BuyOffers.Request.Abstract
 {
-    public interface IGetBuyOfferByIdRequest
+    public interface IGetBuyOffersByUserIdRequest
     {
-        int BuyOfferId { get; }
+        int UserId { get; }
     }
 }
