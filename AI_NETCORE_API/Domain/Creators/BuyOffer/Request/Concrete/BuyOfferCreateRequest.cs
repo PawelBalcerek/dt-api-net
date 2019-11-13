@@ -7,7 +7,7 @@ namespace Domain.Creators.BuyOffer.Request.Concrete
 {
     public class BuyOfferCreateRequest : IBuyOfferCreateRequest
     {
-        public BuyOfferCreateRequest(int companyId, int amount, decimal price)
+        public BuyOfferCreateRequest(int companyId, int amount, double price)
         {
             CompanyId = companyId;
             Amount = amount;
@@ -16,6 +16,6 @@ namespace Domain.Creators.BuyOffer.Request.Concrete
 
         public int CompanyId { get; }
         public int Amount { get; }
-        public decimal Price { get; }
+        public double Price { get; }
     }
 }
