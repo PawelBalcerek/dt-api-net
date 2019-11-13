@@ -6,6 +6,10 @@ using Domain.Repositories.TransactionRepo.Abstract;
 using Data.Models;
 using Domain.DTOToBOConverting;
 using System.Linq;
+using System.Diagnostics;
+using Domain.Repositories.BaseRepo.Response;
+using Microsoft.EntityFrameworkCore;
+
 namespace Domain.Repositories.TransactionRepo.Concrete
 {
     public class TransactionRepository: RepositoryBase<Transaction>, ITransactionRepository
@@ -17,15 +21,16 @@ namespace Domain.Repositories.TransactionRepo.Concrete
             _converter = converter;
         }
 
-        public BusinessObject.Transaction GetTransactionById(int id)
+        public RepositoryResponse<IEnumerable<BusinessObject.Transaction>> GetTransactionsByUserId(int id)
         {
-            Transaction transaction = FindByCondition(transExpr => transExpr.Id == id).FirstOrDefault();
-            return _converter.ConvertTransaction(transaction);
-        }
-
-        public IEnumerable<BusinessObject.Transaction> GetAllTransactions()
-        {
-            return FindAll().Select(t => _converter.ConvertTransaction(t));
+            using (var databaseContext = new RepositoryContext())
+            {
+                var timer = Stopwatch.StartNew();
+                var transactions = FindByCondition(p => p.SellOffer.Resource.UserId == id).Include(p => p.SellOffer).Include(p => p.SellOffer.Resource).Include(p => p.SellOffer.Resource.Comp).Select(p => _converter.ConvertTransaction(p));
+                timer.Stop();
+                var time = timer.ElapsedMilliseconds;
+                return new RepositoryResponse<IEnumerable<BusinessObject.Transaction>>(transactions, time);
+            }
         }
     }
 }

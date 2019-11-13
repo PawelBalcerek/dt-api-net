@@ -22,31 +22,19 @@ namespace Domain.Providers.Transactions.Concrete
             _transactions = transactions;
         }
 
-        public IGetTransactionByIdResponse GetTransactionById(IGetTransactionByIdRequest getTransactionByIdRequest)
+        public IGetTransactionsByUserIdResponse GetTransactionsByUserId(IGetTransactionsByUserIdRequest getTransactionsByUserIdRequest)
         {
             try
             {
-                return new GetTransactionByIdResponse(_transactions.GetTransactionById(getTransactionByIdRequest.Id));
+                var result = _transactions.GetTransactionsByUserId(getTransactionsByUserIdRequest.UserId);
+                return new GetTransactionsByUserIdResponse(result.Object.ToList(), result.DatabaseTime);
+
             }
             catch (Exception ex)
             {
                 _logger.Log(ex);
-                return new GetTransactionByIdResponse();
+                return new GetTransactionsByUserIdResponse();
             }
         }
-
-        public IGetTransactionsResponse GetTransactions()
-        {
-            try
-            {
-                return new GetTransactionsResponse(_transactions.GetAllTransactions().ToList());
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex);
-                return new GetTransactionsResponse();
-            }
-        }
-
     }
 }
