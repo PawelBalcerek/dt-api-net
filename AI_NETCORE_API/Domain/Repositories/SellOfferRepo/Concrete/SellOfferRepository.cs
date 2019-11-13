@@ -12,7 +12,7 @@ using System.Diagnostics;
 
 namespace Domain.Repositories.SellOfferRepo.Concrete
 {
-    public class SellOfferRepository: RepositoryBase<SellOffer>, ISellOfferRepository
+    public class SellOfferRepository : RepositoryBase<SellOffer>, ISellOfferRepository
     {
         private readonly IDTOToBOConverter _converter;
         public SellOfferRepository(RepositoryContext repositoryContext, IDTOToBOConverter converter)
@@ -31,7 +31,7 @@ namespace Domain.Repositories.SellOfferRepo.Concrete
                 var time = timer.ElapsedMilliseconds;
                 return new RepositoryResponse<IEnumerable<BusinessObject.SellOffer>>(sellOffers, time);
             }
-            
+
         }
 
         public long CreateSellOffer(int resourceId, int amount, decimal price)
@@ -65,6 +65,16 @@ namespace Domain.Repositories.SellOfferRepo.Concrete
             timer.Stop();
             var time = timer.ElapsedMilliseconds;
             return time;
+        }
+
+        public RepositoryResponse<IEnumerable<BusinessObject.SellOffer>> GetSellOfferToStockExecute(int quantity)
+        {
+            Stopwatch timer = Stopwatch.StartNew();
+            IList<SellOffer> sellOffers = RepositoryContext.SellOffers.OrderBy(x => x.Price).Take(quantity).ToList();
+            timer.Stop();
+            long time = timer.ElapsedMilliseconds;
+            return new RepositoryResponse<IEnumerable<BusinessObject.SellOffer>>(sellOffers.Select(x=> _converter.ConvertSellOffer(x)), time);
+
         }
     }
 }

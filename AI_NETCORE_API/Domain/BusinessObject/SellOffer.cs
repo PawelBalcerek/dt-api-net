@@ -15,5 +15,7 @@ namespace Domain.BusinessObject
         public decimal Price { get; }
         public int StartAmount { get; }
         public Company Company { get; }
+
+        
     }
 }

@@ -10,5 +10,7 @@ namespace Domain.Providers.SellOffers.Abstract
     {
         IGetSellOffersByUserIdResponse GetSellOffersByUserId(IGetSellOffersByUserIdRequest getSellOffersByUserIdRequest);
         IWithdrawSellOfferByIdResponse WithdrawSellOfferById(IWithdrawSellOfferByIdRequest withdrawSellOfferByIdRequest);
+
+        IGetSellOffersToStockExecutionResponse GetSellOfferToStockExecute(int quantity);
     }
 }
