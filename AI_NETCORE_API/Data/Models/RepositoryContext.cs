@@ -204,7 +204,7 @@ namespace Data.Models
                 entity.Property(e => e.Password)
                     .IsRequired()
                     .HasColumnName("password")
-                    .HasMaxLength(30)
+                    .HasMaxLength(100)
                     .IsUnicode(false);
             });
         }
