@@ -30,7 +30,7 @@ namespace Domain.Repositories.BuyOfferRepo.Concrete
             return new RepositoryResponse<IEnumerable<BusinessObject.BuyOffer>>(buyOffers, time);
         }
 
-        public long CreateBuyOffer(int companyId, int amount, decimal price)
+        public long CreateBuyOffer(int companyId, int amount, double price)
         {
             var timer = Stopwatch.StartNew();
             RepositoryContext.BuyOffers.Add(new BuyOffer
