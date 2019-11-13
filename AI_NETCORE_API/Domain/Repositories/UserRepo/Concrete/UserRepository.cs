@@ -60,7 +60,8 @@ namespace Domain.Repositories.UserRepo.Concrete
         public RepositoryResponse<string> Authenticate(string email, string password)
         {
             var timer = Stopwatch.StartNew();
-            var users = from u in RepositoryContext.Users where u.Password == password && u.Email == email select u;
+            var usersList = RepositoryContext.Users.ToList();
+            var users = from u in RepositoryContext.Users where /*u.Password == password &&*/ u.Email == email select u;
             var user = users.FirstOrDefault();
             timer.Stop();
 
