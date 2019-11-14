@@ -9,12 +9,12 @@ namespace Domain.Infrastructure.Logging.Concrete
     {
         public void Log(string toLog)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void Log(Exception excetionToLog)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

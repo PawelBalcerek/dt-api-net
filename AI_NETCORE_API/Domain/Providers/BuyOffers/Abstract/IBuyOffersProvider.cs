@@ -13,5 +13,7 @@ namespace Domain.Providers.BuyOffers.Abstract
         IGetBuyOffersResponse GetBuyOffers();
 
         IGetBuyOffersToStockExecutionResponse GetBuyOfferToStockExecution(int quantity);
+        IGetBuyOffersByUserIdResponse GetBuyOffersByUserId(IGetBuyOffersByUserIdRequest getBuyOffersByUserIdRequest);
+        IWithdrawBuyOfferByIdResponse WithdrawBuyOfferById(IWithdrawBuyOfferByIdRequest withdrawBuyOfferByIdRequest);
     }
 }

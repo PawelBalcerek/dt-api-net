@@ -25,7 +25,7 @@ namespace Domain.DTOToBOConverting
             if (buyOffer == null)
                 return null;
             else
-                return new Domain.BusinessObject.BuyOffer(buyOffer.Id, buyOffer.ResourceId, buyOffer.Amount, buyOffer.Date, buyOffer.IsValid, buyOffer.MaxPrice);
+                return new Domain.BusinessObject.BuyOffer(buyOffer.Id, buyOffer.ResourceId, buyOffer.Amount, buyOffer.Date, buyOffer.IsValid, buyOffer.MaxPrice, buyOffer.StartAmount, new BusinessObject.Company(buyOffer.Resource.Comp.Id, buyOffer.Resource.Comp.Name));
         }
         public Domain.BusinessObject.SellOffer ConvertSellOffer(Data.Models.SellOffer sellOffer)
         {
@@ -46,14 +46,14 @@ namespace Domain.DTOToBOConverting
             if (transaction == null)
                 return null;
             else
-                return new Domain.BusinessObject.Transaction(transaction.Id, transaction.SellOfferId, transaction.BuyOfferId, transaction.Date, transaction.Price, transaction.Amount);
+                return new Domain.BusinessObject.Transaction(transaction.Id, transaction.SellOfferId, transaction.BuyOfferId, transaction.Date, transaction.Price, transaction.Amount, new BusinessObject.Company(transaction.SellOffer.Resource.Comp.Id, transaction.SellOffer.Resource.Comp.Name));
         }
         public Domain.BusinessObject.Configuration ConvertConfiguration(Data.Models.Configuration configuration)
         {
             if (configuration == null)
                 return null;
             else
-                return new Domain.BusinessObject.Configuration(configuration.Name, configuration.Value);
+                return new Domain.BusinessObject.Configuration(configuration.Name, configuration.Number);
         }
     }
 }

@@ -8,6 +8,6 @@ namespace Domain.Creators.SellOffer.Request.Abstract
     {
         int ResourceId { get; }
         int Amount { get; }
-        decimal Price { get; }
+        double Price { get; }
     }
 }
