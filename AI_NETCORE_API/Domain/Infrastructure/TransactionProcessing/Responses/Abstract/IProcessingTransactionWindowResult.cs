@@ -11,6 +11,5 @@ namespace Domain.Infrastructure.TransactionProcessing.Responses.Abstract
         IList<SellOffer> SellOffersToSave { get; }
         IList<BuyOffer> BuyOffersToSave { get; }
         IList<ICreateTransactionRequest> TransactionsToSave { get; } // TODO change to Transaction Create Request
-        bool SomethingDone { get; }
     }
 }

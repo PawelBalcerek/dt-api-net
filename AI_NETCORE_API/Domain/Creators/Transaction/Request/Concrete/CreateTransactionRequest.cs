@@ -7,7 +7,7 @@ namespace Domain.Creators.Transaction.Request.Concrete
 {
     public class CreateTransactionRequest : ICreateTransactionRequest
     {
-        public CreateTransactionRequest(int sellOfferId, int buyOfferId, decimal price, int amount)
+        public CreateTransactionRequest(int sellOfferId, int buyOfferId, double price, int amount)
         {
             SellOfferId = sellOfferId;
             BuyOfferId = buyOfferId;
@@ -19,7 +19,7 @@ namespace Domain.Creators.Transaction.Request.Concrete
         public int SellOfferId { get; }
         public int BuyOfferId { get; }
         public DateTime CreationDate { get; }
-        public decimal Price { get; }
+        public double Price { get; }
         public int Amount { get; }
     }
 }

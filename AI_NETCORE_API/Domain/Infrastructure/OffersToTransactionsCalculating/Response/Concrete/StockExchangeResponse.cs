@@ -12,6 +12,6 @@ namespace Domain.Infrastructure.OffersToTransactionsCalculating.Response.Concret
         public IList<ISellOfferCreateRequest> SellOffersToCreateAfterCalculating { get; }
         //public IList<IBuyOfferCreateRequest> OffersToCreateAfterCalculating { get; }
         //public IList<ITransactionCreateRequest> TransactionsTpCreateAfterCalculating { get; }
-        public IList<IResource>
+        //public IList<IResource>
     }
 }

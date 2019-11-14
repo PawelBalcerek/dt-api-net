@@ -7,11 +7,13 @@ namespace Domain.Providers.SellOffers.Request.Concrete
 {
     public class GetSellOffersToStockExecutionRequest : IGetSellOffersToStockExecutionRequest
     {
-        public GetSellOffersToStockExecutionRequest(int quantity)
+        public GetSellOffersToStockExecutionRequest(int quantity, int companyId)
         {
             Quantity = quantity;
+            CompanyId = companyId;
         }
 
         public int Quantity { get; }
+        public int CompanyId { get; }
     }
 }

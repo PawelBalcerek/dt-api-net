@@ -75,8 +75,10 @@ namespace Domain.Repositories.ResourceRepo.Concrete
                 CompId = companyId
             };
             RepositoryContext.Resources.Add(resource);
+            
             RepositoryContext.SaveChanges();
-            BusinessObject.Resource businessResource = _converter.ConvertResource(resource);
+            Resource resourceWithCompanyParameters = RepositoryContext.Resources.Include(r => r.Comp).FirstOrDefault(x => x.Id == resource.Id);
+            BusinessObject.Resource businessResource = _converter.ConvertResource(resourceWithCompanyParameters);
             timer.Stop();
             return new RepositoryResponse<BusinessObject.Resource>(businessResource, timer.ElapsedMilliseconds);
         }

@@ -9,9 +9,9 @@ namespace Domain.Creators.Transaction.Request.Abstract
         int SellOfferId { get; }
         int BuyOfferId { get; }
         DateTime CreationDate { get; }
-        decimal Price { get; }
+        double Price { get; }
         int Amount { get; }
 
     }
-}
+
 }

@@ -54,11 +54,11 @@ namespace Domain.Providers.BuyOffers.Concrete
             }
         }
 
-        public IGetBuyOffersToStockExecutionResponse GetBuyOfferToStockExecution(int quantity)
+        public IGetBuyOffersToStockExecutionResponse GetBuyOfferToStockExecution(IGetBuyOffersToStockExecutionRequest getBuyOffersToStockExecutionRequest)
         {
             try
             {
-                RepositoryResponse<IEnumerable<BuyOffer>> buyOfferToStockExecute = _buyOffers.GetSellOfferToStockExecute(quantity);
+                RepositoryResponse<IEnumerable<BuyOffer>> buyOfferToStockExecute = _buyOffers.GetSellOfferToStockExecute(getBuyOffersToStockExecutionRequest.Quantity,getBuyOffersToStockExecutionRequest.CompanyId);
                 return new GetBuyOffersToStockExecutionResponse(buyOfferToStockExecute.Object.ToList(), buyOfferToStockExecute.DatabaseTime);
             }
             catch (Exception ex)

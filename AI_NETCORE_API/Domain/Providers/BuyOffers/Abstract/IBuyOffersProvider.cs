@@ -8,11 +8,11 @@ namespace Domain.Providers.BuyOffers.Abstract
 {
     public interface IBuyOffersProvider
     {
-        IGetBuyOfferByIdResponse GetBuyOfferById(IGetBuyOfferByIdRequest getBuyOfferByIdRequest);
+        //IGetBuyOfferByIdResponse GetBuyOfferById(IGetBuyOfferByIdRequest getBuyOfferByIdRequest);
         
-        IGetBuyOffersResponse GetBuyOffers();
+        //IGetBuyOffersResponse GetBuyOffers();
 
-        IGetBuyOffersToStockExecutionResponse GetBuyOfferToStockExecution(int quantity);
+        IGetBuyOffersToStockExecutionResponse GetBuyOfferToStockExecution(IGetBuyOffersToStockExecutionRequest getBuyOffersToStockExecutionRequest);
         IGetBuyOffersByUserIdResponse GetBuyOffersByUserId(IGetBuyOffersByUserIdRequest getBuyOffersByUserIdRequest);
         IWithdrawBuyOfferByIdResponse WithdrawBuyOfferById(IWithdrawBuyOfferByIdRequest withdrawBuyOfferByIdRequest);
     }
