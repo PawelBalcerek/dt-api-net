@@ -63,6 +63,8 @@ using Domain.Creators.BuyOffer.Abstract;
 using Domain.Creators.BuyOffer.Concrete;
 using Domain.Creators.SellOffer.Concrete;
 using Domain.Creators.SellOffer.Abstract;
+using Domain.Providers.Configurations.Abstract;
+using Domain.Providers.Configurations.Concrete;
 
 namespace AI_NETCORE_API
 {
@@ -107,8 +109,8 @@ namespace AI_NETCORE_API
             services.AddTransient<IBuyOfferCreator, BuyOfferCreator>(); 
             services.AddTransient<IUserCreator, UserCreator>();
             services.AddTransient<ISellOfferCreator, SellOfferCreator>();
-            //services.AddTransient<IConfigurationCreator, ConfigurationCreator>();
             services.AddTransient<IConfigurationUpdater, ConfigurationUpdater>();
+            services.AddTransient<IConfigurationsProvider, ConfigurationsProvider>();
             
 
 

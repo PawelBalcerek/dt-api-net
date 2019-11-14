@@ -29,7 +29,7 @@ namespace Data.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                
+                optionsBuilder.UseNpgsql("Host=javatestai.ddns.net;Database=ai;Username=aidaytrader;Password=2019^L01;");
             }
         }
 
@@ -235,7 +235,8 @@ namespace Data.Models
             {
                 entity.ToTable("users");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id")
+                    .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Cash).HasColumnName("cash");
 
