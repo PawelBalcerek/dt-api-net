@@ -11,7 +11,7 @@ namespace AI_NETCORE_API.Models.Response.Users
         /// <summary>
         /// Token
         /// </summary>
-        public string Token { get; set; }
+        public string Jwt { get; set; }
         public ExecutionDetails ExecDetails { get; set; }
     }
 }

@@ -118,7 +118,7 @@ namespace AI_NETCORE_API.Controllers
                 timer.Stop();
                 var response = new LoginResponse
                 {
-                    Token = loginResponse.Token,
+                    Jwt = loginResponse.Token,
                     ExecDetails = new ExecutionDetails
                     {
                         DbTime = loginResponse.DbTime,
