@@ -17,6 +17,10 @@ using Domain.Providers.BuyOffers.Abstract;
 using Domain.Providers.BuyOffers.Request.Abstract;
 using Domain.Providers.BuyOffers.Request.Concrete;
 using Domain.Providers.BuyOffers.Response.Abstract;
+using Domain.Updaters.Buyoffers.Abstract;
+using Domain.Updaters.BuyOffers.Request.Abstract;
+using Domain.Updaters.BuyOffers.Request.Concrete;
+using Domain.Updaters.BuyOffers.Response.Abstract;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,17 +35,20 @@ namespace AI_NETCORE_API.Controllers
         private readonly ILogger _logger;
         private readonly IBuyOffersProvider _buyOffersProvider;
         private readonly IBuyOfferCreator _buyOfferCreator;
+        private readonly IBuyOfferUpdater _buyOfferUpdater;
 
         public BuyOffersController(
             IBusinessObjectToModelsConverter businessObjectToModelsConverter,
             ILogger logger,
             IBuyOffersProvider buyOffersProvider,
-            IBuyOfferCreator buyOfferCreator)
+            IBuyOfferCreator buyOfferCreator,
+            IBuyOfferUpdater buyOfferUpdater)
         {
             _businessObjectToModelsConverter = businessObjectToModelsConverter;
             _logger = logger;
             _buyOffersProvider = buyOffersProvider;
             _buyOfferCreator = buyOfferCreator;
+            _buyOfferUpdater = buyOfferUpdater;
         }
 
         /// <summary>
@@ -177,7 +184,7 @@ namespace AI_NETCORE_API.Controllers
             {
                 Stopwatch timer = Stopwatch.StartNew();
                 IWithdrawBuyOfferByIdRequest request = new WithdrawBuyOfferByIdRequest(id);
-                IWithdrawBuyOfferByIdResponse withdrawBuyOfferByIdResponse = _buyOffersProvider.WithdrawBuyOfferById(request);
+                IWithdrawBuyOfferByIdResponse withdrawBuyOfferByIdResponse = _buyOfferUpdater.WithdrawBuyOfferById(request);
                 return await PrepareResponseAfterWithdrawBuyOfferById(withdrawBuyOfferByIdResponse, timer);
             }
             catch (Exception ex)

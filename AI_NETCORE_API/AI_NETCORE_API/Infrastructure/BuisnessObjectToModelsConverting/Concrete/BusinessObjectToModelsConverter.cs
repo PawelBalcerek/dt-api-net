@@ -20,7 +20,6 @@ namespace AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Concret
                 Date = buyOffer.Date,
                 IsValid = buyOffer.IsValid,
                 MaxPrice = buyOffer.MaxPrice,
-                ResourceId = buyOffer.ResourceId,
                 Company = new CompanyModel
                 {
                     Id = buyOffer.Company.Id,
