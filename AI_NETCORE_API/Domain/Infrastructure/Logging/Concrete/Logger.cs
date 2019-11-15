@@ -9,12 +9,13 @@ namespace Domain.Infrastructure.Logging.Concrete
     {
         public void Log(string toLog)
         {
-            //throw new NotImplementedException();
+            System.Diagnostics.Debug.Write(toLog);
         }
 
         public void Log(Exception excetionToLog)
         {
-            //throw new NotImplementedException();
+            var log = string.Format("\n[EXCEPTION] {0}\n", excetionToLog);
+            System.Diagnostics.Debug.WriteLine(log);
         }
     }
 }
