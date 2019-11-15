@@ -51,14 +51,19 @@ using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using AI_NETCORE_API.Infrastructure.GettingUserIdentifierFromRequest.Abstract;
+using AI_NETCORE_API.Infrastructure.GettingUserIdentifierFromRequest.Concrete;
 using Domain.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Domain.Updaters.Configurations.Concrete;
 using Domain.Updaters.Configurations.Abstract;
 using Domain.Repositories.ConfigurationRepo.Concrete;
 using Domain.Repositories.ConfigurationRepo.Abstract;
+using Domain.Creators.BuyOffer.Abstract;
+using Domain.Creators.BuyOffer.Concrete;
 using Domain.Creators.SellOffer.Concrete;
 using Domain.Creators.SellOffer.Abstract;
+using Microsoft.EntityFrameworkCore;
 
 namespace AI_NETCORE_API
 {
@@ -79,6 +84,7 @@ namespace AI_NETCORE_API
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.AddTransient<IUserIdentifierFromHttpRequestProvider, UserIdentifierFromHttpRequestProvider>();
             services.AddTransient<RepositoryContext>();
             services.AddTransient<IDTOToBOConverter, DTOToBOConverter>();
             services.AddTransient<IUserRepository, UserRepository>();
@@ -99,13 +105,12 @@ namespace AI_NETCORE_API
             services.AddTransient<IBusinessObjectToModelsConverter, BusinessObjectToModelsConverter>();
             services.AddTransient<IBuyOffersProvider, BuyOffersProvider>();
             services.AddTransient<ISellOfferProvider, SellOfferProvider>();
+            services.AddTransient<IBuyOfferCreator, BuyOfferCreator>(); 
             services.AddTransient<IUserCreator, UserCreator>();
             services.AddTransient<ISellOfferCreator, SellOfferCreator>();
-            services.AddTransient<IConfigurationCreator, ConfigurationCreator>();
             services.AddTransient<IConfigurationUpdater, ConfigurationUpdater>();
-            
 
-
+            services.AddDbContext<RepositoryContext>(options => options.UseNpgsql(Configuration.GetConnectionString("TestDB")));
 
             services.AddSwaggerGen(x =>
             {

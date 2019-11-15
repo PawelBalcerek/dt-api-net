@@ -12,10 +12,12 @@
 
   <ItemGroup>
     <Folder Include="Creators\BuyOffer\" />
+    <Folder Include="Creators\SellOffer\" />
     <Folder Include="Creators\Company\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="3.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.1.11" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.1.1" />

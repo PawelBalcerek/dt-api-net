@@ -12,7 +12,7 @@ namespace Data.Models
         public int BuyOfferId { get; set; }
         public DateTime Date { get; set; }
         public int Amount { get; set; }
-        public decimal Price { get; set; }
+        public double Price { get; set; }
 
         public virtual BuyOffer BuyOffer { get; set; }
         public virtual SellOffer SellOffer { get; set; }

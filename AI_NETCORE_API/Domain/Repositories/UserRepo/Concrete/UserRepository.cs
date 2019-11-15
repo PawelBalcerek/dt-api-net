@@ -12,6 +12,7 @@ using Domain.Infrastructure;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using Domain.Repositories.BaseRepo.Response;
+using BCrypt.Net;
 
 namespace Domain.Repositories.UserRepo.Concrete
 {
@@ -38,9 +39,10 @@ namespace Domain.Repositories.UserRepo.Concrete
         public RepositoryResponse<bool> CreateUser(string name, string password, string email)
         {
             Stopwatch timer = Stopwatch.StartNew();
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
             RepositoryContext.Users.Add(new User
             {
-                Password = password,
+                Password = hashedPassword,
                 Email = email,
                 Name = name,
                 Cash = 0
@@ -60,11 +62,11 @@ namespace Domain.Repositories.UserRepo.Concrete
         public RepositoryResponse<string> Authenticate(string email, string password)
         {
             var timer = Stopwatch.StartNew();
-            var users = from u in RepositoryContext.Users where u.Password == password && u.Email == email select u;
+            var users = from u in RepositoryContext.Users where u.Email == email select u;
             var user = users.FirstOrDefault();
             timer.Stop();
-
-            if (user == null) return null;
+            bool verified = BCrypt.Net.BCrypt.Verify(password, user.Password);
+            if (user == null || !verified) return new RepositoryResponse<string>(null, timer.ElapsedMilliseconds);
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = System.Text.Encoding.ASCII.GetBytes(_tokenManagement.Secret);

@@ -14,7 +14,7 @@ namespace Data.Models
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public decimal Cash { get; set; }
+        public double Cash { get; set; }
 
         public virtual ICollection<Resource> Resources { get; set; }
     }

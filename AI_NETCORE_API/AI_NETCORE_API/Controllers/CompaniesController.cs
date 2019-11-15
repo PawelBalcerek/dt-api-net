@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstract;
+using AI_NETCORE_API.Infrastructure.GettingUserIdentifierFromRequest.Abstract;
 using AI_NETCORE_API.Models.Objects;
 using AI_NETCORE_API.Models.Request.Company;
 using AI_NETCORE_API.Models.Response.Companies;
 using AI_NETCORE_API.Models.Response.ExecutingTimes;
+using Domain.Creators.Company.Abstract;
+using Domain.Creators.Company.Response.Abstract;
 using Domain.Infrastructure.Logging.Abstract;
 using Domain.Providers.Companies.Abstract;
-using Domain.Providers.Companies.Request.Abstract;
-using Domain.Providers.Companies.Request.Concrete;
 using Domain.Providers.Companies.Response.Abstract;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AI_NETCORE_API.Controllers
@@ -24,13 +23,17 @@ namespace AI_NETCORE_API.Controllers
     {
         private readonly ILogger _logger;
         private readonly ICompaniesProvider _companiesProvider;
+        private readonly ICompanyCreator _companyCreator;
         private readonly IBusinessObjectToModelsConverter _businessObjectToModelsConverter;
+        private readonly IUserIdentifierFromHttpRequestProvider _userIdentifierFromHttpRequestProvider;
 
-        public CompaniesController(ILogger logger, ICompaniesProvider companiesProvider, IBusinessObjectToModelsConverter businessObjectToModelsConverter)
+        public CompaniesController(ILogger logger, ICompaniesProvider companiesProvider, IBusinessObjectToModelsConverter businessObjectToModelsConverter, ICompanyCreator companyCreator, IUserIdentifierFromHttpRequestProvider userIdentifierFromHttpRequestProvider)
         {
             _logger = logger;
             _companiesProvider = companiesProvider;
             _businessObjectToModelsConverter = businessObjectToModelsConverter;
+            _companyCreator = companyCreator;
+            _userIdentifierFromHttpRequestProvider = userIdentifierFromHttpRequestProvider;
         }
         [HttpGet("")]
         [ProducesResponseType(200, Type = typeof(GetCompaniesResponseModel))]
@@ -52,34 +55,43 @@ namespace AI_NETCORE_API.Controllers
 
 
 
-        //[HttpPost("")]
-        //[ProducesResponseType(200, Type = typeof(CreateCompanyResponseModel))]
-        //[ProducesResponseType(500)]
-        //public ActionResult<CreateCompanyResponseModel> AddCompany(CreateCompanyRequest request)
-        //{
-        //    try
-        //    {
-        //        Stopwatch timer = Stopwatch.StartNew();
-        //        if (!request.IsValid)
-        //        {
-        //            return PrepareResponseInAddingCompanyWhenBadRequest(timer);
-        //        }
+        [HttpPost("")]
+        [ProducesResponseType(200, Type = typeof(CreateCompanyResponseModel))]
+        [ProducesResponseType(500)]
+        [ProducesResponseType(400)]
+        public ActionResult<CreateCompanyResponseModel> AddCompany(CreateCompanyRequest request)
+        {
+            try
+            {
+                int userId = _userIdentifierFromHttpRequestProvider.GetUserIdFromRequest(this.HttpContext);
+                Stopwatch timer = Stopwatch.StartNew();
+                if (!request.IsValid)
+                {
+                    return PrepareResponseInAddingCompanyWhenBadRequest(timer);
+                }
+                ICreateCompanyResponse companyCreationResponse = _companyCreator.CreateCompany(new Domain.Creators.Company.Request.Concrete.CreateCompanyRequest(userId, request.Name, request.ResourceAmount));
+                timer.Stop();
+                if (!companyCreationResponse.Success) return StatusCode(500);
+                return Ok(new CreateCompanyResponseModel{ ExecutionDetails = new ExecutionDetails
+                {
+                    DbTime = companyCreationResponse.DatabaseExecutionTime,
+                    ExecTime = timer.ElapsedMilliseconds
+                }});
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex);
+                return StatusCode(500);
+            }
+        }
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.Log(ex);
-        //        return StatusCode(500);
-        //    }
-        //}
-
-        //private ActionResult<CreateCompanyResponseModel> PrepareResponseInAddingCompanyWhenBadRequest(Stopwatch timer)
-        //{
-        //    timer.Stop();
-        //    return StatusCode(400,
-        //        new CreateCompanyResponseModel
-        //            {ExecutionDetails = new ExecutionDetails {ExecutionTime = timer.ElapsedMilliseconds}});
-        //}
+        private ActionResult<CreateCompanyResponseModel> PrepareResponseInAddingCompanyWhenBadRequest(Stopwatch timer)
+        {
+            timer.Stop();
+            return StatusCode(400,
+                new CreateCompanyResponseModel
+                { ExecutionDetails = new ExecutionDetails { ExecTime = timer.ElapsedMilliseconds } });
+        }
 
 
         private ActionResult<GetCompaniesResponseModel> PrepareResponseAfterGetCompanies(IGetCompaniesResponse getCompaniesResponse,Stopwatch timer)

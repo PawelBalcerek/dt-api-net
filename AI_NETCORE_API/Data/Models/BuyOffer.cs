@@ -15,7 +15,7 @@ namespace Data.Models
         public int Id { get; set; }
         public int ResourceId { get; set; }
         public int Amount { get; set; }
-        public decimal MaxPrice { get; set; }
+        public double MaxPrice { get; set; }
         public DateTime Date { get; set; }
         public bool IsValid { get; set; }
         public int StartAmount { get; set; }
