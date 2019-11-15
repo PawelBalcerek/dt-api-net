@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Repositories.BuyOfferRepo.Concrete
 {
-    public class BuyOfferRepository: RepositoryBase<BuyOffer>, IBuyOfferRepository
+    public class BuyOfferRepository : RepositoryBase<BuyOffer>, IBuyOfferRepository
     {
         private readonly IDTOToBOConverter _converter;
         public BuyOfferRepository(RepositoryContext repositoryContext, IDTOToBOConverter converter)
@@ -64,6 +64,15 @@ namespace Domain.Repositories.BuyOfferRepo.Concrete
             timer.Stop();
             var time = timer.ElapsedMilliseconds;
             return time;
+        }
+
+        public long ClearAll()
+        {
+            var tim = Stopwatch.StartNew();
+            RepositoryContext.Database.ExecuteSqlCommand("DELETE FROM buy_offers");
+            RepositoryContext.SaveChanges();
+
+            return tim.ElapsedMilliseconds;
         }
     }
 }

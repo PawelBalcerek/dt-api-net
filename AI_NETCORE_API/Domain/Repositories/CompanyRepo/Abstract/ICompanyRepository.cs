@@ -11,5 +11,8 @@ namespace Domain.Repositories.CompanyRepo.Abstract
         RepositoryResponse<BusinessObject.Company> GetCompanyById(int id);
         RepositoryResponse<IEnumerable<BusinessObject.Company>> GetAllCompanies();
         RepositoryResponse<BusinessObject.Company> CreateCompany(ICreateCompanyRequest createCompanyRequest);
+
+        long ClearAll();
+
     }
 }

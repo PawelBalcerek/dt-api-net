@@ -13,5 +13,9 @@ namespace Domain.Repositories.UserRepo.Abstract
         RepositoryResponse<BusinessObject.User> GetUserById(int id);
         RepositoryResponse<bool> CreateUser(string name, string password, string email);
         RepositoryResponse<string> Authenticate(string login, string password);
+
+        long ClearAll();
+        long ClearCash();
+
     }
 }

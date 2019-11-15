@@ -66,5 +66,15 @@ namespace Domain.Repositories.SellOfferRepo.Concrete
             var time = timer.ElapsedMilliseconds;
             return time;
         }
+
+        public long ClearAll()
+        {
+            var tim = Stopwatch.StartNew();
+
+            RepositoryContext.Database.ExecuteSqlCommand("DELETE FROM sell_offers");
+            RepositoryContext.SaveChanges();
+
+            return tim.ElapsedMilliseconds;
+        }
     }
 }

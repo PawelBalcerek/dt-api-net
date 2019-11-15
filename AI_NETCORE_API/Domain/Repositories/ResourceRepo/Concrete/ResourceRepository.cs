@@ -80,5 +80,16 @@ namespace Domain.Repositories.ResourceRepo.Concrete
             timer.Stop();
             return new RepositoryResponse<BusinessObject.Resource>(businessResource, timer.ElapsedMilliseconds);
         }
+
+        public long ClearAll()
+        {
+            var tim = Stopwatch.StartNew();
+
+            RepositoryContext.Database.ExecuteSqlCommand("DELETE FROM resources");
+            RepositoryContext.SaveChanges();
+
+            return tim.ElapsedMilliseconds;
+
+        }
     }
 }

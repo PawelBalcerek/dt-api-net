@@ -32,5 +32,15 @@ namespace Domain.Repositories.TransactionRepo.Concrete
                 return new RepositoryResponse<IEnumerable<BusinessObject.Transaction>>(transactions, time);
             }
         }
+
+        public long ClearAll()
+        {
+            var tim = Stopwatch.StartNew();
+
+            RepositoryContext.Database.ExecuteSqlCommand("DELETE FROM transactions");
+            RepositoryContext.SaveChanges();
+
+            return tim.ElapsedMilliseconds;
+        }
     }
 }
