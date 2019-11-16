@@ -52,11 +52,12 @@ namespace Domain.Repositories.UserRepo.Concrete
                 RepositoryContext.SaveChanges();
                 timer.Stop();
                 return new RepositoryResponse<bool>(true, timer.ElapsedMilliseconds);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return new RepositoryResponse<bool>(false, timer.ElapsedMilliseconds);
             }
-            
+
         }
 
         public RepositoryResponse<string> Authenticate(string email, string password)
@@ -65,8 +66,11 @@ namespace Domain.Repositories.UserRepo.Concrete
             var users = from u in RepositoryContext.Users where u.Email == email select u;
             var user = users.FirstOrDefault();
             timer.Stop();
-            bool verified = BCrypt.Net.BCrypt.Verify(password, user.Password);
-            if (user == null || !verified) return new RepositoryResponse<string>(null, timer.ElapsedMilliseconds);
+
+
+            bool verified = (user != null) && BCrypt.Net.BCrypt.Verify(password, user.Password);
+
+            if (!verified) return new RepositoryResponse<string>(null, timer.ElapsedMilliseconds);
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = System.Text.Encoding.ASCII.GetBytes(_tokenManagement.Secret);

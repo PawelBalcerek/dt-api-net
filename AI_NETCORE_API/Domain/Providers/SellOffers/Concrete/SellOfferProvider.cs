@@ -37,20 +37,5 @@ namespace Domain.Providers.SellOffers.Concrete
                 return new GetSellOffersByUserIdResponse();
             }
         }
-
-        public IWithdrawSellOfferByIdResponse WithdrawSellOfferById(IWithdrawSellOfferByIdRequest withdrawSellOfferByIdRequest)
-        {
-            try
-            {
-                var result = _sellOffers.WithdrawSellOffer(withdrawSellOfferByIdRequest.SellOfferId);
-                return new WithdrawSellOfferByIdResponse(result);
-
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex);
-                return new WithdrawSellOfferByIdResponse();
-            }
-        }
     }
 }

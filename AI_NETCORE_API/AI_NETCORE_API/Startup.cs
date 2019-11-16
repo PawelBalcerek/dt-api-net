@@ -66,6 +66,8 @@ using Domain.Creators.SellOffer.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Domain.Updaters.Buyoffers.Abstract;
 using Domain.Updaters.Buyoffers.Concrete;
+using Domain.Updaters.SellOffers.Abstract;
+using Domain.Updaters.SellOffers.Concrete;
 
 namespace AI_NETCORE_API
 {
@@ -111,6 +113,7 @@ namespace AI_NETCORE_API
             services.AddTransient<IBuyOfferUpdater, BuyOfferUpdater>();
             services.AddTransient<IUserCreator, UserCreator>();
             services.AddTransient<ISellOfferCreator, SellOfferCreator>();
+            services.AddTransient<ISellOfferUpdater, SellOfferUpdater>();
             services.AddTransient<IConfigurationUpdater, ConfigurationUpdater>();
 
             services.AddDbContext<RepositoryContext>(options => options.UseNpgsql(Configuration.GetConnectionString("TestDB")));
