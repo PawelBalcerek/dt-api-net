@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Updaters.Buyoffers.Abstract
+namespace Domain.Updaters.BuyOffers.Abstract
 {
     public interface IBuyOfferUpdater
     {

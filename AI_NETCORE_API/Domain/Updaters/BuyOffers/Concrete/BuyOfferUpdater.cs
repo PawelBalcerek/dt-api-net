@@ -1,14 +1,14 @@
 ﻿using Domain.Infrastructure.Logging.Abstract;
 using Domain.Repositories.BuyOfferRepo.Abstract;
-using Domain.Updaters.Buyoffers.Abstract;
 using Domain.Updaters.BuyOffers.Request.Abstract;
 using Domain.Updaters.BuyOffers.Response.Abstract;
 using Domain.Updaters.BuyOffers.Response.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Domain.Updaters.BuyOffers.Abstract;
 
-namespace Domain.Updaters.Buyoffers.Concrete
+namespace Domain.Updaters.BuyOffers.Concrete
 {
     public class BuyOfferUpdater : IBuyOfferUpdater
     {

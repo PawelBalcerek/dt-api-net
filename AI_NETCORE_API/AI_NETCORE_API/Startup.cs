@@ -64,8 +64,8 @@ using Domain.Creators.BuyOffer.Concrete;
 using Domain.Creators.SellOffer.Concrete;
 using Domain.Creators.SellOffer.Abstract;
 using Microsoft.EntityFrameworkCore;
-using Domain.Updaters.Buyoffers.Abstract;
-using Domain.Updaters.Buyoffers.Concrete;
+using Domain.Updaters.BuyOffers.Abstract;
+using Domain.Updaters.BuyOffers.Concrete;
 using Domain.Updaters.SellOffers.Abstract;
 using Domain.Updaters.SellOffers.Concrete;
 

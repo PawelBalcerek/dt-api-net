@@ -17,7 +17,7 @@ using Domain.Providers.BuyOffers.Abstract;
 using Domain.Providers.BuyOffers.Request.Abstract;
 using Domain.Providers.BuyOffers.Request.Concrete;
 using Domain.Providers.BuyOffers.Response.Abstract;
-using Domain.Updaters.Buyoffers.Abstract;
+using Domain.Updaters.BuyOffers.Abstract;
 using Domain.Updaters.BuyOffers.Request.Abstract;
 using Domain.Updaters.BuyOffers.Request.Concrete;
 using Domain.Updaters.BuyOffers.Response.Abstract;
