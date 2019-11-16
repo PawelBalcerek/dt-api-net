@@ -26,7 +26,7 @@ namespace Domain.Repositories.SellOfferRepo.Concrete
             using (var databaseContext = new RepositoryContext())
             {
                 var timer = Stopwatch.StartNew();
-                var sellOffers = FindByCondition(p => p.Resource.UserId == id && p.IsValid == true).Include(p => p.Resource).Include(p => p.Resource.Comp).Select(p => _converter.ConvertSellOffer(p));
+                var sellOffers = FindByCondition(p => p.Resource.UserId == id).Include(p => p.Resource).Include(p => p.Resource.Comp).Select(p => _converter.ConvertSellOffer(p));
                 timer.Stop();
                 var time = timer.ElapsedMilliseconds;
                 return new RepositoryResponse<IEnumerable<BusinessObject.SellOffer>>(sellOffers, time);

@@ -17,6 +17,7 @@ using Domain.Providers.SellOffers.Abstract;
 using Domain.Providers.SellOffers.Request.Abstract;
 using Domain.Providers.SellOffers.Request.Concrete;
 using Domain.Providers.SellOffers.Response.Abstract;
+using Domain.Updaters.SellOffers.Abstract;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,17 +32,20 @@ namespace AI_NETCORE_API.Controllers
         private readonly ILogger _logger;
         private readonly ISellOfferProvider _sellOffersProvider;
         private readonly ISellOfferCreator _sellOfferCreator;
+        private readonly ISellOfferUpdater _sellOfferUpdater;
 
         public SellOffersController(
             IBusinessObjectToModelsConverter businessObjectToModelsConverter,
             ILogger logger,
             ISellOfferProvider sellOfferProvider,
-            ISellOfferCreator sellOfferCreator)
+            ISellOfferCreator sellOfferCreator,
+            ISellOfferUpdater sellOfferUpdater)
         {
             _businessObjectToModelsConverter = businessObjectToModelsConverter;
             _logger = logger;
             _sellOffersProvider = sellOfferProvider;
             _sellOfferCreator = sellOfferCreator;
+            _sellOfferUpdater = sellOfferUpdater;
         }
 
         /// <summary>
@@ -177,7 +181,7 @@ namespace AI_NETCORE_API.Controllers
             {
                 Stopwatch timer = Stopwatch.StartNew();
                 IWithdrawSellOfferByIdRequest request = new WithdrawSellOfferByIdRequest(id);
-                IWithdrawSellOfferByIdResponse withdrawSellOfferByIdResponse = _sellOffersProvider.WithdrawSellOfferById(request);
+                IWithdrawSellOfferByIdResponse withdrawSellOfferByIdResponse = _sellOfferUpdater.WithdrawSellOfferById(request);
                 return await PrepareResponseAfterWithdrawSellOfferById(withdrawSellOfferByIdResponse, timer);
             }
             catch (Exception ex)
