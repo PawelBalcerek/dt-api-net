@@ -1,10 +1,10 @@
-﻿using Domain.Providers.BuyOffers.Response.Abstract;
-using Domain.Providers.Common.Enum;
+﻿using Domain.Providers.Common.Enum;
+using Domain.Updaters.BuyOffers.Response.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Providers.BuyOffers.Response.Concrete
+namespace Domain.Updaters.BuyOffers.Response.Concrete
 {
     public class WithdrawBuyOfferByIdResponse : IWithdrawBuyOfferByIdResponse
     {

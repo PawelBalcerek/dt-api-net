@@ -9,6 +9,5 @@ namespace Domain.Providers.BuyOffers.Abstract
     public interface IBuyOffersProvider
     {
         IGetBuyOffersByUserIdResponse GetBuyOffersByUserId(IGetBuyOffersByUserIdRequest getBuyOffersByUserIdRequest);
-        IWithdrawBuyOfferByIdResponse WithdrawBuyOfferById(IWithdrawBuyOfferByIdRequest withdrawBuyOfferByIdRequest);
     }
 }

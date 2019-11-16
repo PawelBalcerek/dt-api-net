@@ -64,6 +64,8 @@ using Domain.Creators.BuyOffer.Concrete;
 using Domain.Creators.SellOffer.Concrete;
 using Domain.Creators.SellOffer.Abstract;
 using Microsoft.EntityFrameworkCore;
+using Domain.Updaters.BuyOffers.Abstract;
+using Domain.Updaters.BuyOffers.Concrete;
 using Domain.Updaters.SellOffers.Abstract;
 using Domain.Updaters.SellOffers.Concrete;
 
@@ -107,7 +109,8 @@ namespace AI_NETCORE_API
             services.AddTransient<IBusinessObjectToModelsConverter, BusinessObjectToModelsConverter>();
             services.AddTransient<IBuyOffersProvider, BuyOffersProvider>();
             services.AddTransient<ISellOfferProvider, SellOfferProvider>();
-            services.AddTransient<IBuyOfferCreator, BuyOfferCreator>(); 
+            services.AddTransient<IBuyOfferCreator, BuyOfferCreator>();
+            services.AddTransient<IBuyOfferUpdater, BuyOfferUpdater>();
             services.AddTransient<IUserCreator, UserCreator>();
             services.AddTransient<ISellOfferCreator, SellOfferCreator>();
             services.AddTransient<ISellOfferUpdater, SellOfferUpdater>();
