@@ -19,6 +19,7 @@ using Domain.Providers.SellOffers.Abstract;
 using Domain.Providers.SellOffers.Request.Abstract;
 using Domain.Providers.SellOffers.Request.Concrete;
 using Domain.Providers.SellOffers.Response.Abstract;
+using Domain.Repositories.TransactionRepo.Abstract;
 
 namespace Domain.Infrastructure.OffersToTransactionsCalculating.Concrete
 {
@@ -28,14 +29,16 @@ namespace Domain.Infrastructure.OffersToTransactionsCalculating.Concrete
         private readonly IBuyOffersProvider _buyOffersProvider;
         private readonly ILogger _logger;
         private readonly IConfigurationsProvider _configurationsProvider;
+        private readonly ITransactionRepository _transactionRepository;
 
 
-        public StockExchanger(ISellOfferProvider sellOfferProvider, IBuyOffersProvider buyOffersProvider, ILogger logger, IConfigurationsProvider configurationsProvider)
+        public StockExchanger(ISellOfferProvider sellOfferProvider, IBuyOffersProvider buyOffersProvider, ILogger logger, IConfigurationsProvider configurationsProvider, ITransactionRepository transactionRepository)
         {
             _sellOfferProvider = sellOfferProvider;
             _buyOffersProvider = buyOffersProvider;
             _logger = logger;
             _configurationsProvider = configurationsProvider;
+            _transactionRepository = transactionRepository;
         }
 
         public IStockExchangeResponse StockExchange(IStockExchangeRequest stockExchangeRequest)
@@ -74,13 +77,11 @@ namespace Domain.Infrastructure.OffersToTransactionsCalculating.Concrete
                 }
 
                 IProcessingTransactionWindowResult processingTransactionWindowResult = transactionWindow.Process(_logger);
-
-                if (!processingTransactionWindowResult.SomethingDone)
-                {
-                    //TODO inform
-                }
-
-                //TODO Do Changes on database and return result
+                
+                long databaseExecutionTime = _transactionRepository.SaveTransactionsAfterProcessing(
+                    processingTransactionWindowResult.SellOffersToSave,
+                    processingTransactionWindowResult.BuyOffersToSave,
+                    processingTransactionWindowResult.TransactionsToSave);
 
             }
             catch (Exception ex)
