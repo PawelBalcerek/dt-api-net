@@ -4,8 +4,10 @@ using Domain.Infrastructure.Logging.Abstract;
 using Domain.Infrastructure.OffersToTransactionsCalculating.Abstract;
 using Domain.Infrastructure.OffersToTransactionsCalculating.Request.Abstract;
 using Domain.Infrastructure.OffersToTransactionsCalculating.Response.Abstract;
+using Domain.Infrastructure.OffersToTransactionsCalculating.Response.Concrete;
 using Domain.Infrastructure.TransactionProcessing;
 using Domain.Infrastructure.TransactionProcessing.Responses.Abstract;
+using Domain.Infrastructure.TransactionProcessing.Responses.Const;
 using Domain.Providers.BuyOffers.Abstract;
 using Domain.Providers.BuyOffers.Request.Abstract;
 using Domain.Providers.BuyOffers.Request.Concrete;
@@ -43,29 +45,34 @@ namespace Domain.Infrastructure.OffersToTransactionsCalculating.Concrete
 
         public IStockExchangeResponse StockExchange(IStockExchangeRequest stockExchangeRequest)
         {
+            long databaseTime = 0;
             try
             {
+                
                 int companyId = stockExchangeRequest.CompanyId;
+
                 IGetConfigurationResponse quantityFromConfiguration = new GetConfigurationResponse(new Configuration("offerWindowSize", 2), 0); //_configurationsProvider.GetConfiguration(new GetConfigurationRequest("configValue"));
-
-
-
+                databaseTime += quantityFromConfiguration.DatabaseExecutionTime;
                 if (quantityFromConfiguration.ProvideResult != ProvideEnumResult.Success)
                 {
-                    //TODO inform
+                    return new StockExchangeResponse(StockExchangeResultEnum.GetConfigurationWindowSizeFail,quantityFromConfiguration.DatabaseExecutionTime);
                 }
+
 
                 IGetSellOffersToStockExecutionRequest getSellOffersToStockExecutionRequest = new GetSellOffersToStockExecutionRequest(quantityFromConfiguration.Configuration.Value, companyId);
                 IGetSellOffersToStockExecutionResponse sellOffersToStockExecutionResponse = _sellOfferProvider.GetSellOfferToStockExecute(getSellOffersToStockExecutionRequest);
+                databaseTime += sellOffersToStockExecutionResponse.DatabaseExecutionTime;
                 if (sellOffersToStockExecutionResponse.ProvideResult != ProvideEnumResult.Success)
                 {
-                    //TODO inform
+                    return new StockExchangeResponse(StockExchangeResultEnum.GetSellOffersFail,databaseTime);
                 }
+
                 IGetBuyOffersToStockExecutionRequest buyOffersToStockExecutionRequest = new GetBuyOffersToStockExecutionRequest(quantityFromConfiguration.Configuration.Value, companyId);
                 IGetBuyOffersToStockExecutionResponse buyOffersToStockExecutionResponse = _buyOffersProvider.GetBuyOfferToStockExecution(buyOffersToStockExecutionRequest);
+                databaseTime += buyOffersToStockExecutionResponse.DatabaseExecutionTime;
                 if (buyOffersToStockExecutionResponse.ProvideResult != ProvideEnumResult.Success)
                 {
-                    //TODO inform
+                    return new StockExchangeResponse(StockExchangeResultEnum.GetBuyOffersFail,databaseTime);
                 }
 
                 TransactionWindow transactionWindow = new TransactionWindow(buyOffersToStockExecutionResponse.BuyOffers,
@@ -73,23 +80,26 @@ namespace Domain.Infrastructure.OffersToTransactionsCalculating.Concrete
 
                 if (!transactionWindow.IsValid)
                 {
-                    //TODO inform
+                    return new StockExchangeResponse(StockExchangeResultEnum.ProcessingWindowIsNotValid,databaseTime);
                 }
 
                 IProcessingTransactionWindowResult processingTransactionWindowResult = transactionWindow.Process(_logger);
                 
-                long databaseExecutionTime = _transactionRepository.SaveTransactionsAfterProcessing(
+                long databaseProcessingExecutionTime = _transactionRepository.SaveTransactionsAfterProcessing(
                     processingTransactionWindowResult.SellOffersToSave,
                     processingTransactionWindowResult.BuyOffersToSave,
                     processingTransactionWindowResult.TransactionsToSave);
+                databaseTime += databaseProcessingExecutionTime;
+
+                return new StockExchangeResponse(StockExchangeResultEnum.Success,databaseTime);
 
             }
             catch (Exception ex)
             {
                 _logger.Log(ex);
-
+                return new StockExchangeResponse(StockExchangeResultEnum.Exception,databaseTime);
             }
-            throw new NotImplementedException();
+            
 
         }
     }
