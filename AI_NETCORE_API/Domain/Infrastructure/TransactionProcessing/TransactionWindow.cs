@@ -37,9 +37,9 @@ namespace Domain.Infrastructure.TransactionProcessing
                 while (true)
                 {
                     SellOffer actualSellOffer = SellOffers.FirstOrDefault(x => x.Amount != 0);
-                    if (actualSellOffer == null) return new ProcessingTransactionWindowResult(SellOffers, BuyOffers, TransactionsToSave); ;
+                    if (actualSellOffer == null) return new ProcessingTransactionWindowResult(SellOffers, BuyOffers, TransactionsToSave); 
                     BuyOffer actualBuyOffer = BuyOffers.FirstOrDefault(x => x.Amount != 0);
-                    if (actualBuyOffer == null) return new ProcessingTransactionWindowResult(SellOffers, BuyOffers, TransactionsToSave); ;
+                    if (actualBuyOffer == null) return new ProcessingTransactionWindowResult(SellOffers, BuyOffers, TransactionsToSave);
 
                     if (actualBuyOffer.MaxPrice < actualSellOffer.Price)
                     {

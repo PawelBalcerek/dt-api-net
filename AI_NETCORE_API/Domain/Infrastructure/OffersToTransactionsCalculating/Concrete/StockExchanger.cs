@@ -51,7 +51,7 @@ namespace Domain.Infrastructure.OffersToTransactionsCalculating.Concrete
                 
                 int companyId = stockExchangeRequest.CompanyId;
 
-                IGetConfigurationResponse quantityFromConfiguration = new GetConfigurationResponse(new Configuration("offerWindowSize", 2), 0); //_configurationsProvider.GetConfiguration(new GetConfigurationRequest("configValue"));
+                IGetConfigurationResponse quantityFromConfiguration = new GetConfigurationResponse(new Configuration("offerWindowSize", 3), 0); //_configurationsProvider.GetConfiguration(new GetConfigurationRequest("configValue"));
                 databaseTime += quantityFromConfiguration.DatabaseExecutionTime;
                 if (quantityFromConfiguration.ProvideResult != ProvideEnumResult.Success)
                 {

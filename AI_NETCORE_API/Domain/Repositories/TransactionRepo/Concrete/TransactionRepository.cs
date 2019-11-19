@@ -56,6 +56,8 @@ namespace Domain.Repositories.TransactionRepo.Concrete
                     };
                     RepositoryContext.Transactions.Add(transaction);
 
+                    RepositoryContext.SaveChanges();
+
                     BusinessObject.SellOffer sellOffer =
                         sellOffersToSave.FirstOrDefault(x => x.Id == transactionRequest.SellOfferId);
 
@@ -73,8 +75,12 @@ namespace Domain.Repositories.TransactionRepo.Concrete
                         StartAmount = sellOffer.StartAmount
                     });
 
+                    RepositoryContext.SaveChanges();
+
                     Resource sellOfferResource =
                         RepositoryContext.Resources.FirstOrDefault(x => x.Id == sellOffer.ResourceId);
+
+
 
                     if (sellOfferResource == null)
                         throw new InvalidOperationException("Resources from sellOffer not found");
@@ -82,7 +88,7 @@ namespace Domain.Repositories.TransactionRepo.Concrete
                     sellOfferResource.Amount -= transaction.Amount;
                     RepositoryContext.Resources.Update(sellOfferResource);
 
-
+                    RepositoryContext.SaveChanges();
 
 
                     BusinessObject.BuyOffer buyOffer =
@@ -102,18 +108,21 @@ namespace Domain.Repositories.TransactionRepo.Concrete
                         StartAmount = buyOffer.StartAmount
                     });
 
+                    RepositoryContext.SaveChanges();
+
                     Resource buyOfferResource =
                         RepositoryContext.Resources.FirstOrDefault(x => x.Id == buyOffer.ResourceId);
 
                     if (buyOfferResource == null)
                         throw new InvalidOperationException("Resources from buyOffer not found");
 
-                    buyOfferResource.Amount -= transaction.Amount;
+                    buyOfferResource.Amount += transaction.Amount;
                     RepositoryContext.Resources.Update(buyOfferResource);
+                    RepositoryContext.SaveChanges();
 
                 }
 
-                RepositoryContext.SaveChanges();
+                //RepositoryContext.SaveChanges();
 
                 dbContextTransaction.Commit();
             }
