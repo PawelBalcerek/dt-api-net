@@ -34,16 +34,16 @@ namespace Domain.Infrastructure.TransactionProcessing
         {
             try
             {
-                for (int i = 0; i < Size; i++)
+                while (true)
                 {
                     SellOffer actualSellOffer = SellOffers.FirstOrDefault(x => x.Amount != 0);
-                    if (actualSellOffer == null) return null;
+                    if (actualSellOffer == null) return new ProcessingTransactionWindowResult(SellOffers, BuyOffers, TransactionsToSave); ;
                     BuyOffer actualBuyOffer = BuyOffers.FirstOrDefault(x => x.Amount != 0);
-                    if (actualBuyOffer == null) return null;
+                    if (actualBuyOffer == null) return new ProcessingTransactionWindowResult(SellOffers, BuyOffers, TransactionsToSave); ;
 
                     if (actualBuyOffer.MaxPrice < actualSellOffer.Price)
                     {
-                        return null; // TODO cannot create any transaction
+                        return new ProcessingTransactionWindowResult(SellOffers, BuyOffers, TransactionsToSave);
                     }
 
                     bool amountIsTheSame = actualSellOffer.Amount == actualBuyOffer.Amount;
@@ -65,8 +65,6 @@ namespace Domain.Infrastructure.TransactionProcessing
                         }
                     }
                 }
-
-                return new ProcessingTransactionWindowResult(SellOffers, BuyOffers, TransactionsToSave);
             }
             catch (Exception ex)
             {
@@ -78,26 +76,26 @@ namespace Domain.Infrastructure.TransactionProcessing
         private void ProcessWhenAmountOnSellOfferIsBigger(SellOffer actualSellOffer, BuyOffer actualBuyOffer)
         {
             int quantityToTransaction = actualBuyOffer.Amount;
-            TransactionsToSave.Add(new CreateTransactionRequest(actualSellOffer.Id, actualBuyOffer.Id,
-                actualSellOffer.Price, quantityToTransaction));
-            actualBuyOffer.UpdateActualAmount(quantityToTransaction);
+            MakeChangesOnOffersAndCreateTransaction(actualBuyOffer,actualSellOffer,quantityToTransaction);
         }
 
         private void ProcessWhenAmountOnBuyOfferIsBigger(BuyOffer actualBuyOffer, SellOffer actualSellOffer)
         {
             int quantityToTransaction =actualSellOffer.Amount;
+            MakeChangesOnOffersAndCreateTransaction(actualBuyOffer,actualSellOffer,quantityToTransaction);
+        }
+
+        private void MakeChangesOnOffersAndCreateTransaction(BuyOffer actualBuyOffer, SellOffer actualSellOffer,int quantityToTransaction)
+        {
             TransactionsToSave.Add(new CreateTransactionRequest(actualSellOffer.Id, actualBuyOffer.Id,
                 actualSellOffer.Price, quantityToTransaction));
             actualSellOffer.UpdateActualAmount(actualSellOffer.Amount - quantityToTransaction);
+            actualBuyOffer.UpdateActualAmount(actualBuyOffer.Amount - quantityToTransaction);
         }
-
-        private void ProcessWhenAmountsAreEquals(SellOffer actualSellOffer, BuyOffer actualBuyOffer
-            )
+        private void ProcessWhenAmountsAreEquals(SellOffer actualSellOffer, BuyOffer actualBuyOffer)
         {
-            TransactionsToSave.Add(new CreateTransactionRequest(actualSellOffer.Id, actualBuyOffer.Id,
-                actualSellOffer.Price, actualSellOffer.Amount));
-            actualSellOffer.UpdateActualAmount(0);
-            actualBuyOffer.UpdateActualAmount(0);
+            int quantity = actualSellOffer.Amount;
+            MakeChangesOnOffersAndCreateTransaction(actualBuyOffer,actualSellOffer,quantity);
         }
     }
 }
