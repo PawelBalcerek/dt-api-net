@@ -7,10 +7,12 @@ using Data.Models;
 using Domain.DTOToBOConverting;
 using System.Linq;
 using System.Diagnostics;
+using System.Transactions;
 using Domain.Creators.Transaction.Request.Abstract;
 using Domain.Repositories.BaseRepo.Response;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Transaction = Data.Models.Transaction;
 
 namespace Domain.Repositories.TransactionRepo.Concrete
 {
@@ -41,7 +43,7 @@ namespace Domain.Repositories.TransactionRepo.Concrete
             IList<BusinessObject.BuyOffer> buyOffersToSave, IList<ICreateTransactionRequest> transactionsToSave)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
-            using (IDbContextTransaction dbContextTransaction = RepositoryContext.Database.BeginTransaction())
+            using (var transactionScope = RepositoryContext.Database.BeginTransaction())
             {
                 foreach (ICreateTransactionRequest transactionRequest in transactionsToSave)
                 {
@@ -64,16 +66,26 @@ namespace Domain.Repositories.TransactionRepo.Concrete
                     if (sellOffer == null)
                         throw new InvalidOperationException("Cannot create transaction without sellOffer");
 
-                    RepositoryContext.SellOffers.Update(new SellOffer
-                    {
-                        Price = sellOffer.Price,
-                        Amount = sellOffer.Amount,
-                        Id = sellOffer.Id,
-                        Date = sellOffer.Date,
-                        IsValid = sellOffer.IsValid,
-                        ResourceId = sellOffer.ResourceId,
-                        StartAmount = sellOffer.StartAmount
-                    });
+                    //SellOffer sellOfferFromDatabase = new SellOffer
+                    //{
+                    //    Id = sellOffer.Id,
+                    //    Amount = sellOffer.Amount,
+                    //    Price = sellOffer.Price,
+                    //    ResourceId = sellOffer.ResourceId,
+                    //    Date = sellOffer.Date,
+                    //    IsValid = sellOffer.IsValid,
+                    //    StartAmount = sellOffer.StartAmount
+
+                    //};
+                    SellOffer sellOfferFromDatabase =
+                        RepositoryContext.SellOffers.FirstOrDefault(x => x.Id == transactionRequest.SellOfferId);
+                    //RepositoryContext.SellOffers.Attach(sellOfferFromDatabase);
+                    if (sellOfferFromDatabase == null)
+                        throw new InvalidOperationException("Cannot create transaction without sellOffer - from database not found");
+
+                    sellOfferFromDatabase.Amount = sellOffer.Amount;
+
+                    //RepositoryContext.SellOffers.Attach(sellOfferFromDatabase);
 
                     RepositoryContext.SaveChanges();
 
@@ -86,7 +98,7 @@ namespace Domain.Repositories.TransactionRepo.Concrete
                         throw new InvalidOperationException("Resources from sellOffer not found");
 
                     sellOfferResource.Amount -= transaction.Amount;
-                    RepositoryContext.Resources.Update(sellOfferResource);
+                    //RepositoryContext.Resources.Attach(sellOfferResource);
 
                     RepositoryContext.SaveChanges();
 
@@ -97,16 +109,26 @@ namespace Domain.Repositories.TransactionRepo.Concrete
                     if (buyOffer == null)
                         throw new InvalidOperationException("Cannot create transaction without buyOffer");
 
-                    RepositoryContext.BuyOffers.Update(new BuyOffer
-                    {
-                        MaxPrice = buyOffer.MaxPrice,
-                        Amount = buyOffer.Amount,
-                        Id = buyOffer.Id,
-                        Date = buyOffer.Date,
-                        IsValid = buyOffer.IsValid,
-                        ResourceId = buyOffer.ResourceId,
-                        StartAmount = buyOffer.StartAmount
-                    });
+
+                    //BuyOffer buyOfferFromDatabase = new BuyOffer
+                    //{
+                    //    Id = buyOffer.Id,
+                    //    Amount = buyOffer.Amount,
+                    //    ResourceId = buyOffer.ResourceId,
+                    //    StartAmount = buyOffer.StartAmount,
+                    //    IsValid = buyOffer.IsValid,
+                    //    MaxPrice = buyOffer.MaxPrice,
+                    //    Date = buyOffer.Date
+                    //};
+
+                    BuyOffer buyOfferFromDatabase =
+                        RepositoryContext.BuyOffers.FirstOrDefault(x => x.Id == transactionRequest.BuyOfferId);
+
+                    //RepositoryContext.BuyOffers.Attach(buyOfferFromDatabase);
+
+                    buyOfferFromDatabase.Amount = buyOffer.Amount;
+
+                    //RepositoryContext.BuyOffers.Attach(buyOfferFromDatabase);
 
                     RepositoryContext.SaveChanges();
 
@@ -117,14 +139,14 @@ namespace Domain.Repositories.TransactionRepo.Concrete
                         throw new InvalidOperationException("Resources from buyOffer not found");
 
                     buyOfferResource.Amount += transaction.Amount;
-                    RepositoryContext.Resources.Update(buyOfferResource);
+                    //RepositoryContext.Resources.Attach(buyOfferResource);
                     RepositoryContext.SaveChanges();
 
                 }
 
-                //RepositoryContext.SaveChanges();
+                RepositoryContext.SaveChanges();
 
-                dbContextTransaction.Commit();
+                transactionScope.Commit();
             }
 
             stopwatch.Stop();
