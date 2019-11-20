@@ -352,3 +352,7 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 /.idea/.idea.dt-api-net.dir
+
+
+appsettings.json
+appsettings.Development.json

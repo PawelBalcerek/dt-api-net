@@ -25,7 +25,7 @@ namespace Domain.Creators.BuyOffer.Concrete
         {
             try
             {
-                long time = _buyOfferRepository.CreateBuyOffer(buyOfferCreateRequest.CompanyId, buyOfferCreateRequest.Amount, buyOfferCreateRequest.Price);
+                long time = _buyOfferRepository.CreateBuyOffer(buyOfferCreateRequest.CompanyId, buyOfferCreateRequest.Amount, buyOfferCreateRequest.Price, buyOfferCreateRequest.UserId);
 
                 return new BuyOfferCreateResponse(true, time);
             }

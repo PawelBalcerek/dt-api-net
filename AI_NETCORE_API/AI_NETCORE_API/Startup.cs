@@ -65,6 +65,11 @@ using Domain.Creators.Company.Abstract;
 using Domain.Creators.Company.Concrete;
 using Domain.Creators.SellOffer.Concrete;
 using Domain.Creators.SellOffer.Abstract;
+using Microsoft.EntityFrameworkCore;
+using Domain.Updaters.BuyOffers.Abstract;
+using Domain.Updaters.BuyOffers.Concrete;
+using Domain.Updaters.SellOffers.Abstract;
+using Domain.Updaters.SellOffers.Concrete;
 using Domain.Infrastructure.OffersToTransactionsCalculating.Abstract;
 using Domain.Infrastructure.OffersToTransactionsCalculating.Concrete;
 using Domain.Providers.Configurations.Abstract;
@@ -111,15 +116,19 @@ namespace AI_NETCORE_API
             services.AddTransient<IBusinessObjectToModelsConverter, BusinessObjectToModelsConverter>();
             services.AddTransient<IBuyOffersProvider, BuyOffersProvider>();
             services.AddTransient<ISellOfferProvider, SellOfferProvider>();
-            services.AddTransient<IBuyOfferCreator, BuyOfferCreator>(); 
+            services.AddTransient<IBuyOfferCreator, BuyOfferCreator>();
+            services.AddTransient<IBuyOfferUpdater, BuyOfferUpdater>();
             services.AddTransient<IUserCreator, UserCreator>();
             services.AddTransient<ISellOfferCreator, SellOfferCreator>();
+            services.AddTransient<ISellOfferUpdater, SellOfferUpdater>();
             services.AddTransient<IConfigurationUpdater, ConfigurationUpdater>();
             services.AddTransient<IConfigurationsProvider, ConfigurationsProvider>();
             services.AddTransient<IStockExchanger, StockExchanger>();
             
 
 
+
+            services.AddDbContext<RepositoryContext>(options => options.UseNpgsql(Configuration.GetConnectionString("TestDB")));
 
             services.AddSwaggerGen(x =>
             {

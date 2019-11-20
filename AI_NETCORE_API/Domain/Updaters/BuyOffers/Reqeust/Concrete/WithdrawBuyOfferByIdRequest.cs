@@ -1,9 +1,9 @@
-﻿using Domain.Providers.BuyOffers.Request.Abstract;
+﻿using Domain.Updaters.BuyOffers.Request.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Providers.BuyOffers.Request.Concrete
+namespace Domain.Updaters.BuyOffers.Request.Concrete
 {
     public class WithdrawBuyOfferByIdRequest : IWithdrawBuyOfferByIdRequest
     {

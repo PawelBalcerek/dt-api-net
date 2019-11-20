@@ -25,9 +25,9 @@ namespace Domain.Creators.SellOffer.Concrete
         {
             try
             {
-                long time = _sellOfferRepository.CreateSellOffer(sellOfferCreateRequest.ResourceId, sellOfferCreateRequest.Amount, sellOfferCreateRequest.Price);
+                var result = _sellOfferRepository.CreateSellOffer(sellOfferCreateRequest.ResourceId, sellOfferCreateRequest.Amount, sellOfferCreateRequest.Price, sellOfferCreateRequest.UserId);
 
-                return new SellOfferCreateResponse(true, time);
+                return new SellOfferCreateResponse(result.Object, result.DatabaseTime);
             }
             catch (Exception ex)
             {

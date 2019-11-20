@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Providers.BuyOffers.Request.Abstract
+namespace Domain.Updaters.BuyOffers.Request.Abstract
 {
     public interface IWithdrawBuyOfferByIdRequest
     {
