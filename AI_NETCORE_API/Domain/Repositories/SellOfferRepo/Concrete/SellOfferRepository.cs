@@ -34,9 +34,32 @@ namespace Domain.Repositories.SellOfferRepo.Concrete
             
         }
 
-        public long CreateSellOffer(int resourceId, int amount, double price)
+        public RepositoryResponse<bool> CreateSellOffer(int resourceId, int amount, double price, int userId)
         {
             var timer = Stopwatch.StartNew();
+
+            var resource = RepositoryContext.Resources.Where(p => p.Id == resourceId).FirstOrDefault();
+
+
+            // User doesn't have this resource
+            if (resource == null)
+            {
+                timer.Stop();
+                return new RepositoryResponse<bool>(false, timer.ElapsedMilliseconds);
+            }
+            // This resoure doesn't belong to current user
+            else if(resource.UserId != userId)
+            {
+                timer.Stop();
+                return new RepositoryResponse<bool>(false, timer.ElapsedMilliseconds);
+            }
+            // User doesn't have enough amount
+            else if (resource.Amount < amount)
+            {
+                timer.Stop();
+                return new RepositoryResponse<bool>(false, timer.ElapsedMilliseconds);
+            }
+
             RepositoryContext.SellOffers.Add(new SellOffer
             {
                 Amount = amount,
@@ -49,7 +72,7 @@ namespace Domain.Repositories.SellOfferRepo.Concrete
             RepositoryContext.SaveChanges(true);
             timer.Stop();
             var time = timer.ElapsedMilliseconds;
-            return time;
+            return new RepositoryResponse<bool>(true, timer.ElapsedMilliseconds); ;
         }
 
         public long WithdrawSellOffer(int sellOfferId)

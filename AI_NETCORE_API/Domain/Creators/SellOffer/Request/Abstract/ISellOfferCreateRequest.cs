@@ -9,5 +9,6 @@ namespace Domain.Creators.SellOffer.Request.Abstract
         int ResourceId { get; }
         int Amount { get; }
         double Price { get; }
+        int UserId { get; }
     }
 }

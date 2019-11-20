@@ -30,19 +30,29 @@ namespace Domain.Repositories.BuyOfferRepo.Concrete
             return new RepositoryResponse<IEnumerable<BusinessObject.BuyOffer>>(buyOffers, time);
         }
 
-        public long CreateBuyOffer(int companyId, int amount, double price)
+        public long CreateBuyOffer(int companyId, int amount, double price, int userId)
         {
             var timer = Stopwatch.StartNew();
+
+            var resource = RepositoryContext.Resources.Where(p => p.UserId == userId && p.CompId == companyId).FirstOrDefault();
+
+            if(resource == null)
+            {
+                resource = new Resource
+                {
+                    Amount = 0,
+                    CompId = companyId,
+                    UserId = userId
+                };
+            }
+
             RepositoryContext.BuyOffers.Add(new BuyOffer
             {
                 Amount = amount,
                 StartAmount = amount,
                 IsValid = true,
                 MaxPrice = price,
-                Resource = new Resource()
-                {
-                    CompId = companyId
-                },
+                Resource = resource,
                 Date = DateTime.Now
             });
             RepositoryContext.SaveChanges(true);

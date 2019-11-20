@@ -115,7 +115,8 @@ namespace AI_NETCORE_API.Controllers
         /// <param name="request">Data for sell offer creation.</param>
         /// <returns>Response with time</returns>
         [ProducesResponseType(200, Type = typeof(CreateSellOfferResponseModel))]
-        [ProducesResponseType(401)]
+        [ProducesResponseType(403)]
+        [ProducesResponseType(404)]
         [ProducesResponseType(500)]
         [HttpPost("sell-offers")]
         [Authorize("Bearer")]
@@ -124,7 +125,13 @@ namespace AI_NETCORE_API.Controllers
             try
             {
                 Stopwatch timer = Stopwatch.StartNew();
-                ISellOfferCreateResponse getSellOffersCreateResponse = _sellOfferCreator.CreateSellOffer(new SellOfferCreateRequest(request.ResourceId, request.Amount, request.Price));
+                var identity = HttpContext.User.Identity as ClaimsIdentity;
+                var userId = int.Parse(identity.Claims.Where(c => c.Type == "Id").FirstOrDefault().Value);
+                ISellOfferCreateResponse getSellOffersCreateResponse = _sellOfferCreator.CreateSellOffer(new SellOfferCreateRequest(request.ResourceId, request.Amount, request.Price, userId));
+                if(getSellOffersCreateResponse.Success == false && getSellOffersCreateResponse.ProvideResult == Domain.Providers.Common.Enum.ProvideEnumResult.Success)
+                {
+                    return StatusCode(403);
+                }
                 return await PrepareResponseAfterPostSellOffers(getSellOffersCreateResponse, timer);
             }
             catch (Exception ex)

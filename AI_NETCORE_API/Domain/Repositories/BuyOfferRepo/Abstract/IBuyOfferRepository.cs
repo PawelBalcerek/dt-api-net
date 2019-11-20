@@ -11,7 +11,7 @@ namespace Domain.Repositories.BuyOfferRepo.Abstract
     public interface IBuyOfferRepository : IRepositoryBase<BuyOffer>
     {
         RepositoryResponse<IEnumerable<BusinessObject.BuyOffer>> GetBuyOffersByUserId(int id);
-        long CreateBuyOffer(int companyId, int amount, double price);
+        long CreateBuyOffer(int companyId, int amount, double price, int userId);
         long WithdrawBuyOffer(int buyOfferId);
     }
 }

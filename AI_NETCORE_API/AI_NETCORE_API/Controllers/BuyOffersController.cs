@@ -127,7 +127,9 @@ namespace AI_NETCORE_API.Controllers
             try
             {
                 Stopwatch timer = Stopwatch.StartNew();
-                IBuyOfferCreateResponse getBuyOffersCreateResponse = _buyOfferCreator.CreateBuyOffer(new BuyOfferCreateRequest(request.CompanyId, request.Amount, request.Price));
+                var identity = HttpContext.User.Identity as ClaimsIdentity;
+                var userId = int.Parse(identity.Claims.Where(c => c.Type == "Id").FirstOrDefault().Value);
+                IBuyOfferCreateResponse getBuyOffersCreateResponse = _buyOfferCreator.CreateBuyOffer(new BuyOfferCreateRequest(request.CompanyId, request.Amount, request.Price, userId));
                 return await PrepareResponseAfterPostBuyOffers(getBuyOffersCreateResponse, timer);
             }
             catch (Exception ex)
