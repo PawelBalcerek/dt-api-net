@@ -13,5 +13,6 @@ namespace Domain.Repositories.BuyOfferRepo.Abstract
         RepositoryResponse<IEnumerable<BusinessObject.BuyOffer>> GetBuyOffersByUserId(int id);
         long CreateBuyOffer(int companyId, int amount, double price, int userId);
         long WithdrawBuyOffer(int buyOfferId);
+        RepositoryResponse<IEnumerable<BusinessObject.BuyOffer>> GetSellOfferToStockExecute(int quantity,int companyId);
     }
 }

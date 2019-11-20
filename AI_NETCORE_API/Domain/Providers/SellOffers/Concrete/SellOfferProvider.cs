@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Domain.Repositories.BaseRepo.Response;
 
 namespace Domain.Providers.SellOffers.Concrete
 {
@@ -35,6 +36,35 @@ namespace Domain.Providers.SellOffers.Concrete
             {
                 _logger.Log(ex);
                 return new GetSellOffersByUserIdResponse();
+            }
+        }
+
+        public IWithdrawSellOfferByIdResponse WithdrawSellOfferById(IWithdrawSellOfferByIdRequest withdrawSellOfferByIdRequest)
+        {
+            try
+            {
+                var result = _sellOffers.WithdrawSellOffer(withdrawSellOfferByIdRequest.SellOfferId);
+                return new WithdrawSellOfferByIdResponse(result);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex);
+                return new WithdrawSellOfferByIdResponse();
+            }
+        }
+
+        public IGetSellOffersToStockExecutionResponse GetSellOfferToStockExecute(IGetSellOffersToStockExecutionRequest getSellOffersToStockExecutionRequest)
+        {
+            try
+            {
+                RepositoryResponse<IEnumerable<SellOffer>> getSellOffers = _sellOffers.GetSellOfferToStockExecute(getSellOffersToStockExecutionRequest.Quantity,getSellOffersToStockExecutionRequest.CompanyId);
+                return new GetSellOffersToStockExecutionResponse(getSellOffers.Object.ToList(),getSellOffers.DatabaseTime);
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex);
+                return new GetSellOffersToStockExecutionResponse();
             }
         }
     }

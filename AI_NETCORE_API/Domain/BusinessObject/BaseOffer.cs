@@ -16,9 +16,14 @@ namespace Domain.BusinessObject
         }
 
         public int Id { get; }
-        public int Amount { get; }
+        public int Amount { get; private set; }
         public int ResourceId { get; }
         public DateTime Date { get; }
         public bool IsValid { get; }
+
+        public void UpdateActualAmount(int newAmount)
+        {
+            Amount = newAmount;
+        }
     }
 }

@@ -41,6 +41,15 @@ namespace Domain.Repositories.ResourceRepo.Concrete
             return new RepositoryResponse<BusinessObject.Resource>(resourceBO, timer.ElapsedMilliseconds);
         }
 
+
+        public RepositoryResponse<int?> GetCompanyIdByResourceId(int resourceId)
+        {
+            Stopwatch timer = Stopwatch.StartNew();
+            Resource resource = RepositoryContext.Resources.AsNoTracking().FirstOrDefault(p => p.Id == resourceId);
+            timer.Stop();
+            return new RepositoryResponse<int?>(resource?.CompId, timer.ElapsedMilliseconds);
+        }
+
         public RepositoryResponse<bool> UpdateResource(BusinessObject.Resource resource)
         {
             bool success;
@@ -75,8 +84,10 @@ namespace Domain.Repositories.ResourceRepo.Concrete
                 CompId = companyId
             };
             RepositoryContext.Resources.Add(resource);
+            
             RepositoryContext.SaveChanges();
-            BusinessObject.Resource businessResource = _converter.ConvertResource(resource);
+            Resource resourceWithCompanyParameters = RepositoryContext.Resources.Include(r => r.Comp).FirstOrDefault(x => x.Id == resource.Id);
+            BusinessObject.Resource businessResource = _converter.ConvertResource(resourceWithCompanyParameters);
             timer.Stop();
             return new RepositoryResponse<BusinessObject.Resource>(businessResource, timer.ElapsedMilliseconds);
         }

@@ -9,5 +9,8 @@ namespace Domain.Providers.SellOffers.Abstract
     public interface ISellOfferProvider
     {
         IGetSellOffersByUserIdResponse GetSellOffersByUserId(IGetSellOffersByUserIdRequest getSellOffersByUserIdRequest);
+        IWithdrawSellOfferByIdResponse WithdrawSellOfferById(IWithdrawSellOfferByIdRequest withdrawSellOfferByIdRequest);
+
+        IGetSellOffersToStockExecutionResponse GetSellOfferToStockExecute(IGetSellOffersToStockExecutionRequest getSellOffersToStockExecutionRequest);
     }
 }

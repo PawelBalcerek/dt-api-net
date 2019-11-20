@@ -14,5 +14,6 @@ namespace Domain.Repositories.ResourceRepo.Abstract
         RepositoryResponse<BusinessObject.Resource> GetResourceById(int id);
         RepositoryResponse<bool> UpdateResource(BusinessObject.Resource resource);
         RepositoryResponse<BusinessObject.Resource> AddResource(int amount, int userId, int companyId);
+        RepositoryResponse<int?> GetCompanyIdByResourceId(int resourceId);
     }
 }
