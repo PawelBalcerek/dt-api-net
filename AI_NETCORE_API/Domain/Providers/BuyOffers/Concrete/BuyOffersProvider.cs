@@ -42,22 +42,7 @@ namespace Domain.Providers.BuyOffers.Concrete
             }
         }
 
-        public IWithdrawBuyOfferByIdResponse WithdrawBuyOfferById(IWithdrawBuyOfferByIdRequest withdrawBuyOfferByIdRequest)
-        {
-            try
-            {
-                var result = _buyOffers.WithdrawBuyOffer(withdrawBuyOfferByIdRequest.BuyOfferId);
-                return new WithdrawBuyOfferByIdResponse(result);
-
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex);
-                return new WithdrawBuyOfferByIdResponse();
-            }
-        }
-
-        public IGetBuyOffersToStockExecutionResponse GetBuyOfferToStockExecution(IGetBuyOffersToStockExecutionRequest getBuyOffersToStockExecutionRequest)
+       public IGetBuyOffersToStockExecutionResponse GetBuyOfferToStockExecution(IGetBuyOffersToStockExecutionRequest getBuyOffersToStockExecutionRequest)
         {
             try
             {

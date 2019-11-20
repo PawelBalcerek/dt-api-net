@@ -80,7 +80,7 @@ namespace Domain.Repositories.BuyOfferRepo.Concrete
         public RepositoryResponse<IEnumerable<BusinessObject.BuyOffer>> GetSellOfferToStockExecute(int quantity,int companyId)
         {
             Stopwatch timer = Stopwatch.StartNew();
-            IList<BuyOffer> buyOffers = RepositoryContext.BuyOffers.Include(p => p.Resource).Include(p => p.Resource.Comp).OrderByDescending(x => x.MaxPrice).Where(bo => bo.Resource.Comp.Id == companyId).Take(quantity).ToList();
+            IList<BuyOffer> buyOffers = RepositoryContext.BuyOffers.Where(x => x.IsValid && x.Amount > 0).Include(p => p.Resource).Include(p => p.Resource.Comp).OrderByDescending(x => x.MaxPrice).Where(bo => bo.Resource.Comp.Id == companyId).Take(quantity).ToList();
             timer.Stop();
             long time = timer.ElapsedMilliseconds;
             return new RepositoryResponse<IEnumerable<BusinessObject.BuyOffer>>(buyOffers.Select(x => _converter.ConvertBuyOffer(x)), time);

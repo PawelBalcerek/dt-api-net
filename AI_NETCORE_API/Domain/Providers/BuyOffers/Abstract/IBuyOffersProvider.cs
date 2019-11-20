@@ -8,10 +8,6 @@ namespace Domain.Providers.BuyOffers.Abstract
 {
     public interface IBuyOffersProvider
     {
-        //IGetBuyOfferByIdResponse GetBuyOfferById(IGetBuyOfferByIdRequest getBuyOfferByIdRequest);
-        
-        //IGetBuyOffersResponse GetBuyOffers();
-
         IGetBuyOffersToStockExecutionResponse GetBuyOfferToStockExecution(IGetBuyOffersToStockExecutionRequest getBuyOffersToStockExecutionRequest);
         IGetBuyOffersByUserIdResponse GetBuyOffersByUserId(IGetBuyOffersByUserIdRequest getBuyOffersByUserIdRequest);
     }
