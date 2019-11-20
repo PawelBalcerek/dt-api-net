@@ -41,6 +41,15 @@ namespace Domain.Repositories.ResourceRepo.Concrete
             return new RepositoryResponse<BusinessObject.Resource>(resourceBO, timer.ElapsedMilliseconds);
         }
 
+
+        public RepositoryResponse<int?> GetCompanyIdByResourceId(int resourceId)
+        {
+            Stopwatch timer = Stopwatch.StartNew();
+            Resource resource = RepositoryContext.Resources.AsNoTracking().FirstOrDefault(p => p.Id == resourceId);
+            timer.Stop();
+            return new RepositoryResponse<int?>(resource?.CompId, timer.ElapsedMilliseconds);
+        }
+
         public RepositoryResponse<bool> UpdateResource(BusinessObject.Resource resource)
         {
             bool success;

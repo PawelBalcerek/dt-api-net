@@ -10,6 +10,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Domain.Repositories.BaseRepo.Response;
+using Domain.Updaters.BuyOffers.Request.Abstract;
+using Domain.Updaters.BuyOffers.Response.Abstract;
+using Domain.Updaters.BuyOffers.Response.Concrete;
 
 namespace Domain.Providers.BuyOffers.Concrete
 {

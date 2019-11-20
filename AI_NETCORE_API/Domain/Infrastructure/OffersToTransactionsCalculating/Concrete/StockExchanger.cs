@@ -91,6 +91,7 @@ namespace Domain.Infrastructure.OffersToTransactionsCalculating.Concrete
                     processingTransactionWindowResult.TransactionsToSave);
                 databaseTime += databaseProcessingExecutionTime;
 
+                
                 return new StockExchangeResponse(StockExchangeResultEnum.Success,databaseTime);
 
             }

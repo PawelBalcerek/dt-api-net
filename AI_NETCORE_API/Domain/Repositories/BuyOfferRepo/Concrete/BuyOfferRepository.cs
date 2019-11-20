@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using Domain.Repositories.BaseRepo.Concrete;
 using Domain.Repositories.BuyOfferRepo.Abstract;
 using Data.Models;
 using System.Linq;
 using Domain.DTOToBOConverting;
 using Domain.Repositories.BaseRepo.Response;
-using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Repositories.BuyOfferRepo.Concrete
@@ -30,6 +28,7 @@ namespace Domain.Repositories.BuyOfferRepo.Concrete
             var time = timer.ElapsedMilliseconds;
             return new RepositoryResponse<IEnumerable<BusinessObject.BuyOffer>>(buyOffers, time);
         }
+        
 
         public long CreateBuyOffer(int companyId, int amount, double price, int userId)
         {
