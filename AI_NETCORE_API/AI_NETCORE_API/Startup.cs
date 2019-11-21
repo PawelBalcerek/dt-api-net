@@ -74,6 +74,9 @@ using Domain.Infrastructure.OffersToTransactionsCalculating.Abstract;
 using Domain.Infrastructure.OffersToTransactionsCalculating.Concrete;
 using Domain.Providers.Configurations.Abstract;
 using Domain.Providers.Configurations.Concrete;
+using Serilog;
+using Serilog.Events;
+
 
 namespace AI_NETCORE_API
 {
@@ -124,10 +127,7 @@ namespace AI_NETCORE_API
             services.AddTransient<IConfigurationUpdater, ConfigurationUpdater>();
             services.AddTransient<IConfigurationsProvider, ConfigurationsProvider>();
             services.AddTransient<IStockExchanger, StockExchanger>();
-            
-
-
-
+           
             services.AddDbContext<RepositoryContext>(options => options.UseNpgsql(Configuration.GetConnectionString("TestDB")));
 
             services.AddSwaggerGen(x =>
