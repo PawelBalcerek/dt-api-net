@@ -12,8 +12,8 @@ namespace Domain.Repositories.TransactionRepo.Abstract
     public interface ITransactionRepository : IRepositoryBase<Transaction>
     {
         RepositoryResponse<IEnumerable<BusinessObject.Transaction>> GetTransactionsByUserId(int id);
-
+        long ClearAll();
         long SaveTransactionsAfterProcessing(IList<BusinessObject.SellOffer> sellOffersToSave,
-            IList<BusinessObject.BuyOffer> buyOffersToSave, IList<ICreateTransactionRequest> transactionsToSave);
+        IList<BusinessObject.BuyOffer> buyOffersToSave, IList<ICreateTransactionRequest> transactionsToSave);
     }
 }

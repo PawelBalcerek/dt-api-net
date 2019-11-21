@@ -9,6 +9,7 @@ using System.Linq;
 using System.Timers;
 using Domain.Creators.Company.Request.Abstract;
 using Domain.Repositories.BaseRepo.Response;
+using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Repositories.CompanyRepo.Concrete
 {
@@ -48,6 +49,16 @@ namespace Domain.Repositories.CompanyRepo.Concrete
             RepositoryContext.SaveChanges();
             stopWatch.Stop();
             return new RepositoryResponse<BusinessObject.Company>(_converter.ConvertCompany(company),stopWatch.ElapsedMilliseconds);
+        }
+
+        public long ClearAll()
+        {
+            var tim = Stopwatch.StartNew();
+
+            RepositoryContext.Database.ExecuteSqlCommand("DELETE FROM companies");
+            RepositoryContext.SaveChanges();
+
+            return tim.ElapsedMilliseconds;
         }
     }
 }

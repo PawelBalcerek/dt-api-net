@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Repositories.BuyOfferRepo.Concrete
 {
-    public class BuyOfferRepository: RepositoryBase<BuyOffer>, IBuyOfferRepository
+    public class BuyOfferRepository : RepositoryBase<BuyOffer>, IBuyOfferRepository
     {
         private readonly IDTOToBOConverter _converter;
         public BuyOfferRepository(RepositoryContext repositoryContext, IDTOToBOConverter converter)
@@ -70,12 +70,21 @@ namespace Domain.Repositories.BuyOfferRepo.Concrete
                 offer.IsValid = false;
 
             }
+            
             RepositoryContext.SaveChanges(true);
             timer.Stop();
             var time = timer.ElapsedMilliseconds;
             return time;
         }
 
+        public long ClearAll()
+        {
+            var tim = Stopwatch.StartNew();
+            RepositoryContext.Database.ExecuteSqlCommand("DELETE FROM buy_offers");
+            RepositoryContext.SaveChanges();
+
+            return tim.ElapsedMilliseconds;
+        }
         
         public RepositoryResponse<IEnumerable<BusinessObject.BuyOffer>> GetSellOfferToStockExecute(int quantity,int companyId)
         {
@@ -84,7 +93,6 @@ namespace Domain.Repositories.BuyOfferRepo.Concrete
             timer.Stop();
             long time = timer.ElapsedMilliseconds;
             return new RepositoryResponse<IEnumerable<BusinessObject.BuyOffer>>(buyOffers.Select(x => _converter.ConvertBuyOffer(x)), time);
-
         }
     }
 }
