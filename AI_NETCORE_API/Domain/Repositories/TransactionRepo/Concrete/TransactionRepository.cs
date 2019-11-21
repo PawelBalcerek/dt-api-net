@@ -51,6 +51,16 @@ namespace Domain.Repositories.TransactionRepo.Concrete
             }
         }
 
+        public long ClearAll()
+        {
+            var tim = Stopwatch.StartNew();
+
+            RepositoryContext.Database.ExecuteSqlCommand("DELETE FROM transactions");
+            RepositoryContext.SaveChanges();
+
+            return tim.ElapsedMilliseconds;
+        }
+        
         public long SaveTransactionsAfterProcessing(IList<BusinessObject.SellOffer> sellOffersToSave,
             IList<BusinessObject.BuyOffer> buyOffersToSave, IList<ICreateTransactionRequest> transactionsToSave)
         {
@@ -137,6 +147,7 @@ namespace Domain.Repositories.TransactionRepo.Concrete
             }
 
             stopwatch.Stop();
+            
             return stopwatch.ElapsedMilliseconds;
         }
     }

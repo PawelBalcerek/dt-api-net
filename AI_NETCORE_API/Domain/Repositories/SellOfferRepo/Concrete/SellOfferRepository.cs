@@ -90,6 +90,16 @@ namespace Domain.Repositories.SellOfferRepo.Concrete
             return time;
         }
 
+        public long ClearAll()
+        {
+            var tim = Stopwatch.StartNew();
+
+            RepositoryContext.Database.ExecuteSqlCommand("DELETE FROM sell_offers");
+            RepositoryContext.SaveChanges();
+
+            return tim.ElapsedMilliseconds;
+        }
+        
         public RepositoryResponse<IEnumerable<BusinessObject.SellOffer>> GetSellOfferToStockExecute(int quantity,int companyId)
         {
             Stopwatch timer = Stopwatch.StartNew();

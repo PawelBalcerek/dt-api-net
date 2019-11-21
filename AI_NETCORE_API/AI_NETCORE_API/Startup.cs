@@ -66,6 +66,8 @@ using Domain.Creators.Company.Concrete;
 using Domain.Creators.SellOffer.Concrete;
 using Domain.Creators.SellOffer.Abstract;
 using Microsoft.EntityFrameworkCore;
+using Domain.Deleters.Thanos.Abstract;
+using Domain.Deleters.Thanos.Concrete;
 using Domain.Updaters.BuyOffers.Abstract;
 using Domain.Updaters.BuyOffers.Concrete;
 using Domain.Updaters.SellOffers.Abstract;
@@ -125,9 +127,9 @@ namespace AI_NETCORE_API
             services.AddTransient<ISellOfferCreator, SellOfferCreator>();
             services.AddTransient<ISellOfferUpdater, SellOfferUpdater>();
             services.AddTransient<IConfigurationUpdater, ConfigurationUpdater>();
+            services.AddTransient<IDbDeleter, DbDeleter>();
             services.AddTransient<IConfigurationsProvider, ConfigurationsProvider>();
             services.AddTransient<IStockExchanger, StockExchanger>();
-           
             services.AddDbContext<RepositoryContext>(options => options.UseNpgsql(Configuration.GetConnectionString("TestDB")));
 
             services.AddSwaggerGen(x =>

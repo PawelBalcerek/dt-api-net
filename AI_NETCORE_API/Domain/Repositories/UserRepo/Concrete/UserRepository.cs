@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using Domain.Repositories.BaseRepo.Response;
 using BCrypt.Net;
+using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Repositories.UserRepo.Concrete
 {
@@ -87,6 +88,30 @@ namespace Domain.Repositories.UserRepo.Concrete
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return new RepositoryResponse<string>(tokenHandler.WriteToken(token), timer.ElapsedMilliseconds);
+        }
+
+        public long ClearAll()
+        {
+            var tim = Stopwatch.StartNew();
+
+            RepositoryContext.Database.ExecuteSqlCommand("DELETE FROM users");
+            RepositoryContext.SaveChanges();
+
+            return tim.ElapsedMilliseconds;
+        }
+
+        public long ClearCash()
+        {
+            var tim = Stopwatch.StartNew();
+
+            foreach (var user in RepositoryContext.Users)
+            {
+                user.Cash = 0;
+            }
+
+            RepositoryContext.SaveChanges();
+
+            return tim.ElapsedMilliseconds;
         }
     }
 }
