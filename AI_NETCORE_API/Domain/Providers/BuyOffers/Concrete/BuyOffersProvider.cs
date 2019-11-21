@@ -9,6 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Domain.Repositories.BaseRepo.Response;
+using Domain.Updaters.BuyOffers.Request.Abstract;
+using Domain.Updaters.BuyOffers.Response.Abstract;
+using Domain.Updaters.BuyOffers.Response.Concrete;
 
 namespace Domain.Providers.BuyOffers.Concrete
 {
@@ -38,18 +42,17 @@ namespace Domain.Providers.BuyOffers.Concrete
             }
         }
 
-        public IWithdrawBuyOfferByIdResponse WithdrawBuyOfferById(IWithdrawBuyOfferByIdRequest withdrawBuyOfferByIdRequest)
+       public IGetBuyOffersToStockExecutionResponse GetBuyOfferToStockExecution(IGetBuyOffersToStockExecutionRequest getBuyOffersToStockExecutionRequest)
         {
             try
             {
-                var result = _buyOffers.WithdrawBuyOffer(withdrawBuyOfferByIdRequest.BuyOfferId);
-                return new WithdrawBuyOfferByIdResponse(result);
-
+                RepositoryResponse<IEnumerable<BuyOffer>> buyOfferToStockExecute = _buyOffers.GetSellOfferToStockExecute(getBuyOffersToStockExecutionRequest.Quantity,getBuyOffersToStockExecutionRequest.CompanyId);
+                return new GetBuyOffersToStockExecutionResponse(buyOfferToStockExecute.Object.ToList(), buyOfferToStockExecute.DatabaseTime);
             }
             catch (Exception ex)
             {
                 _logger.Log(ex);
-                return new WithdrawBuyOfferByIdResponse();
+                return new GetBuyOffersToStockExecutionResponse();
             }
         }
     }

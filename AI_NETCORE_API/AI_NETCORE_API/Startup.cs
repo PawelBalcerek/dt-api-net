@@ -61,11 +61,21 @@ using Domain.Repositories.ConfigurationRepo.Concrete;
 using Domain.Repositories.ConfigurationRepo.Abstract;
 using Domain.Creators.BuyOffer.Abstract;
 using Domain.Creators.BuyOffer.Concrete;
+using Domain.Creators.Company.Abstract;
+using Domain.Creators.Company.Concrete;
 using Domain.Creators.SellOffer.Concrete;
 using Domain.Creators.SellOffer.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Domain.Deleters.Thanos.Abstract;
 using Domain.Deleters.Thanos.Concrete;
+using Domain.Updaters.BuyOffers.Abstract;
+using Domain.Updaters.BuyOffers.Concrete;
+using Domain.Updaters.SellOffers.Abstract;
+using Domain.Updaters.SellOffers.Concrete;
+using Domain.Infrastructure.OffersToTransactionsCalculating.Abstract;
+using Domain.Infrastructure.OffersToTransactionsCalculating.Concrete;
+using Domain.Providers.Configurations.Abstract;
+using Domain.Providers.Configurations.Concrete;
 
 namespace AI_NETCORE_API
 {
@@ -104,14 +114,19 @@ namespace AI_NETCORE_API
             services.AddTransient<ITransactionsProvider, TransactionProvider>();
             services.AddTransient<IResourcesProvider, ResourcesProvider>();
             services.AddTransient<ICompaniesProvider, CompaniesProvider>();
+            services.AddTransient<ICompanyCreator, CompanyCreator>();
             services.AddTransient<IBusinessObjectToModelsConverter, BusinessObjectToModelsConverter>();
             services.AddTransient<IBuyOffersProvider, BuyOffersProvider>();
             services.AddTransient<ISellOfferProvider, SellOfferProvider>();
-            services.AddTransient<IBuyOfferCreator, BuyOfferCreator>(); 
+            services.AddTransient<IBuyOfferCreator, BuyOfferCreator>();
+            services.AddTransient<IBuyOfferUpdater, BuyOfferUpdater>();
             services.AddTransient<IUserCreator, UserCreator>();
             services.AddTransient<ISellOfferCreator, SellOfferCreator>();
+            services.AddTransient<ISellOfferUpdater, SellOfferUpdater>();
             services.AddTransient<IConfigurationUpdater, ConfigurationUpdater>();
             services.AddTransient<IDbDeleter, DbDeleter>();
+            services.AddTransient<IConfigurationsProvider, ConfigurationsProvider>();
+            services.AddTransient<IStockExchanger, StockExchanger>();
 
             services.AddDbContext<RepositoryContext>(options => options.UseNpgsql(Configuration.GetConnectionString("TestDB")));
 

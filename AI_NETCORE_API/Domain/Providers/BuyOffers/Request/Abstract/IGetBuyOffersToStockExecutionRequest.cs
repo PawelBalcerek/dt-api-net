@@ -4,8 +4,9 @@ using System.Text;
 
 namespace Domain.Providers.BuyOffers.Request.Abstract
 {
-    public interface IWithdrawBuyOfferByIdRequest
+    public interface IGetBuyOffersToStockExecutionRequest
     {
-        int BuyOfferId { get; }
+        int Quantity { get; }
+        int CompanyId { get; }
     }
 }

@@ -15,5 +15,7 @@ namespace Domain.BusinessObject
         public double Price { get; }
         public int StartAmount { get; }
         public Company Company { get; }
+
+        
     }
 }

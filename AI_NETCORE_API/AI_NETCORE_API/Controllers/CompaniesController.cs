@@ -13,6 +13,7 @@ using Domain.Creators.Company.Response.Abstract;
 using Domain.Infrastructure.Logging.Abstract;
 using Domain.Providers.Companies.Abstract;
 using Domain.Providers.Companies.Response.Abstract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AI_NETCORE_API.Controllers
@@ -59,6 +60,7 @@ namespace AI_NETCORE_API.Controllers
         [ProducesResponseType(200, Type = typeof(CreateCompanyResponseModel))]
         [ProducesResponseType(500)]
         [ProducesResponseType(400)]
+        [Authorize("Bearer")]
         public ActionResult<CreateCompanyResponseModel> AddCompany(CreateCompanyRequest request)
         {
             try

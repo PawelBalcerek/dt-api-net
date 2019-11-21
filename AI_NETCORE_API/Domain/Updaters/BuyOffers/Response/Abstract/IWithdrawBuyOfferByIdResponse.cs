@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Providers.BuyOffers.Response.Abstract
+namespace Domain.Updaters.BuyOffers.Response.Abstract
 {
     public interface IWithdrawBuyOfferByIdResponse : IProvideResult, IDatabaseExecutionTimeDetails
     {

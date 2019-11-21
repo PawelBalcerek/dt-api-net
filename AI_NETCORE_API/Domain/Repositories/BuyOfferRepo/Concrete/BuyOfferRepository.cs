@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
 using Domain.Repositories.BaseRepo.Concrete;
 using Domain.Repositories.BuyOfferRepo.Abstract;
 using Data.Models;
 using System.Linq;
 using Domain.DTOToBOConverting;
 using Domain.Repositories.BaseRepo.Response;
-using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Repositories.BuyOfferRepo.Concrete
@@ -29,20 +28,31 @@ namespace Domain.Repositories.BuyOfferRepo.Concrete
             var time = timer.ElapsedMilliseconds;
             return new RepositoryResponse<IEnumerable<BusinessObject.BuyOffer>>(buyOffers, time);
         }
+        
 
-        public long CreateBuyOffer(int companyId, int amount, double price)
+        public long CreateBuyOffer(int companyId, int amount, double price, int userId)
         {
             var timer = Stopwatch.StartNew();
+
+            var resource = RepositoryContext.Resources.Where(p => p.UserId == userId && p.CompId == companyId).FirstOrDefault();
+
+            if(resource == null)
+            {
+                resource = new Resource
+                {
+                    Amount = 0,
+                    CompId = companyId,
+                    UserId = userId
+                };
+            }
+
             RepositoryContext.BuyOffers.Add(new BuyOffer
             {
                 Amount = amount,
                 StartAmount = amount,
                 IsValid = true,
                 MaxPrice = price,
-                Resource = new Resource()
-                {
-                    CompId = companyId
-                },
+                Resource = resource,
                 Date = DateTime.Now
             });
             RepositoryContext.SaveChanges(true);
@@ -60,6 +70,7 @@ namespace Domain.Repositories.BuyOfferRepo.Concrete
                 offer.IsValid = false;
 
             }
+            
             RepositoryContext.SaveChanges(true);
             timer.Stop();
             var time = timer.ElapsedMilliseconds;
@@ -73,6 +84,15 @@ namespace Domain.Repositories.BuyOfferRepo.Concrete
             RepositoryContext.SaveChanges();
 
             return tim.ElapsedMilliseconds;
+        }
+        
+        public RepositoryResponse<IEnumerable<BusinessObject.BuyOffer>> GetSellOfferToStockExecute(int quantity,int companyId)
+        {
+            Stopwatch timer = Stopwatch.StartNew();
+            IList<BuyOffer> buyOffers = RepositoryContext.BuyOffers.Where(x => x.IsValid && x.Amount > 0).Include(p => p.Resource).Include(p => p.Resource.Comp).OrderByDescending(x => x.MaxPrice).Where(bo => bo.Resource.Comp.Id == companyId).Take(quantity).ToList();
+            timer.Stop();
+            long time = timer.ElapsedMilliseconds;
+            return new RepositoryResponse<IEnumerable<BusinessObject.BuyOffer>>(buyOffers.Select(x => _converter.ConvertBuyOffer(x)), time);
         }
     }
 }
