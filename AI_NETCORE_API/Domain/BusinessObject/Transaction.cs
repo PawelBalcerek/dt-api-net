@@ -4,6 +4,8 @@ using System.Text;
 
 namespace Domain.BusinessObject
 {
+    public enum TransactionType { BUY_OFFER, SELL_OFFER };
+
     public class Transaction
     {
         public Transaction(int id, int sellOfferId, int buyOfferId, DateTime date, double price, int amount, Company company)
@@ -24,5 +26,6 @@ namespace Domain.BusinessObject
         public double Price { get; }
         public int Amount { get; }
         public Company Company { get; }
+        public TransactionType Type { get; set; }
     }
 }

@@ -32,7 +32,19 @@ namespace Domain.Repositories.TransactionRepo.Concrete
             using (var databaseContext = new RepositoryContext())
             {
                 var timer = Stopwatch.StartNew();
-                var transactions = FindByCondition(p => p.SellOffer.Resource.UserId == id).Include(p => p.SellOffer).Include(p => p.SellOffer.Resource).Include(p => p.SellOffer.Resource.Comp).Select(p => _converter.ConvertTransaction(p));
+                var sellOfferTransactions = FindByCondition(p => p.SellOffer.Resource.UserId == id).Include(p => p.SellOffer).Include(p => p.SellOffer.Resource).Include(p => p.SellOffer.Resource.Comp).Select(p => _converter.ConvertTransaction(p));
+                foreach(var transaction in sellOfferTransactions)
+                {
+                    transaction.Type = BusinessObject.TransactionType.SELL_OFFER;
+                }
+
+                var buyOfferTransaction = FindByCondition(p => p.BuyOffer.Resource.UserId == id).Include(p => p.BuyOffer).Include(p => p.BuyOffer.Resource).Include(p => p.BuyOffer.Resource.Comp).Select(p => _converter.ConvertTransaction(p));
+                foreach (var transaction in buyOfferTransaction)
+                {
+                    transaction.Type = BusinessObject.TransactionType.BUY_OFFER;
+                }
+
+                var transactions = sellOfferTransactions.Concat(buyOfferTransaction);
                 timer.Stop();
                 var time = timer.ElapsedMilliseconds;
                 return new RepositoryResponse<IEnumerable<BusinessObject.Transaction>>(transactions, time);
