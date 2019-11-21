@@ -81,7 +81,8 @@ namespace AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Concret
                 {
                     Id = transaction.Company.Id,
                     Name = transaction.Company.Name
-                }
+                },
+                Type = transaction.Type == TransactionType.BUY_OFFER ? TransactionTypeModel.BUY_OFFER : TransactionTypeModel.SELL_OFFER
             };
         }
 
