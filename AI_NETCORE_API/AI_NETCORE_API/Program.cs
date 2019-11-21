@@ -22,7 +22,7 @@ namespace AI_NETCORE_API
                 .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
                 .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
                 .WriteTo.Console()
-                .WriteTo.File("logs\\dt-traffic-generator-api.txt", rollingInterval: RollingInterval.Day)
+                .WriteTo.File("logs\\dt-api-core.txt", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
 
             try
