@@ -9,13 +9,13 @@ namespace Domain.Infrastructure.Logging.Concrete
     {
         public void Log(string toLog)
         {
-            System.Diagnostics.Debug.Write(toLog);
+            Serilog.Log.Debug(toLog);
         }
 
         public void Log(Exception excetionToLog)
         {
             var log = string.Format("\n[EXCEPTION] {0}\n", excetionToLog);
-            System.Diagnostics.Debug.WriteLine(log);
+            Serilog.Log.Fatal(log);
         }
     }
 }
