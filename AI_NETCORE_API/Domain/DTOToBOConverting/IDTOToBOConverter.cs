@@ -11,7 +11,7 @@ namespace Domain.DTOToBOConverting
         Domain.BusinessObject.BuyOffer ConvertBuyOffer(Data.Models.BuyOffer buyOffer);
         Domain.BusinessObject.SellOffer ConvertSellOffer(Data.Models.SellOffer sellOffer);
         Domain.BusinessObject.Resource ConvertResource(Data.Models.Resource resource);
-        Domain.BusinessObject.Transaction ConvertTransaction(Data.Models.Transaction transaction);
+        Domain.BusinessObject.Transaction ConvertTransaction(Data.Models.Transaction transaction, Data.Models.Company company);
         Domain.BusinessObject.Configuration ConvertConfiguration(Data.Models.Configuration configuration);
     }
 }

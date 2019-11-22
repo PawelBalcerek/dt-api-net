@@ -41,12 +41,12 @@ namespace Domain.DTOToBOConverting
             else
                 return new Domain.BusinessObject.Resource(resource.Id, resource.UserId, new BusinessObject.Company(resource.CompId, resource.Comp.Name), resource.Amount);
         }
-        public Domain.BusinessObject.Transaction ConvertTransaction(Data.Models.Transaction transaction)
+        public Domain.BusinessObject.Transaction ConvertTransaction(Data.Models.Transaction transaction, Data.Models.Company company)
         {
             if (transaction == null)
                 return null;
             else
-                return new Domain.BusinessObject.Transaction(transaction.Id, transaction.SellOfferId, transaction.BuyOfferId, transaction.Date, transaction.Price, transaction.Amount, new BusinessObject.Company(transaction.SellOffer.Resource.Comp.Id, transaction.SellOffer.Resource.Comp.Name));
+                return new Domain.BusinessObject.Transaction(transaction.Id, transaction.SellOfferId, transaction.BuyOfferId, transaction.Date, transaction.Price, transaction.Amount, new BusinessObject.Company(company.Id, company.Name));
         }
         public Domain.BusinessObject.Configuration ConvertConfiguration(Data.Models.Configuration configuration)
         {
