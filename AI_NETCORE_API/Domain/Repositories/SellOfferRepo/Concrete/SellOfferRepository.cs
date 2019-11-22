@@ -69,6 +69,7 @@ namespace Domain.Repositories.SellOfferRepo.Concrete
                 ResourceId = resourceId,
                 Date = DateTime.Now
             });
+            resource.Amount -= amount;
             RepositoryContext.SaveChanges(true);
             timer.Stop();
             var time = timer.ElapsedMilliseconds;
@@ -78,12 +79,11 @@ namespace Domain.Repositories.SellOfferRepo.Concrete
         public long WithdrawSellOffer(int sellOfferId)
         {
             var timer = Stopwatch.StartNew();
-            using (var dbContext = new RepositoryContext())
-            {
-                SellOffer offer = dbContext.SellOffers.Where(p => p.Id == sellOfferId).First();
-                offer.IsValid = false;
+            SellOffer offer = RepositoryContext.SellOffers.Where(p => p.Id == sellOfferId).FirstOrDefault();
+            Resource resource = RepositoryContext.Resources.FirstOrDefault(r => r.Id == offer.ResourceId);
+            resource.Amount += offer.Amount;
+            offer.IsValid = false;
 
-            }
             RepositoryContext.SaveChanges(true);
             timer.Stop();
             var time = timer.ElapsedMilliseconds;
