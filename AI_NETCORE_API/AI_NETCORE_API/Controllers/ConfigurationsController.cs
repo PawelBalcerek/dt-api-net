@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AI_NETCORE_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class ConfigurationsController : ControllerBase
     {
@@ -33,7 +33,7 @@ namespace AI_NETCORE_API.Controllers
             _businessObjectToModelsConverter = businessObjectToModelsConverter;
         }
 
-        [HttpPut("")]
+        [HttpPut("configurations")]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
         [ProducesResponseType(404)]

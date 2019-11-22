@@ -161,7 +161,7 @@ namespace AI_NETCORE_API.Controllers
         /// </summary>
         /// <param name="registerRequest"> Request object required to create new user </param>
         /// <returns>RegisterResponse</returns>
-        [HttpPost("register")]
+        [HttpPost("users")]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
         [ProducesResponseType(200, Type = typeof(RegisterResponse))]
