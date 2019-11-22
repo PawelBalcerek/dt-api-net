@@ -64,13 +64,10 @@ namespace Domain.Repositories.BuyOfferRepo.Concrete
         public long WithdrawBuyOffer(int buyOfferId)
         {
             var timer = Stopwatch.StartNew();
-            using (var dbContext = new RepositoryContext())
-            {
-                BuyOffer offer = dbContext.BuyOffers.Where(p => p.Id == buyOfferId).First();
-                offer.IsValid = false;
-
-            }
             
+            BuyOffer offer = RepositoryContext.BuyOffers.Where(p => p.Id == buyOfferId).First();
+            offer.IsValid = false;
+
             RepositoryContext.SaveChanges(true);
             timer.Stop();
             var time = timer.ElapsedMilliseconds;
