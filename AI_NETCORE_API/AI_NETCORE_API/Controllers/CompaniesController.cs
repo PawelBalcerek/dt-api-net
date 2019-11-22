@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AI_NETCORE_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class CompaniesController : ControllerBase
     {
@@ -36,7 +36,7 @@ namespace AI_NETCORE_API.Controllers
             _companyCreator = companyCreator;
             _userIdentifierFromHttpRequestProvider = userIdentifierFromHttpRequestProvider;
         }
-        [HttpGet("")]
+        [HttpGet("companies")]
         [ProducesResponseType(200, Type = typeof(GetCompaniesResponseModel))]
         [ProducesResponseType(500)]
         public ActionResult<GetCompaniesResponseModel> GetCompanies()
@@ -56,7 +56,7 @@ namespace AI_NETCORE_API.Controllers
 
 
 
-        [HttpPost("")]
+        [HttpPost("companies")]
         [ProducesResponseType(200, Type = typeof(CreateCompanyResponseModel))]
         [ProducesResponseType(500)]
         [ProducesResponseType(400)]
