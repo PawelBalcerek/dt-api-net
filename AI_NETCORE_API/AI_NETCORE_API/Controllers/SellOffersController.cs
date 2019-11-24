@@ -180,9 +180,9 @@ namespace AI_NETCORE_API.Controllers
         [ProducesResponseType(200, Type = typeof(WithdrawSellOfferResponseModel))]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
-        [HttpPut("sell-offers/:id")]
+        [HttpPut("sell-offers/{id}")]
         [Authorize("Bearer")]
-        public async Task<ActionResult> GetSellOffersByUserId(int id)
+        public async Task<ActionResult> WithdrawSellOfferById(int id)
         {
             try
             {

@@ -109,18 +109,6 @@ namespace Domain.Repositories.TransactionRepo.Concrete
 
 
 
-                    Resource sellOfferResource =
-                        RepositoryContext.Resources.FirstOrDefault(x => x.Id == sellOffer.ResourceId);
-
-                    if (sellOfferResource == null)
-                        throw new InvalidOperationException("Resources from sellOffer not found");
-
-                    sellOfferResource.Amount -= transaction.Amount;
-                    
-                    RepositoryContext.SaveChanges();
-
-
-
                     BusinessObject.BuyOffer buyOffer =
                         buyOffersToSave.FirstOrDefault(x => x.Id == transactionRequest.BuyOfferId);
 
