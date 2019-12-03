@@ -27,6 +27,7 @@ using Domain.Providers.Users.Abstract;
 using Domain.Providers.Users.Request.Abstract;
 using Domain.Providers.Users.Request.Concrete;
 using Domain.Providers.Users.Response.Abstract;
+using Domain.Repositories.UserRepo.Const;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -180,23 +181,27 @@ namespace AI_NETCORE_API.Controllers
 
                 timer.Stop();
 
-                if (result.Success)
+                switch (result.ResponseEnum)
                 {
-                    var response = new RegisterResponse
+                    case CreateUserResponseEnum.Success:
                     {
-                        ExecDetails = new ExecutionDetails
+                        var response = new RegisterResponse
                         {
-                            DbTime = result.DbTime,
-                            ExecTime = timer.ElapsedMilliseconds
-                        }
-                    };
-                    return Ok(response);
+                            ExecDetails = new ExecutionDetails
+                            {
+                                DbTime = result.DbTime,
+                                ExecTime = timer.ElapsedMilliseconds
+                            }
+                        };
+                        return Ok(response);
+                    }
+                    case CreateUserResponseEnum.EmailAlreadyExists:
+                        return StatusCode(409);
+                    case CreateUserResponseEnum.Exception:
+                        return StatusCode(500);
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
-                else
-                {
-                    return StatusCode(500);
-                }
-                
             }
             catch (Exception ex)
             {
