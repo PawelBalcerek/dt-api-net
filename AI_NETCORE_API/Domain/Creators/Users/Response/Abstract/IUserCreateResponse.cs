@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using Domain.BusinessObject;
+using Domain.Repositories.UserRepo.Const;
 
 namespace Domain.Creators.Users.Response.Abstract
 {
     public interface IUserCreateResponse
     {
-        bool Success { get; }
+        CreateUserResponseEnum ResponseEnum { get; }
         long DbTime { get; }
     }
 }

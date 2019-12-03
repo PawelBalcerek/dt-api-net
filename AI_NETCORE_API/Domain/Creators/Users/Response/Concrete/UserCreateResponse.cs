@@ -3,24 +3,25 @@ using System.Collections.Generic;
 using System.Text;
 using Domain.BusinessObject;
 using Domain.Creators.Users.Response.Abstract;
+using Domain.Repositories.UserRepo.Const;
 
 namespace Domain.Creators.Users.Response.Concrete
 {
     public class UserCreateResponse : IUserCreateResponse
     {
-        public UserCreateResponse(bool success, long dbTime)
+        public UserCreateResponse(CreateUserResponseEnum responseEnum, long dbTime)
         {
-            Success = success;
+            ResponseEnum = responseEnum;
             DbTime = dbTime;
         }
 
         public UserCreateResponse()
         {
-            Success = false;
+            ResponseEnum = CreateUserResponseEnum.Exception;
             DbTime = 0;
         }
 
-        public bool Success { get; }
+        public CreateUserResponseEnum ResponseEnum { get; }
         public long DbTime { get; }
     }
 }

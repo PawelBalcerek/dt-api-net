@@ -8,7 +8,9 @@ using Domain.Creators.Users.Request.Abstract;
 using Domain.Creators.Users.Response.Abstract;
 using Domain.Creators.Users.Response.Concrete;
 using Domain.Infrastructure.Logging.Abstract;
+using Domain.Repositories.BaseRepo.Response;
 using Domain.Repositories.UserRepo.Abstract;
+using Domain.Repositories.UserRepo.Const;
 
 namespace Domain.Creators.Users.Concrete
 {
@@ -27,7 +29,7 @@ namespace Domain.Creators.Users.Concrete
         {
             try
             {
-                var response = _userRepository.CreateUser(userCreateRequest.UserName,userCreateRequest.Password,userCreateRequest.Email);
+                RepositoryResponse<CreateUserResponseEnum> response = _userRepository.CreateUser(userCreateRequest.UserName,userCreateRequest.Password,userCreateRequest.Email);
     
                 return new UserCreateResponse(response.Object, response.DatabaseTime);
             }

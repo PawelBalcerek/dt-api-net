@@ -13,6 +13,8 @@ using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using Domain.Repositories.BaseRepo.Response;
 using BCrypt.Net;
+using Domain.Infrastructure.Logging.Abstract;
+using Domain.Repositories.UserRepo.Const;
 using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Repositories.UserRepo.Concrete
@@ -21,12 +23,13 @@ namespace Domain.Repositories.UserRepo.Concrete
     {
         private readonly IDTOToBOConverter _converter;
         private readonly TokenManagement _tokenManagement;
+        private readonly ILogger _logger;
 
-
-        public UserRepository(RepositoryContext repositoryContext, IDTOToBOConverter converter, IOptions<TokenManagement> tokenManagement)
+        public UserRepository(RepositoryContext repositoryContext, IDTOToBOConverter converter, IOptions<TokenManagement> tokenManagement, ILogger logger)
             : base(repositoryContext)
         {
             _converter = converter;
+            _logger = logger;
             _tokenManagement = tokenManagement.Value;
         }
         public RepositoryResponse<BusinessObject.User> GetUserById(int id)
@@ -37,10 +40,21 @@ namespace Domain.Repositories.UserRepo.Concrete
             return new RepositoryResponse<BusinessObject.User>(_converter.ConvertUser(user), timer.ElapsedMilliseconds);
         }
 
-        public RepositoryResponse<bool> CreateUser(string name, string password, string email)
+        public RepositoryResponse<CreateUserResponseEnum> CreateUser(string name, string password, string email)
         {
             Stopwatch timer = Stopwatch.StartNew();
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+
+
+            User userWithGivenEmail = RepositoryContext.Users.AsNoTracking().FirstOrDefault(x => x.Email == email);
+
+            if (userWithGivenEmail != null)
+            {
+                timer.Stop();
+                return new RepositoryResponse<CreateUserResponseEnum>(CreateUserResponseEnum.EmailAlreadyExists, timer.ElapsedMilliseconds);
+            }
+
+
             RepositoryContext.Users.Add(new User
             {
                 Password = hashedPassword,
@@ -52,11 +66,12 @@ namespace Domain.Repositories.UserRepo.Concrete
             {
                 RepositoryContext.SaveChanges();
                 timer.Stop();
-                return new RepositoryResponse<bool>(true, timer.ElapsedMilliseconds);
+                return new RepositoryResponse<CreateUserResponseEnum>(CreateUserResponseEnum.Success, timer.ElapsedMilliseconds);
             }
             catch (Exception ex)
             {
-                return new RepositoryResponse<bool>(false, timer.ElapsedMilliseconds);
+                _logger.Log(ex);
+                return new RepositoryResponse<CreateUserResponseEnum>(CreateUserResponseEnum.Exception, timer.ElapsedMilliseconds);
             }
 
         }
