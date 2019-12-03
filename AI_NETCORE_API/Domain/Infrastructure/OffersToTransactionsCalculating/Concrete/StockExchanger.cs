@@ -51,11 +51,15 @@ namespace Domain.Infrastructure.OffersToTransactionsCalculating.Concrete
                 
                 int companyId = stockExchangeRequest.CompanyId;
 
-                IGetConfigurationResponse quantityFromConfiguration = new GetConfigurationResponse(new Configuration("offerWindowSize", 3), 0); //_configurationsProvider.GetConfiguration(new GetConfigurationRequest("configValue"));
+                IGetConfigurationResponse quantityFromConfiguration = _configurationsProvider.GetConfiguration(new GetConfigurationRequest("tableSize"));
+
+
                 databaseTime += quantityFromConfiguration.DatabaseExecutionTime;
                 if (quantityFromConfiguration.ProvideResult != ProvideEnumResult.Success)
                 {
-                    return new StockExchangeResponse(StockExchangeResultEnum.GetConfigurationWindowSizeFail,quantityFromConfiguration.DatabaseExecutionTime);
+                    _logger.Log($"Configuration by key {"tableSize"} not found. Actual size is default size from code : 3");
+                    quantityFromConfiguration = new GetConfigurationResponse(new Configuration("tableSize",3),0);
+                    //return new StockExchangeResponse(StockExchangeResultEnum.GetConfigurationWindowSizeFail,quantityFromConfiguration.DatabaseExecutionTime);
                 }
 
 
