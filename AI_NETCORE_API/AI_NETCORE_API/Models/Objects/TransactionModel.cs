@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +16,8 @@ namespace AI_NETCORE_API.Models.Objects
         public DateTime Date { get; set; }
         public int Amount { get; set; }
         public double Price { get; set; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
         public TransactionTypeModel Type { get; set; }
         public CompanyModel Company { get; set; }
     }
