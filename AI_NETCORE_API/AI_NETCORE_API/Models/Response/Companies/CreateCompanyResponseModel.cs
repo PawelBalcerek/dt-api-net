@@ -8,6 +8,6 @@ namespace AI_NETCORE_API.Models.Response.Companies
 {
     public class CreateCompanyResponseModel
     {
-        public ExecutionDetails ExecutionDetails { get; set; }
+        public ExecutionDetails ExecDetails { get; set; }
     }
 }

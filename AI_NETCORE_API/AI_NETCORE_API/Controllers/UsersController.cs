@@ -232,7 +232,7 @@ namespace AI_NETCORE_API.Controllers
             return new GetUserResponse
             {
                 user = user,
-                execDetails = new ExecutionDetails
+                ExecDetails = new ExecutionDetails
                 {
                     DbTime = getUserByIdResponse.DbTime,
                     ExecTime = timer.ElapsedMilliseconds

@@ -10,7 +10,7 @@ namespace AI_NETCORE_API.Models.Response.Companies
     public class GetCompaniesResponseModel
     {
         public IList<CompanyModel> Companies { get; set; }
-        public ExecutionDetails ExecutionDetails { get; set; }
+        public ExecutionDetails ExecDetails { get; set; }
 
     }
 }
