@@ -84,7 +84,7 @@ namespace AI_NETCORE_API.Controllers
             GetUserResourcesResponseModel response = new GetUserResourcesResponseModel
             {
                 Resources = resourceModelsList,
-                ExecutionDetails = new ExecutionDetails
+                ExecDetails = new ExecutionDetails
                 {
                     DbTime = getResourcesResponse.DatabaseExecutionTime,
                     ExecTime = timer.ElapsedMilliseconds

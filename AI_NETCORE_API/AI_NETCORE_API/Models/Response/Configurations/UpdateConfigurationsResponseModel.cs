@@ -8,6 +8,6 @@ namespace AI_NETCORE_API.Models.Response.Configurations
 {
     public class UpdateConfigurationsResponseModel
     {
-        public ExecutionDetails executionDetails { get; set; }
+        public ExecutionDetails ExecDetails { get; set; }
     }
 }

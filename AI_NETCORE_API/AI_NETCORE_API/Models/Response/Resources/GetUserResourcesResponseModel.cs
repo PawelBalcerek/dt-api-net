@@ -10,6 +10,6 @@ namespace AI_NETCORE_API.Models.Response.Resources
     public class GetUserResourcesResponseModel
     {
         public IList<ResourceModel> Resources { get; set; }
-        public ExecutionDetails ExecutionDetails { get; set; }
+        public ExecutionDetails ExecDetails { get; set; }
     }
 }

@@ -69,7 +69,7 @@ namespace AI_NETCORE_API.Controllers
             timer.Stop();
             return new UpdateConfigurationsResponseModel
             {
-                executionDetails = new ExecutionDetails
+                ExecDetails = new ExecutionDetails
                 {
                     DbTime = updateConfigurationResponse.DbTime,
                     ExecTime = timer.ElapsedMilliseconds

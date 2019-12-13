@@ -10,6 +10,6 @@ namespace AI_NETCORE_API.Models.Response.Users
     public class GetUserResponse
     {
         public UserModel user { get; set; }
-        public ExecutionDetails execDetails { get; set; }
+        public ExecutionDetails ExecDetails { get; set; }
     }
 }
