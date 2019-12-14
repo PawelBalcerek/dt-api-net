@@ -13,12 +13,12 @@ namespace Domain.DTOToBOConverting
             else
                 return new Domain.BusinessObject.User(user.Id, user.Name, user.Email, user.Password, user.Cash);
         }
-        public Domain.BusinessObject.Company ConvertCompany(Data.Models.Company company)
+        public Domain.BusinessObject.Company ConvertCompany(Data.Models.Company company, double indexPrice = 0)
         {
             if (company == null)
                 return null;
             else
-                return new Domain.BusinessObject.Company(company.Id, company.Name);
+                return new Domain.BusinessObject.Company(company.Id, company.Name, indexPrice);
         }
         public Domain.BusinessObject.BuyOffer ConvertBuyOffer(Data.Models.BuyOffer buyOffer)
         {

@@ -115,8 +115,8 @@ namespace AI_NETCORE_API.Controllers
         private GetCompaniesResponseModel PrepareSuccessResponseAfterGetCompanies(IGetCompaniesResponse getCompaniesResponse,
             Stopwatch timer)
         {
-            IList<CompanyModel> companiesModelList = getCompaniesResponse.Companies.ToList()
-                .Select(x => _businessObjectToModelsConverter.ConvertCompany(x)).ToList();
+            IList<CompanyWithIndexPriceModel> companiesModelList = getCompaniesResponse.Companies.ToList()
+                .Select(x => _businessObjectToModelsConverter.ConvertCompanyWithIndexPrice(x)).ToList();
             timer.Stop();
             GetCompaniesResponseModel response = new GetCompaniesResponseModel
             {
