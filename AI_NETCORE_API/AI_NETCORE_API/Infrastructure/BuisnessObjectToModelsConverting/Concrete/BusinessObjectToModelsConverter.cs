@@ -38,12 +38,21 @@ namespace AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Concret
             };
         }
 
+        public CompanyWithIndexPriceModel ConvertCompanyWithIndexPrice(Company company)
+        {
+            return new CompanyWithIndexPriceModel
+            {
+                Id = company.Id,
+                Name = company.Name,
+                IndexPrice = company.IndexPrice
+            };
+        }
+
         public ResourceModel ConvertResource(Resource resource)
         {
             return new ResourceModel
             {
                 Id = resource.Id,
-                UserId = resource.UserId,
                 Amount = resource.Amount,
                 Company = new CompanyModel { Id = resource.Company.Id, Name = resource.Company.Name }
             };
@@ -73,10 +82,8 @@ namespace AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Concret
             {
                 Id = transaction.Id,
                 Amount = transaction.Amount,
-                BuyOfferId = transaction.BuyOfferId, 
                 Date = transaction.Date,
                 Price = transaction.Price,
-                SellOfferId = transaction.SellOfferId,
                 Company = new CompanyModel
                 {
                     Id = transaction.Company.Id,

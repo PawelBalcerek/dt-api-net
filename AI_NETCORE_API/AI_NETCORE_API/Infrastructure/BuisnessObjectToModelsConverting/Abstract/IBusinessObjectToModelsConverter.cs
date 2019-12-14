@@ -10,6 +10,7 @@ namespace AI_NETCORE_API.Infrastructure.BuisnessObjectToModelsConverting.Abstrac
     public interface IBusinessObjectToModelsConverter
     {
         CompanyModel ConvertCompany(Company company);
+        CompanyWithIndexPriceModel ConvertCompanyWithIndexPrice(Company company); 
         BuyOfferModel ConvertBuyOffer(BuyOffer buyOffer);
         SellOfferModel ConvertSellOffer(SellOffer sellOffer);
         UserModel ConvertUser(User user);

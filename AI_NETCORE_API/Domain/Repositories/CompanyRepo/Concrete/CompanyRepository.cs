@@ -33,9 +33,23 @@ namespace Domain.Repositories.CompanyRepo.Concrete
         public RepositoryResponse<IEnumerable<BusinessObject.Company>> GetAllCompanies()
         {
             Stopwatch stopWatch = Stopwatch.StartNew();
-            IQueryable<BusinessObject.Company> result = FindAll().Select(c => _converter.ConvertCompany(c));
+            var companies = FindAll().ToList();
+            var companiesBO = new List<BusinessObject.Company>();
+            foreach(Company company in companies)
+            {
+                var lastTransaction = RepositoryContext.Transactions
+                    .Include(t => t.BuyOffer)
+                    .Include(t => t.BuyOffer.Resource)
+                    .Where(t => t.BuyOffer.Resource.CompId == company.Id)
+                    .FirstOrDefault();
+                double indexPrice = 0;
+                if (lastTransaction != null)
+                    indexPrice = lastTransaction.Price;
+                companiesBO.Add(_converter.ConvertCompany(company, indexPrice));
+            }
+            
             stopWatch.Stop();
-            return new RepositoryResponse<IEnumerable<BusinessObject.Company>>(result,stopWatch.ElapsedMilliseconds);
+            return new RepositoryResponse<IEnumerable<BusinessObject.Company>>(companiesBO,stopWatch.ElapsedMilliseconds);
         }
 
         public RepositoryResponse<BusinessObject.Company> CreateCompany(ICreateCompanyRequest createCompanyRequest)

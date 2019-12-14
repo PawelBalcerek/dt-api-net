@@ -74,7 +74,7 @@ namespace AI_NETCORE_API.Controllers
                 ICreateCompanyResponse companyCreationResponse = _companyCreator.CreateCompany(new Domain.Creators.Company.Request.Concrete.CreateCompanyRequest(userId, request.Name, request.ResourceAmount));
                 timer.Stop();
                 if (!companyCreationResponse.Success) return StatusCode(500);
-                return Ok(new CreateCompanyResponseModel{ ExecutionDetails = new ExecutionDetails
+                return Ok(new CreateCompanyResponseModel{ ExecDetails = new ExecutionDetails
                 {
                     DbTime = companyCreationResponse.DatabaseExecutionTime,
                     ExecTime = timer.ElapsedMilliseconds
@@ -92,7 +92,7 @@ namespace AI_NETCORE_API.Controllers
             timer.Stop();
             return StatusCode(400,
                 new CreateCompanyResponseModel
-                { ExecutionDetails = new ExecutionDetails { ExecTime = timer.ElapsedMilliseconds } });
+                { ExecDetails = new ExecutionDetails { ExecTime = timer.ElapsedMilliseconds } });
         }
 
 
@@ -115,13 +115,13 @@ namespace AI_NETCORE_API.Controllers
         private GetCompaniesResponseModel PrepareSuccessResponseAfterGetCompanies(IGetCompaniesResponse getCompaniesResponse,
             Stopwatch timer)
         {
-            IList<CompanyModel> companiesModelList = getCompaniesResponse.Companies.ToList()
-                .Select(x => _businessObjectToModelsConverter.ConvertCompany(x)).ToList();
+            IList<CompanyWithIndexPriceModel> companiesModelList = getCompaniesResponse.Companies.ToList()
+                .Select(x => _businessObjectToModelsConverter.ConvertCompanyWithIndexPrice(x)).ToList();
             timer.Stop();
             GetCompaniesResponseModel response = new GetCompaniesResponseModel
             {
                 Companies = companiesModelList,
-                ExecutionDetails = new ExecutionDetails
+                ExecDetails = new ExecutionDetails
                 {
                     DbTime = getCompaniesResponse.DatabaseExecutionTime,
                     ExecTime = timer.ElapsedMilliseconds
