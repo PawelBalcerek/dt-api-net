@@ -44,11 +44,11 @@ namespace Domain.Deleters.Thanos.Concrete
         {
             long tim = 0;
 
-            tim += _buyOfferRepository.ClearAll();
-            tim += _companyRepository.ClearAll();
-            tim += _resourceRepository.ClearAll();
-            tim += _sellOfferRepositroy.ClearAll();
             tim += _transactionRepository.ClearAll();
+            tim += _buyOfferRepository.ClearAll();
+            tim += _sellOfferRepositroy.ClearAll();
+            tim += _resourceRepository.ClearAll();
+            tim += _companyRepository.ClearAll();
             tim += _userRepository.ClearAll();
 
             return tim;
@@ -59,11 +59,11 @@ namespace Domain.Deleters.Thanos.Concrete
 
             long tim = 0;
 
-            tim += _buyOfferRepository.ClearAll();
-            tim += _companyRepository.ClearAll();
-            tim += _resourceRepository.ClearAll();
-            tim += _sellOfferRepositroy.ClearAll();
             tim += _transactionRepository.ClearAll();
+            tim += _buyOfferRepository.ClearAll();
+            tim += _sellOfferRepositroy.ClearAll();
+            tim += _resourceRepository.ClearAll();
+            tim += _companyRepository.ClearAll();
             tim += _userRepository.ClearCash();
 
             return tim;
