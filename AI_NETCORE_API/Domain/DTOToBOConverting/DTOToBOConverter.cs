@@ -53,7 +53,7 @@ namespace Domain.DTOToBOConverting
             if (configuration == null)
                 return null;
             else
-                return new Domain.BusinessObject.Configuration(configuration.Name, configuration.Number);
+                return new Domain.BusinessObject.Configuration(configuration.Name, configuration.Value);
         }
     }
 }
