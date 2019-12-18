@@ -88,7 +88,7 @@ namespace Data.Models
                     .HasColumnType("character varying(255)")
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.Number).HasColumnName("number");
+                entity.Property(e => e.Value).HasColumnName("number");
             });
 
             modelBuilder.Entity<FlywaySchemaHistory>(entity =>

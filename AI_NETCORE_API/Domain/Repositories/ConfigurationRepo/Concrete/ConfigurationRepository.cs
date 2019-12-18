@@ -41,7 +41,7 @@ namespace Domain.Repositories.ConfigurationRepo.Concrete
             }
             else
             {
-                configuration.Number = value;
+                configuration.Value = value;
                 RepositoryContext.Update(configuration);
                 RepositoryContext.SaveChanges();
                 timer.Stop();
